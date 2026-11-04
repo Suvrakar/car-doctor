@@ -1,0 +1,396 @@
+{
+ "id": "easy_bike",
+ "version": 1,
+ "name": {
+  "en": "Electric easy-bike",
+  "bn": "ইজি বাইক (ব্যাটারি চালিত)"
+ },
+ "defaultEnergy": "ELECTRIC_LEAD_ACID",
+ "parts": [
+  {
+   "id": "traction_battery",
+   "name": {
+    "en": "Battery set (capacity)",
+    "bn": "ব্যাটারি সেট (ক্ষমতা)"
+   },
+   "category": "TRACTION_BATTERY",
+   "weight": 25,
+   "intervalKm": 25000,
+   "intervalMonths": 18,
+   "checkId": "battery_water",
+   "costMinBdt": 40000,
+   "costMaxBdt": 75000
+  },
+  {
+   "id": "battery_water",
+   "name": {
+    "en": "Battery water top-up",
+    "bn": "ব্যাটারিতে পানি দেওয়া"
+   },
+   "category": "TRACTION_BATTERY",
+   "weight": 10,
+   "intervalMonths": 1,
+   "checkId": "battery_water",
+   "costMinBdt": 50,
+   "costMaxBdt": 200
+  },
+  {
+   "id": "terminals",
+   "name": {
+    "en": "Terminal cleaning & tightening",
+    "bn": "টার্মিনাল পরিষ্কার ও টাইট"
+   },
+   "category": "ELECTRICAL",
+   "weight": 6,
+   "intervalMonths": 1,
+   "checkId": "battery_terminal",
+   "costMinBdt": 0,
+   "costMaxBdt": 200
+  },
+  {
+   "id": "charger_check",
+   "name": {
+    "en": "Charger output check",
+    "bn": "চার্জার আউটপুট চেক"
+   },
+   "category": "ELECTRICAL",
+   "weight": 6,
+   "intervalMonths": 6,
+   "costMinBdt": 200,
+   "costMaxBdt": 800
+  },
+  {
+   "id": "motor_controller",
+   "name": {
+    "en": "Motor & controller check",
+    "bn": "মোটর ও কন্ট্রোলার চেক"
+   },
+   "category": "ELECTRICAL",
+   "weight": 8,
+   "intervalKm": 10000,
+   "intervalMonths": 6,
+   "costMinBdt": 300,
+   "costMaxBdt": 1500
+  },
+  {
+   "id": "brakes",
+   "name": {
+    "en": "Brake shoes & cable",
+    "bn": "ব্রেক শু ও তার"
+   },
+   "category": "BRAKES",
+   "weight": 15,
+   "intervalKm": 5000,
+   "intervalMonths": 4,
+   "checkId": "brake_pad",
+   "costMinBdt": 300,
+   "costMaxBdt": 900
+  },
+  {
+   "id": "tyres",
+   "name": {
+    "en": "Tyres",
+    "bn": "টায়ার"
+   },
+   "category": "TYRES",
+   "weight": 10,
+   "intervalKm": 12000,
+   "intervalMonths": 12,
+   "checkId": "tyre_tread",
+   "costMinBdt": 1500,
+   "costMaxBdt": 3500
+  },
+  {
+   "id": "bearings",
+   "name": {
+    "en": "Wheel bearings & greasing",
+    "bn": "হুইল বিয়ারিং ও গ্রিজ"
+   },
+   "category": "OTHER",
+   "weight": 5,
+   "intervalKm": 6000,
+   "intervalMonths": 6,
+   "costMinBdt": 300,
+   "costMaxBdt": 1000
+  },
+  {
+   "id": "differential_oil",
+   "name": {
+    "en": "Differential/gear oil",
+    "bn": "ডিফারেনশিয়াল অয়েল"
+   },
+   "category": "ENGINE_OIL",
+   "weight": 4,
+   "intervalKm": 10000,
+   "intervalMonths": 12,
+   "costMinBdt": 300,
+   "costMaxBdt": 700
+  }
+ ],
+ "documents": [
+  "REGISTRATION",
+  "INSURANCE",
+  "ROUTE_PERMIT",
+  "DRIVING_LICENCE"
+ ],
+ "checks": [
+  {
+   "id": "tyre_tread",
+   "title": {
+    "en": "Tyre tread check",
+    "bn": "টায়ারের গ্রিপ (ট্রেড) চেক"
+   },
+   "steps": [
+    {
+     "en": "Park on flat ground and look at the centre of the tyre.",
+     "bn": "সমান জায়গায় পার্ক করে টায়ারের মাঝখানটা দেখুন।"
+    },
+    {
+     "en": "Find the small raised bar (wear indicator) inside the grooves.",
+     "bn": "খাঁজের ভেতরে ছোট উঁচু দাগ (ওয়্যার ইন্ডিকেটর) খুঁজুন।"
+    },
+    {
+     "en": "Insert a 1-taka coin edge into the groove and compare.",
+     "bn": "১ টাকার কয়েনের কিনারা খাঁজে ঢুকিয়ে তুলনা করুন।"
+    }
+   ],
+   "references": [
+    {
+     "label": {
+      "en": "Deep grooves",
+      "bn": "গভীর খাঁজ"
+     },
+     "description": {
+      "en": "Grooves clearly deeper than the wear bar (>2 mm).",
+      "bn": "খাঁজ ওয়্যার দাগের চেয়ে স্পষ্ট গভীর (>২ মিমি)।"
+     },
+     "passes": true,
+     "image": "tyre_good"
+    },
+    {
+     "label": {
+      "en": "Level with wear bar",
+      "bn": "ওয়্যার দাগের সমান"
+     },
+     "description": {
+      "en": "Tread is flush with the indicator: replace soon.",
+      "bn": "ট্রেড ইন্ডিকেটরের সমান: শীঘ্রই বদলান।"
+     },
+     "passes": false,
+     "image": "tyre_worn"
+    },
+    {
+     "label": {
+      "en": "Bald / cracked / bulge",
+      "bn": "মসৃণ / ফাটা / ফোলা"
+     },
+     "description": {
+      "en": "No grooves, cracks in sidewall or a bulge: unsafe.",
+      "bn": "খাঁজ নেই, পাশে ফাটল বা ফোলা: বিপজ্জনক।"
+     },
+     "passes": false,
+     "image": "tyre_bald"
+    }
+   ]
+  },
+  {
+   "id": "brake_pad",
+   "title": {
+    "en": "Brake pad thickness",
+    "bn": "ব্রেক প্যাডের পুরুত্ব"
+   },
+   "steps": [
+    {
+     "en": "Look through the caliper gap with a phone torch.",
+     "bn": "ফোনের টর্চ দিয়ে ক্যালিপারের ফাঁক দিয়ে দেখুন।"
+    },
+    {
+     "en": "Find the pad material between the metal plate and the disc.",
+     "bn": "ধাতব প্লেট আর ডিস্কের মাঝে প্যাডের অংশ দেখুন।"
+    },
+    {
+     "en": "For drum brakes: check the wear-indicator arrow on the hub.",
+     "bn": "ড্রাম ব্রেকে: হাবের ওয়্যার ইন্ডিকেটর তীর দেখুন।"
+    }
+   ],
+   "references": [
+    {
+     "label": {
+      "en": "3 mm or more",
+      "bn": "৩ মিমি বা বেশি"
+     },
+     "description": {
+      "en": "Plenty of pad left.",
+      "bn": "যথেষ্ট প্যাড আছে।"
+     },
+     "passes": true,
+     "image": "pad_good"
+    },
+    {
+     "label": {
+      "en": "Less than 2 mm",
+      "bn": "২ মিমির কম"
+     },
+     "description": {
+      "en": "Replace pads this week.",
+      "bn": "এই সপ্তাহে প্যাড বদলান।"
+     },
+     "passes": false,
+     "image": "pad_thin"
+    },
+    {
+     "label": {
+      "en": "Metal on metal / grinding",
+      "bn": "ধাতুতে ধাতু ঘষা / কিচকিচ শব্দ"
+     },
+     "description": {
+      "en": "Stop riding: disc is being damaged.",
+      "bn": "চালানো বন্ধ করুন: ডিস্ক নষ্ট হচ্ছে।"
+     },
+     "passes": false,
+     "image": "pad_gone"
+    }
+   ]
+  },
+  {
+   "id": "battery_water",
+   "title": {
+    "en": "Battery water level (lead-acid)",
+    "bn": "ব্যাটারির পানি (লেড-অ্যাসিড)"
+   },
+   "steps": [
+    {
+     "en": "Charger unplugged. Open each cell cap of every battery.",
+     "bn": "চার্জার খুলে নিন। প্রতিটি ব্যাটারির প্রতিটি সেলের ক্যাপ খুলুন।"
+    },
+    {
+     "en": "Look at the electrolyte level against the plates.",
+     "bn": "প্লেটের তুলনায় পানির লেভেল দেখুন।"
+    }
+   ],
+   "references": [
+    {
+     "label": {
+      "en": "Plates covered by ~5–10 mm",
+      "bn": "প্লেটের উপর ৫–১০ মিমি পানি"
+     },
+     "description": {
+      "en": "OK.",
+      "bn": "ঠিক আছে।"
+     },
+     "passes": true,
+     "image": "water_good"
+    },
+    {
+     "label": {
+      "en": "Plates visible",
+      "bn": "প্লেট দেখা যাচ্ছে"
+     },
+     "description": {
+      "en": "Top up with DISTILLED water only, after charging.",
+      "bn": "চার্জের পরে শুধু ডিস্টিলড পানি দিন।"
+     },
+     "passes": false,
+     "image": "water_low"
+    },
+    {
+     "label": {
+      "en": "Bulging case / acid leak",
+      "bn": "বডি ফুলে গেছে / অ্যাসিড লিক"
+     },
+     "description": {
+      "en": "Replace that battery; check charger for overcharging.",
+      "bn": "ব্যাটারিটি বদলান; চার্জার ওভারচার্জ করছে কিনা দেখুন।"
+     },
+     "passes": false,
+     "image": "water_bulge"
+    }
+   ]
+  },
+  {
+   "id": "battery_terminal",
+   "title": {
+    "en": "Battery terminals",
+    "bn": "ব্যাটারি টার্মিনাল"
+   },
+   "steps": [
+    {
+     "en": "Engine off. Look at both battery terminals.",
+     "bn": "ইঞ্জিন বন্ধ। ব্যাটারির দুই টার্মিনাল দেখুন।"
+    },
+    {
+     "en": "Try to wiggle each cable clamp by hand.",
+     "bn": "হাত দিয়ে প্রতিটি ক্লাম্প নাড়িয়ে দেখুন।"
+    }
+   ],
+   "references": [
+    {
+     "label": {
+      "en": "Clean and tight",
+      "bn": "পরিষ্কার ও টাইট"
+     },
+     "description": {
+      "en": "No corrosion, clamps don't move.",
+      "bn": "মরিচা নেই, ক্লাম্প নড়ে না।"
+     },
+     "passes": true,
+     "image": "batt_good"
+    },
+    {
+     "label": {
+      "en": "White/green powder",
+      "bn": "সাদা/সবুজ গুঁড়া"
+     },
+     "description": {
+      "en": "Corrosion: clean with baking soda water.",
+      "bn": "মরিচা: খাবার সোডা পানি দিয়ে পরিষ্কার করুন।"
+     },
+     "passes": false,
+     "image": "batt_corroded"
+    },
+    {
+     "label": {
+      "en": "Loose clamp",
+      "bn": "ক্লাম্প ঢিলা"
+     },
+     "description": {
+      "en": "Tighten; loose terminals cause slow start.",
+      "bn": "টাইট দিন; ঢিলা টার্মিনালে স্টার্ট দেরিতে হয়।"
+     },
+     "passes": false,
+     "image": "batt_loose"
+    }
+   ]
+  }
+ ],
+ "symptomTreeId": "easy_bike",
+ "fleetFriendly": true,
+ "models": [
+  {
+   "id": "easybike_lead_48v",
+   "brand": "Generic",
+   "model": "48V lead-acid (4×12V)"
+  },
+  {
+   "id": "easybike_lead_60v",
+   "brand": "Generic",
+   "model": "60V lead-acid (5×12V)"
+  },
+  {
+   "id": "easybike_lithium",
+   "brand": "Generic",
+   "model": "Lithium pack",
+   "energyType": "ELECTRIC_LITHIUM",
+   "overrides": {
+    "traction_battery": {
+     "intervalKm": 60000,
+     "intervalMonths": 48
+    },
+    "battery_water": {
+     "intervalKm": null,
+     "intervalMonths": 120
+    }
+   }
+  }
+ ]
+}

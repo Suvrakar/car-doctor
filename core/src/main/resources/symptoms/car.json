@@ -1,0 +1,854 @@
+{
+ "id": "car",
+ "entries": [
+  {
+   "id": "smoke_white",
+   "label": {
+    "en": "White smoke from exhaust",
+    "bn": "সাইলেন্সার দিয়ে সাদা ধোঁয়া"
+   },
+   "start": "ws_q1"
+  },
+  {
+   "id": "overheat",
+   "label": {
+    "en": "Temperature gauge high",
+    "bn": "টেম্পারেচার বেশি দেখাচ্ছে"
+   },
+   "start": "oh_q1"
+  },
+  {
+   "id": "brake",
+   "label": {
+    "en": "Brake noise / vibration / soft pedal",
+    "bn": "ব্রেকে শব্দ / কাঁপুনি / নরম প্যাডেল"
+   },
+   "start": "br_q1"
+  },
+  {
+   "id": "ac",
+   "label": {
+    "en": "AC not cooling",
+    "bn": "এসি ঠান্ডা করছে না"
+   },
+   "start": "ac_q1"
+  },
+  {
+   "id": "start",
+   "label": {
+    "en": "Won't start / slow crank",
+    "bn": "স্টার্ট হয় না / ধীরে ঘোরে"
+   },
+   "start": "st_q1"
+  },
+  {
+   "id": "vibration",
+   "label": {
+    "en": "Vibration at speed / pulls to side",
+    "bn": "গতিতে কাঁপে / এক দিকে টানে"
+   },
+   "start": "vib_q1"
+  },
+  {
+   "id": "cng",
+   "label": {
+    "en": "Problems on CNG (jerking, no start on gas)",
+    "bn": "সিএনজিতে সমস্যা (ঝাঁকুনি, গ্যাসে স্টার্ট নেয় না)"
+   },
+   "start": "cng_q1"
+  },
+  {
+   "id": "light",
+   "label": {
+    "en": "Check-engine light on",
+    "bn": "চেক ইঞ্জিন লাইট জ্বলছে"
+   },
+   "start": "cel_q1"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "ws_q1",
+   "question": {
+    "en": "Does the white smoke continue after the engine is fully warm?",
+    "bn": "ইঞ্জিন পুরো গরম হওয়ার পরও কি সাদা ধোঁয়া থাকে?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "No",
+      "bn": "না"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Normal condensation",
+         "bn": "স্বাভাবিক বাষ্প"
+        },
+        "likelihood": 90
+       }
+      ],
+      "urgency": "SAFE",
+      "costMinBdt": 0,
+      "costMaxBdt": 0,
+      "advice": {
+       "en": "Normal on cool mornings.",
+       "bn": "ঠান্ডা সকালে এটা স্বাভাবিক।"
+      }
+     }
+    },
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "next": "ws_q2"
+    }
+   ]
+  },
+  {
+   "id": "ws_q2",
+   "question": {
+    "en": "Is the coolant level dropping without a visible leak?",
+    "bn": "দৃশ্যমান লিক ছাড়াই কি কুল্যান্ট কমে যাচ্ছে?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Head gasket leak",
+         "bn": "হেড গ্যাসকেট লিক"
+        },
+        "likelihood": 60
+       },
+       {
+        "text": {
+         "en": "Cracked cylinder head",
+         "bn": "সিলিন্ডার হেড ফাটা"
+        },
+        "likelihood": 25
+       },
+       {
+        "text": {
+         "en": "Coolant leak into intake",
+         "bn": "ইনটেকে কুল্যান্ট লিক"
+        },
+        "likelihood": 15
+       }
+      ],
+      "urgency": "STOP_NOW",
+      "costMinBdt": 8000,
+      "costMaxBdt": 45000,
+      "advice": {
+       "en": "Stop driving: risk of severe engine damage. Tow to a workshop.",
+       "bn": "চালানো বন্ধ করুন: ইঞ্জিন মারাত্মক নষ্ট হতে পারে। টো করে ওয়ার্কশপে নিন।"
+      },
+      "partId": "coolant",
+      "garageType": "car_workshop"
+     }
+    },
+    {
+     "label": {
+      "en": "No",
+      "bn": "না"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Transmission fluid being burnt (vacuum modulator)",
+         "bn": "ট্রান্সমিশন ফ্লুইড পুড়ছে"
+        },
+        "likelihood": 40
+       },
+       {
+        "text": {
+         "en": "Rich mixture / injector leak",
+         "bn": "মিশ্রণ বেশি / ইনজেক্টর লিক"
+        },
+        "likelihood": 35
+       },
+       {
+        "text": {
+         "en": "Condensation in short trips",
+         "bn": "ছোট যাত্রায় বাষ্প"
+        },
+        "likelihood": 25
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 1000,
+      "costMaxBdt": 10000,
+      "advice": {
+       "en": "Get a scan and compression test.",
+       "bn": "স্ক্যান ও কম্প্রেশন টেস্ট করান।"
+      },
+      "garageType": "car_workshop"
+     }
+    }
+   ]
+  },
+  {
+   "id": "oh_q1",
+   "question": {
+    "en": "Is the coolant reservoir low (engine cold)?",
+    "bn": "রিজার্ভারে কি কুল্যান্ট কম (ইঞ্জিন ঠান্ডা অবস্থায়)?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Coolant leak (hose, radiator, water pump)",
+         "bn": "কুল্যান্ট লিক (হোস, রেডিয়েটর, ওয়াটার পাম্প)"
+        },
+        "likelihood": 70
+       },
+       {
+        "text": {
+         "en": "Head gasket",
+         "bn": "হেড গ্যাসকেট"
+        },
+        "likelihood": 30
+       }
+      ],
+      "urgency": "STOP_NOW",
+      "costMinBdt": 500,
+      "costMaxBdt": 15000,
+      "advice": {
+       "en": "Stop now. Let it cool, top up, and get the leak fixed.",
+       "bn": "এখনই থামুন। ঠান্ডা হলে কুল্যান্ট দিন ও লিক ঠিক করান।"
+      },
+      "partId": "coolant",
+      "garageType": "car_workshop"
+     }
+    },
+    {
+     "label": {
+      "en": "No",
+      "bn": "না"
+     },
+     "next": "oh_q2"
+    }
+   ]
+  },
+  {
+   "id": "oh_q2",
+   "question": {
+    "en": "Does it overheat mainly in traffic jams?",
+    "bn": "মূলত জ্যামে কি গরম হয়?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Radiator fan / fan relay fault",
+         "bn": "রেডিয়েটর ফ্যান / রিলে সমস্যা"
+        },
+        "likelihood": 65
+       },
+       {
+        "text": {
+         "en": "Radiator fins clogged",
+         "bn": "রেডিয়েটরের জালি বন্ধ"
+        },
+        "likelihood": 35
+       }
+      ],
+      "urgency": "STOP_NOW",
+      "costMinBdt": 800,
+      "costMaxBdt": 6000,
+      "advice": {
+       "en": "Turn off AC, pull over safely; check whether fan runs.",
+       "bn": "এসি বন্ধ করে নিরাপদে থামুন; ফ্যান ঘুরছে কিনা দেখুন।"
+      },
+      "partId": "coolant",
+      "garageType": "car_workshop"
+     }
+    },
+    {
+     "label": {
+      "en": "No",
+      "bn": "না"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Thermostat stuck closed",
+         "bn": "থার্মোস্ট্যাট আটকে বন্ধ"
+        },
+        "likelihood": 45
+       },
+       {
+        "text": {
+         "en": "Water pump failing",
+         "bn": "ওয়াটার পাম্প দুর্বল"
+        },
+        "likelihood": 35
+       },
+       {
+        "text": {
+         "en": "Clogged radiator",
+         "bn": "রেডিয়েটর বন্ধ"
+        },
+        "likelihood": 20
+       }
+      ],
+      "urgency": "STOP_NOW",
+      "costMinBdt": 1500,
+      "costMaxBdt": 10000,
+      "advice": {
+       "en": "Do not keep driving with high temperature.",
+       "bn": "উচ্চ তাপমাত্রায় চালিয়ে যাবেন না।"
+      },
+      "partId": "coolant",
+      "garageType": "car_workshop"
+     }
+    }
+   ]
+  },
+  {
+   "id": "br_q1",
+   "question": {
+    "en": "What is the brake symptom?",
+    "bn": "ব্রেকের সমস্যা কী?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Pedal soft / sinks to floor",
+      "bn": "প্যাডেল নরম / নিচে চলে যায়"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Brake fluid leak",
+         "bn": "ব্রেক ফ্লুইড লিক"
+        },
+        "likelihood": 50
+       },
+       {
+        "text": {
+         "en": "Air in lines",
+         "bn": "লাইনে বাতাস"
+        },
+        "likelihood": 30
+       },
+       {
+        "text": {
+         "en": "Master cylinder failing",
+         "bn": "মাস্টার সিলিন্ডার নষ্ট"
+        },
+        "likelihood": 20
+       }
+      ],
+      "urgency": "STOP_NOW",
+      "costMinBdt": 800,
+      "costMaxBdt": 8000,
+      "advice": {
+       "en": "Do not drive. Brakes may fail.",
+       "bn": "চালাবেন না। ব্রেক ফেল করতে পারে।"
+      },
+      "partId": "brake_fluid",
+      "garageType": "car_workshop"
+     }
+    },
+    {
+     "label": {
+      "en": "Steering shakes when braking",
+      "bn": "ব্রেক করলে স্টিয়ারিং কাঁপে"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Warped brake discs (rotors)",
+         "bn": "ব্রেক ডিস্ক বাঁকা"
+        },
+        "likelihood": 75
+       },
+       {
+        "text": {
+         "en": "Worn suspension bushes",
+         "bn": "সাসপেনশন বুশ ক্ষয়"
+        },
+        "likelihood": 25
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 2000,
+      "costMaxBdt": 9000,
+      "advice": {
+       "en": "Skim or replace discs; replace pads together.",
+       "bn": "ডিস্ক স্কিম বা বদলান; প্যাডও একসাথে বদলান।"
+      },
+      "partId": "brake_pads",
+      "garageType": "car_workshop"
+     }
+    },
+    {
+     "label": {
+      "en": "Grinding / squealing",
+      "bn": "ঘষা / চিঁচিঁ শব্দ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Pads worn to wear indicator",
+         "bn": "প্যাড ওয়্যার ইন্ডিকেটর পর্যন্ত ক্ষয়"
+        },
+        "likelihood": 75
+       },
+       {
+        "text": {
+         "en": "Debris / rust",
+         "bn": "ময়লা / মরিচা"
+        },
+        "likelihood": 25
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 2500,
+      "costMaxBdt": 6000,
+      "advice": {
+       "en": "Replace pads soon to avoid disc damage.",
+       "bn": "ডিস্ক নষ্ট হওয়ার আগে প্যাড বদলান।"
+      },
+      "partId": "brake_pads",
+      "garageType": "car_workshop"
+     }
+    }
+   ]
+  },
+  {
+   "id": "ac_q1",
+   "question": {
+    "en": "Does the AC blow air but not cold?",
+    "bn": "এসি বাতাস দেয় কিন্তু ঠান্ডা নয়?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Low refrigerant (gas leak)",
+         "bn": "গ্যাস কম (লিক)"
+        },
+        "likelihood": 55
+       },
+       {
+        "text": {
+         "en": "Compressor clutch not engaging",
+         "bn": "কম্প্রেসর ক্লাচ কাজ করছে না"
+        },
+        "likelihood": 25
+       },
+       {
+        "text": {
+         "en": "Condenser fan / dirty condenser",
+         "bn": "কনডেন্সার ফ্যান / ময়লা কনডেন্সার"
+        },
+        "likelihood": 20
+       }
+      ],
+      "urgency": "SAFE",
+      "costMinBdt": 2000,
+      "costMaxBdt": 25000,
+      "advice": {
+       "en": "Leak test before refilling gas, or it will leak again.",
+       "bn": "গ্যাস দেওয়ার আগে লিক টেস্ট করান, নাহলে আবার বের হয়ে যাবে।"
+      },
+      "partId": "ac_service",
+      "garageType": "car_workshop"
+     }
+    },
+    {
+     "label": {
+      "en": "Weak airflow",
+      "bn": "বাতাস কম"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Clogged cabin filter",
+         "bn": "কেবিন ফিল্টার বন্ধ"
+        },
+        "likelihood": 70
+       },
+       {
+        "text": {
+         "en": "Blower motor weak",
+         "bn": "ব্লোয়ার মোটর দুর্বল"
+        },
+        "likelihood": 30
+       }
+      ],
+      "urgency": "SAFE",
+      "costMinBdt": 500,
+      "costMaxBdt": 4000,
+      "advice": {
+       "en": "Replace cabin filter first.",
+       "bn": "আগে কেবিন ফিল্টার বদলান।"
+      },
+      "partId": "ac_filter",
+      "garageType": "car_workshop"
+     }
+    }
+   ]
+  },
+  {
+   "id": "st_q1",
+   "question": {
+    "en": "When you turn the key, what happens?",
+    "bn": "চাবি ঘোরালে কী হয়?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Click or nothing, lights dim",
+      "bn": "টিক শব্দ বা কিছুই না, লাইট মৃদু"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Weak/dead battery",
+         "bn": "ব্যাটারি দুর্বল/শেষ"
+        },
+        "likelihood": 65
+       },
+       {
+        "text": {
+         "en": "Corroded terminals",
+         "bn": "টার্মিনালে মরিচা"
+        },
+        "likelihood": 25
+       },
+       {
+        "text": {
+         "en": "Starter motor",
+         "bn": "স্টার্টার মোটর"
+        },
+        "likelihood": 10
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 0,
+      "costMaxBdt": 14000,
+      "advice": {
+       "en": "Try a jump start; test battery (12.4V+ at rest).",
+       "bn": "জাম্প স্টার্ট দিন; ব্যাটারি টেস্ট করুন (বিশ্রামে ১২.৪V+)।"
+      },
+      "partId": "battery",
+      "garageType": "car_workshop"
+     }
+    },
+    {
+     "label": {
+      "en": "Cranks normally but won't fire",
+      "bn": "ঘোরে কিন্তু চালু হয় না"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Fuel pump / relay",
+         "bn": "ফুয়েল পাম্প / রিলে"
+        },
+        "likelihood": 40
+       },
+       {
+        "text": {
+         "en": "Ignition coil / plugs",
+         "bn": "ইগনিশন কয়েল / প্লাগ"
+        },
+        "likelihood": 30
+       },
+       {
+        "text": {
+         "en": "Immobiliser / sensor (crank sensor)",
+         "bn": "ইমোবিলাইজার / ক্র্যাংক সেন্সর"
+        },
+        "likelihood": 30
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 1000,
+      "costMaxBdt": 15000,
+      "advice": {
+       "en": "Scan with OBD dongle for codes.",
+       "bn": "OBD ডঙ্গল দিয়ে কোড স্ক্যান করুন।"
+      },
+      "partId": "spark_plugs",
+      "garageType": "car_workshop"
+     }
+    }
+   ]
+  },
+  {
+   "id": "vib_q1",
+   "question": {
+    "en": "At what speed does it vibrate?",
+    "bn": "কোন গতিতে কাঁপে?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "60–100 km/h, steering shakes",
+      "bn": "৬০–১০০ কিমি/ঘণ্টা, স্টিয়ারিং কাঁপে"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Wheel balancing needed",
+         "bn": "হুইল ব্যালান্সিং দরকার"
+        },
+        "likelihood": 65
+       },
+       {
+        "text": {
+         "en": "Bent rim / tyre bulge",
+         "bn": "রিম বাঁকা / টায়ার ফোলা"
+        },
+        "likelihood": 35
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 400,
+      "costMaxBdt": 6000,
+      "advice": {
+       "en": "Get wheel balancing and inspect tyres for bulges.",
+       "bn": "হুইল ব্যালান্সিং করান ও টায়ার ফোলা কিনা দেখুন।"
+      },
+      "partId": "tyre_rotation",
+      "garageType": "car_workshop"
+     }
+    },
+    {
+     "label": {
+      "en": "Pulls to one side always",
+      "bn": "সবসময় এক দিকে টানে"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Wheel alignment",
+         "bn": "হুইল অ্যালাইনমেন্ট"
+        },
+        "likelihood": 60
+       },
+       {
+        "text": {
+         "en": "Uneven tyre pressure",
+         "bn": "টায়ারে অসমান হাওয়া"
+        },
+        "likelihood": 30
+       },
+       {
+        "text": {
+         "en": "Sticking brake caliper",
+         "bn": "ব্রেক ক্যালিপার আটকে আছে"
+        },
+        "likelihood": 10
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 0,
+      "costMaxBdt": 2500,
+      "advice": {
+       "en": "Equalise tyre pressure; get alignment.",
+       "bn": "টায়ারের হাওয়া সমান করুন; অ্যালাইনমেন্ট করান।"
+      },
+      "partId": "tyre_rotation",
+      "garageType": "car_workshop"
+     }
+    }
+   ]
+  },
+  {
+   "id": "cng_q1",
+   "question": {
+    "en": "Does the car run fine on petrol?",
+    "bn": "পেট্রোলে কি গাড়ি ঠিক চলে?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "CNG kit tuning / reducer needs service",
+         "bn": "সিএনজি কিট টিউনিং / রিডিউসার সার্ভিস দরকার"
+        },
+        "likelihood": 50
+       },
+       {
+        "text": {
+         "en": "Clogged CNG filter",
+         "bn": "সিএনজি ফিল্টার বন্ধ"
+        },
+        "likelihood": 30
+       },
+       {
+        "text": {
+         "en": "Gas leak — smell of gas?",
+         "bn": "গ্যাস লিক — গন্ধ পাচ্ছেন?"
+        },
+        "likelihood": 20
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 500,
+      "costMaxBdt": 4000,
+      "advice": {
+       "en": "If you smell gas, stop, close the cylinder valve, and ventilate. Otherwise get the kit serviced.",
+       "bn": "গ্যাসের গন্ধ পেলে থামুন, সিলিন্ডার ভালভ বন্ধ করুন ও দরজা খুলে দিন। নাহলে কিট সার্ভিস করান।"
+      },
+      "partId": "cng_kit_tune",
+      "garageType": "cng_kit"
+     }
+    },
+    {
+     "label": {
+      "en": "No",
+      "bn": "না"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Ignition: plugs and coils (CNG wears them faster)",
+         "bn": "ইগনিশন: প্লাগ ও কয়েল (সিএনজিতে দ্রুত ক্ষয়)"
+        },
+        "likelihood": 60
+       },
+       {
+        "text": {
+         "en": "Air filter / throttle body dirty",
+         "bn": "এয়ার ফিল্টার / থ্রটল বডি ময়লা"
+        },
+        "likelihood": 40
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 1500,
+      "costMaxBdt": 9000,
+      "advice": {
+       "en": "CNG cars need plugs more often — replace and gap correctly.",
+       "bn": "সিএনজি গাড়িতে প্লাগ বেশি ঘন ঘন বদলাতে হয়।"
+      },
+      "partId": "spark_plugs",
+      "garageType": "car_workshop"
+     }
+    }
+   ]
+  },
+  {
+   "id": "cel_q1",
+   "question": {
+    "en": "Is the light flashing?",
+    "bn": "লাইট কি জ্বলছে-নিভছে (ফ্ল্যাশ)?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Severe misfire (risk of catalytic converter damage)",
+         "bn": "মারাত্মক মিসফায়ার (ক্যাটালিটিক কনভার্টার নষ্ট হতে পারে)"
+        },
+        "likelihood": 90
+       }
+      ],
+      "urgency": "STOP_NOW",
+      "costMinBdt": 1500,
+      "costMaxBdt": 15000,
+      "advice": {
+       "en": "Reduce speed and stop soon. Scan codes with an OBD dongle.",
+       "bn": "গতি কমিয়ে শীঘ্রই থামুন। OBD ডঙ্গলে কোড স্ক্যান করুন।"
+      },
+      "partId": "spark_plugs",
+      "garageType": "car_workshop"
+     }
+    },
+    {
+     "label": {
+      "en": "No",
+      "bn": "না"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Loose fuel cap",
+         "bn": "ফুয়েল ক্যাপ ঢিলা"
+        },
+        "likelihood": 25
+       },
+       {
+        "text": {
+         "en": "O2 or MAF sensor",
+         "bn": "O2 বা MAF সেন্সর"
+        },
+        "likelihood": 45
+       },
+       {
+        "text": {
+         "en": "Ignition / EVAP fault",
+         "bn": "ইগনিশন / EVAP সমস্যা"
+        },
+        "likelihood": 30
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 0,
+      "costMaxBdt": 8000,
+      "advice": {
+       "en": "Tighten fuel cap; connect the OBD dongle to read the exact code.",
+       "bn": "ফুয়েল ক্যাপ টাইট দিন; সঠিক কোড পড়তে OBD ডঙ্গল লাগান।"
+      },
+      "garageType": "car_workshop"
+     }
+    }
+   ]
+  }
+ ]
+}

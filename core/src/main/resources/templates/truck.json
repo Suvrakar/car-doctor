@@ -1,0 +1,487 @@
+{
+ "id": "truck",
+ "version": 1,
+ "name": {
+  "en": "Truck / covered van",
+  "bn": "ট্রাক / কাভার্ড ভ্যান"
+ },
+ "defaultEnergy": "DIESEL",
+ "parts": [
+  {
+   "id": "engine_oil",
+   "name": {
+    "en": "Engine oil & filter",
+    "bn": "ইঞ্জিন অয়েল ও ফিল্টার"
+   },
+   "category": "ENGINE_OIL",
+   "weight": 20,
+   "intervalKm": 8000,
+   "intervalMonths": 4,
+   "checkId": "oil_level",
+   "costMinBdt": 5000,
+   "costMaxBdt": 15000
+  },
+  {
+   "id": "fuel_filter",
+   "name": {
+    "en": "Diesel fuel filter / water separator",
+    "bn": "ডিজেল ফুয়েল ফিল্টার / ওয়াটার সেপারেটর"
+   },
+   "category": "FILTER",
+   "weight": 8,
+   "intervalKm": 15000,
+   "intervalMonths": 6,
+   "costMinBdt": 1200,
+   "costMaxBdt": 4000
+  },
+  {
+   "id": "air_filter",
+   "name": {
+    "en": "Air filter",
+    "bn": "এয়ার ফিল্টার"
+   },
+   "category": "FILTER",
+   "weight": 6,
+   "intervalKm": 15000,
+   "intervalMonths": 6,
+   "costMinBdt": 1500,
+   "costMaxBdt": 5000
+  },
+  {
+   "id": "brakes",
+   "name": {
+    "en": "Brake linings/pads & adjustment",
+    "bn": "ব্রেক লাইনার/প্যাড ও অ্যাডজাস্টমেন্ট"
+   },
+   "category": "BRAKES",
+   "weight": 15,
+   "intervalKm": 15000,
+   "intervalMonths": 6,
+   "checkId": "brake_pad",
+   "costMinBdt": 3000,
+   "costMaxBdt": 15000
+  },
+  {
+   "id": "brake_air",
+   "name": {
+    "en": "Air brake tank drain & check",
+    "bn": "এয়ার ব্রেক ট্যাংক ড্রেন ও চেক"
+   },
+   "category": "BRAKES",
+   "weight": 5,
+   "intervalMonths": 1,
+   "costMinBdt": 0,
+   "costMaxBdt": 500
+  },
+  {
+   "id": "tyres",
+   "name": {
+    "en": "Tyres (incl. spare)",
+    "bn": "টায়ার (স্পেয়ার সহ)"
+   },
+   "category": "TYRES",
+   "weight": 12,
+   "intervalKm": 60000,
+   "intervalMonths": 36,
+   "checkId": "tyre_tread",
+   "costMinBdt": 20000,
+   "costMaxBdt": 120000
+  },
+  {
+   "id": "greasing",
+   "name": {
+    "en": "Chassis greasing",
+    "bn": "চেসিস গ্রিজিং"
+   },
+   "category": "OTHER",
+   "weight": 5,
+   "intervalKm": 5000,
+   "intervalMonths": 1,
+   "costMinBdt": 300,
+   "costMaxBdt": 1200
+  },
+  {
+   "id": "clutch",
+   "name": {
+    "en": "Clutch plate inspection",
+    "bn": "ক্লাচ প্লেট পরীক্ষা"
+   },
+   "category": "DRIVE",
+   "weight": 6,
+   "intervalKm": 40000,
+   "intervalMonths": 24,
+   "costMinBdt": 5000,
+   "costMaxBdt": 25000
+  },
+  {
+   "id": "gear_oil",
+   "name": {
+    "en": "Gearbox & differential oil",
+    "bn": "গিয়ারবক্স ও ডিফারেনশিয়াল অয়েল"
+   },
+   "category": "ENGINE_OIL",
+   "weight": 6,
+   "intervalKm": 40000,
+   "intervalMonths": 24,
+   "costMinBdt": 3000,
+   "costMaxBdt": 10000
+  },
+  {
+   "id": "coolant",
+   "name": {
+    "en": "Coolant",
+    "bn": "কুল্যান্ট"
+   },
+   "category": "COOLING",
+   "weight": 8,
+   "intervalKm": 40000,
+   "intervalMonths": 24,
+   "checkId": "coolant_level",
+   "costMinBdt": 1500,
+   "costMaxBdt": 5000
+  },
+  {
+   "id": "battery",
+   "name": {
+    "en": "Batteries",
+    "bn": "ব্যাটারি"
+   },
+   "category": "BATTERY",
+   "weight": 8,
+   "intervalMonths": 24,
+   "checkId": "battery_terminal",
+   "costMinBdt": 8000,
+   "costMaxBdt": 30000
+  },
+  {
+   "id": "wheel_bearing",
+   "name": {
+    "en": "Wheel bearings & hub grease",
+    "bn": "হুইল বিয়ারিং ও হাব গ্রিজ"
+   },
+   "category": "OTHER",
+   "weight": 5,
+   "intervalKm": 30000,
+   "intervalMonths": 12,
+   "costMinBdt": 1500,
+   "costMaxBdt": 6000
+  }
+ ],
+ "documents": [
+  "REGISTRATION",
+  "FITNESS",
+  "TAX_TOKEN",
+  "INSURANCE",
+  "DRIVING_LICENCE",
+  "ROUTE_PERMIT"
+ ],
+ "checks": [
+  {
+   "id": "tyre_tread",
+   "title": {
+    "en": "Tyre tread check",
+    "bn": "টায়ারের গ্রিপ (ট্রেড) চেক"
+   },
+   "steps": [
+    {
+     "en": "Park on flat ground and look at the centre of the tyre.",
+     "bn": "সমান জায়গায় পার্ক করে টায়ারের মাঝখানটা দেখুন।"
+    },
+    {
+     "en": "Find the small raised bar (wear indicator) inside the grooves.",
+     "bn": "খাঁজের ভেতরে ছোট উঁচু দাগ (ওয়্যার ইন্ডিকেটর) খুঁজুন।"
+    },
+    {
+     "en": "Insert a 1-taka coin edge into the groove and compare.",
+     "bn": "১ টাকার কয়েনের কিনারা খাঁজে ঢুকিয়ে তুলনা করুন।"
+    }
+   ],
+   "references": [
+    {
+     "label": {
+      "en": "Deep grooves",
+      "bn": "গভীর খাঁজ"
+     },
+     "description": {
+      "en": "Grooves clearly deeper than the wear bar (>2 mm).",
+      "bn": "খাঁজ ওয়্যার দাগের চেয়ে স্পষ্ট গভীর (>২ মিমি)।"
+     },
+     "passes": true,
+     "image": "tyre_good"
+    },
+    {
+     "label": {
+      "en": "Level with wear bar",
+      "bn": "ওয়্যার দাগের সমান"
+     },
+     "description": {
+      "en": "Tread is flush with the indicator: replace soon.",
+      "bn": "ট্রেড ইন্ডিকেটরের সমান: শীঘ্রই বদলান।"
+     },
+     "passes": false,
+     "image": "tyre_worn"
+    },
+    {
+     "label": {
+      "en": "Bald / cracked / bulge",
+      "bn": "মসৃণ / ফাটা / ফোলা"
+     },
+     "description": {
+      "en": "No grooves, cracks in sidewall or a bulge: unsafe.",
+      "bn": "খাঁজ নেই, পাশে ফাটল বা ফোলা: বিপজ্জনক।"
+     },
+     "passes": false,
+     "image": "tyre_bald"
+    }
+   ]
+  },
+  {
+   "id": "brake_pad",
+   "title": {
+    "en": "Brake pad thickness",
+    "bn": "ব্রেক প্যাডের পুরুত্ব"
+   },
+   "steps": [
+    {
+     "en": "Look through the caliper gap with a phone torch.",
+     "bn": "ফোনের টর্চ দিয়ে ক্যালিপারের ফাঁক দিয়ে দেখুন।"
+    },
+    {
+     "en": "Find the pad material between the metal plate and the disc.",
+     "bn": "ধাতব প্লেট আর ডিস্কের মাঝে প্যাডের অংশ দেখুন।"
+    },
+    {
+     "en": "For drum brakes: check the wear-indicator arrow on the hub.",
+     "bn": "ড্রাম ব্রেকে: হাবের ওয়্যার ইন্ডিকেটর তীর দেখুন।"
+    }
+   ],
+   "references": [
+    {
+     "label": {
+      "en": "3 mm or more",
+      "bn": "৩ মিমি বা বেশি"
+     },
+     "description": {
+      "en": "Plenty of pad left.",
+      "bn": "যথেষ্ট প্যাড আছে।"
+     },
+     "passes": true,
+     "image": "pad_good"
+    },
+    {
+     "label": {
+      "en": "Less than 2 mm",
+      "bn": "২ মিমির কম"
+     },
+     "description": {
+      "en": "Replace pads this week.",
+      "bn": "এই সপ্তাহে প্যাড বদলান।"
+     },
+     "passes": false,
+     "image": "pad_thin"
+    },
+    {
+     "label": {
+      "en": "Metal on metal / grinding",
+      "bn": "ধাতুতে ধাতু ঘষা / কিচকিচ শব্দ"
+     },
+     "description": {
+      "en": "Stop riding: disc is being damaged.",
+      "bn": "চালানো বন্ধ করুন: ডিস্ক নষ্ট হচ্ছে।"
+     },
+     "passes": false,
+     "image": "pad_gone"
+    }
+   ]
+  },
+  {
+   "id": "oil_level",
+   "title": {
+    "en": "Engine oil level",
+    "bn": "ইঞ্জিন অয়েলের লেভেল"
+   },
+   "steps": [
+    {
+     "en": "Engine off for 5 minutes, vehicle upright on level ground.",
+     "bn": "ইঞ্জিন ৫ মিনিট বন্ধ রাখুন, সমান জায়গায় সোজা রাখুন।"
+    },
+    {
+     "en": "Pull the dipstick (or look in the sight glass), wipe, re-insert, check.",
+     "bn": "ডিপস্টিক তুলে মুছে আবার ঢুকিয়ে দেখুন (বা সাইট গ্লাস দেখুন)।"
+    }
+   ],
+   "references": [
+    {
+     "label": {
+      "en": "Between MIN and MAX, amber/brown",
+      "bn": "MIN ও MAX এর মাঝে, হালকা বাদামি"
+     },
+     "description": {
+      "en": "Level and colour OK.",
+      "bn": "লেভেল ও রং ঠিক আছে।"
+     },
+     "passes": true,
+     "image": "oil_good"
+    },
+    {
+     "label": {
+      "en": "Below MIN",
+      "bn": "MIN এর নিচে"
+     },
+     "description": {
+      "en": "Top up today; check for leaks.",
+      "bn": "আজই তেল দিন; লিক আছে কিনা দেখুন।"
+     },
+     "passes": false,
+     "image": "oil_low"
+    },
+    {
+     "label": {
+      "en": "Black & thick or milky",
+      "bn": "কালো ঘন বা দুধের মতো"
+     },
+     "description": {
+      "en": "Change oil. Milky oil can mean coolant leak.",
+      "bn": "তেল বদলান। দুধের মতো হলে কুল্যান্ট লিক হতে পারে।"
+     },
+     "passes": false,
+     "image": "oil_dirty"
+    }
+   ]
+  },
+  {
+   "id": "battery_terminal",
+   "title": {
+    "en": "Battery terminals",
+    "bn": "ব্যাটারি টার্মিনাল"
+   },
+   "steps": [
+    {
+     "en": "Engine off. Look at both battery terminals.",
+     "bn": "ইঞ্জিন বন্ধ। ব্যাটারির দুই টার্মিনাল দেখুন।"
+    },
+    {
+     "en": "Try to wiggle each cable clamp by hand.",
+     "bn": "হাত দিয়ে প্রতিটি ক্লাম্প নাড়িয়ে দেখুন।"
+    }
+   ],
+   "references": [
+    {
+     "label": {
+      "en": "Clean and tight",
+      "bn": "পরিষ্কার ও টাইট"
+     },
+     "description": {
+      "en": "No corrosion, clamps don't move.",
+      "bn": "মরিচা নেই, ক্লাম্প নড়ে না।"
+     },
+     "passes": true,
+     "image": "batt_good"
+    },
+    {
+     "label": {
+      "en": "White/green powder",
+      "bn": "সাদা/সবুজ গুঁড়া"
+     },
+     "description": {
+      "en": "Corrosion: clean with baking soda water.",
+      "bn": "মরিচা: খাবার সোডা পানি দিয়ে পরিষ্কার করুন।"
+     },
+     "passes": false,
+     "image": "batt_corroded"
+    },
+    {
+     "label": {
+      "en": "Loose clamp",
+      "bn": "ক্লাম্প ঢিলা"
+     },
+     "description": {
+      "en": "Tighten; loose terminals cause slow start.",
+      "bn": "টাইট দিন; ঢিলা টার্মিনালে স্টার্ট দেরিতে হয়।"
+     },
+     "passes": false,
+     "image": "batt_loose"
+    }
+   ]
+  },
+  {
+   "id": "coolant_level",
+   "title": {
+    "en": "Coolant level",
+    "bn": "কুল্যান্ট লেভেল"
+   },
+   "steps": [
+    {
+     "en": "Engine COLD. Never open the radiator cap when hot.",
+     "bn": "ইঞ্জিন ঠান্ডা থাকতে হবে। গরম অবস্থায় রেডিয়েটর ক্যাপ খুলবেন না।"
+    },
+    {
+     "en": "Check the reservoir tank level marks.",
+     "bn": "রিজার্ভার ট্যাংকের দাগ দেখুন।"
+    }
+   ],
+   "references": [
+    {
+     "label": {
+      "en": "Between LOW and FULL",
+      "bn": "LOW ও FULL এর মাঝে"
+     },
+     "description": {
+      "en": "OK.",
+      "bn": "ঠিক আছে।"
+     },
+     "passes": true,
+     "image": "coolant_good"
+    },
+    {
+     "label": {
+      "en": "Below LOW / empty",
+      "bn": "LOW এর নিচে / খালি"
+     },
+     "description": {
+      "en": "Top up and check for leaks.",
+      "bn": "কুল্যান্ট দিন ও লিক দেখুন।"
+     },
+     "passes": false,
+     "image": "coolant_low"
+    },
+    {
+     "label": {
+      "en": "Rusty or oily",
+      "bn": "মরিচা রঙের বা তেলতেলে"
+     },
+     "description": {
+      "en": "Flush coolant; oil in coolant can mean head-gasket issue.",
+      "bn": "কুল্যান্ট বদলান; তেল মিশলে হেড গ্যাসকেট সমস্যা হতে পারে।"
+     },
+     "passes": false,
+     "image": "coolant_dirty"
+    }
+   ]
+  }
+ ],
+ "symptomTreeId": "heavy",
+ "fleetFriendly": true,
+ "models": [
+  {
+   "id": "tata_lpt_1613",
+   "brand": "Tata",
+   "model": "LPT 1613"
+  },
+  {
+   "id": "ashok_leyland_1616",
+   "brand": "Ashok Leyland",
+   "model": "Ecomet 1616"
+  },
+  {
+   "id": "hino_ranger",
+   "brand": "Hino",
+   "model": "Ranger / FM"
+  },
+  {
+   "id": "eicher_pro",
+   "brand": "Eicher",
+   "model": "Pro 3015"
+  }
+ ]
+}

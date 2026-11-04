@@ -1,0 +1,1087 @@
+{
+ "id": "motorcycle",
+ "entries": [
+  {
+   "id": "pulls",
+   "label": {
+    "en": "Pulls to one side",
+    "bn": "এক দিকে টানে"
+   },
+   "start": "pulls_q1"
+  },
+  {
+   "id": "brake",
+   "label": {
+    "en": "Brake feels weak / spongy / noisy",
+    "bn": "ব্রেক দুর্বল / নরম / শব্দ করে"
+   },
+   "start": "brake_q1"
+  },
+  {
+   "id": "start",
+   "label": {
+    "en": "Hard to start / won't start",
+    "bn": "স্টার্ট নিতে চায় না"
+   },
+   "start": "start_q1"
+  },
+  {
+   "id": "smoke",
+   "label": {
+    "en": "Smoke from exhaust",
+    "bn": "সাইলেন্সার দিয়ে ধোঁয়া"
+   },
+   "start": "smoke_q1"
+  },
+  {
+   "id": "mileage",
+   "label": {
+    "en": "Low mileage",
+    "bn": "মাইলেজ কম"
+   },
+   "start": "mil_q1"
+  },
+  {
+   "id": "noise",
+   "label": {
+    "en": "Rattling / chain noise",
+    "bn": "খটখট / চেইনের শব্দ"
+   },
+   "start": "noise_q1"
+  },
+  {
+   "id": "pickup",
+   "label": {
+    "en": "Poor pickup / misfiring / jerking",
+    "bn": "পিকআপ কম / মিসিং / ঝাঁকুনি"
+   },
+   "start": "pick_q1"
+  },
+  {
+   "id": "heat",
+   "label": {
+    "en": "Engine overheating",
+    "bn": "ইঞ্জিন অতিরিক্ত গরম"
+   },
+   "start": "heat_q1"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "pulls_q1",
+   "question": {
+    "en": "Does it pull only when braking?",
+    "bn": "শুধু ব্রেক করলেই কি টানে?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Uneven brake pad wear or stuck caliper piston",
+         "bn": "ব্রেক প্যাড অসমান ক্ষয় বা ক্যালিপার আটকে আছে"
+        },
+        "likelihood": 60
+       },
+       {
+        "text": {
+         "en": "Bent disc",
+         "bn": "ডিস্ক বাঁকা"
+        },
+        "likelihood": 25
+       },
+       {
+        "text": {
+         "en": "Low pressure in one tyre",
+         "bn": "একটি টায়ারে হাওয়া কম"
+        },
+        "likelihood": 15
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 300,
+      "costMaxBdt": 2500,
+      "advice": {
+       "en": "Avoid hard braking until checked.",
+       "bn": "চেক না করা পর্যন্ত জোরে ব্রেক করবেন না।"
+      },
+      "partId": "brake_front",
+      "garageType": "bike_mechanic"
+     }
+    },
+    {
+     "label": {
+      "en": "No",
+      "bn": "না"
+     },
+     "next": "pulls_q2"
+    }
+   ]
+  },
+  {
+   "id": "pulls_q2",
+   "question": {
+    "en": "Is the handlebar crooked when riding straight?",
+    "bn": "সোজা চালালে কি হ্যান্ডেল বাঁকা থাকে?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Fork misalignment after a fall",
+         "bn": "পড়ে গিয়ে ফর্ক বাঁকা"
+        },
+        "likelihood": 55
+       },
+       {
+        "text": {
+         "en": "Bent handlebar or fork tube",
+         "bn": "হ্যান্ডেল বা ফর্ক টিউব বাঁকা"
+        },
+        "likelihood": 35
+       },
+       {
+        "text": {
+         "en": "Wheel alignment off",
+         "bn": "চাকার অ্যালাইনমেন্ট ঠিক নেই"
+        },
+        "likelihood": 10
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 500,
+      "costMaxBdt": 4000,
+      "advice": {
+       "en": "Get fork alignment checked; don't ride fast.",
+       "bn": "ফর্ক অ্যালাইনমেন্ট চেক করান; দ্রুত চালাবেন না।"
+      },
+      "garageType": "bike_mechanic"
+     }
+    },
+    {
+     "label": {
+      "en": "No",
+      "bn": "না"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Rear wheel not aligned after chain adjustment",
+         "bn": "চেইন টাইটের পর পেছনের চাকা সোজা নেই"
+        },
+        "likelihood": 50
+       },
+       {
+        "text": {
+         "en": "Low tyre pressure",
+         "bn": "টায়ারে হাওয়া কম"
+        },
+        "likelihood": 30
+       },
+       {
+        "text": {
+         "en": "Worn steering bearing",
+         "bn": "স্টিয়ারিং বিয়ারিং ক্ষয়"
+        },
+        "likelihood": 20
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 0,
+      "costMaxBdt": 1500,
+      "advice": {
+       "en": "Check tyre pressure first; then align rear wheel marks.",
+       "bn": "আগে টায়ারের হাওয়া দেখুন; তারপর পেছনের চাকার দাগ মিলিয়ে নিন।"
+      },
+      "partId": "chain",
+      "garageType": "bike_mechanic"
+     }
+    }
+   ]
+  },
+  {
+   "id": "brake_q1",
+   "question": {
+    "en": "What do you notice?",
+    "bn": "কী লক্ষ্য করছেন?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Lever/pedal goes too far, feels soft",
+      "bn": "লিভার/প্যাডেল অনেক দূর যায়, নরম লাগে"
+     },
+     "next": "brake_q2"
+    },
+    {
+     "label": {
+      "en": "Grinding / metal scraping sound",
+      "bn": "ঘষা / ধাতব কিচকিচ শব্দ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Brake pads worn to the metal",
+         "bn": "ব্রেক প্যাড শেষ হয়ে ধাতু ঘষছে"
+        },
+        "likelihood": 80
+       },
+       {
+        "text": {
+         "en": "Stone or debris in caliper",
+         "bn": "ক্যালিপারে পাথর/ময়লা"
+        },
+        "likelihood": 20
+       }
+      ],
+      "urgency": "STOP_NOW",
+      "costMinBdt": 400,
+      "costMaxBdt": 3000,
+      "advice": {
+       "en": "Stop riding: the disc is being damaged and braking is unreliable.",
+       "bn": "চালানো বন্ধ করুন: ডিস্ক নষ্ট হচ্ছে এবং ব্রেক ভরসাযোগ্য নয়।"
+      },
+      "partId": "brake_front",
+      "garageType": "bike_mechanic"
+     }
+    },
+    {
+     "label": {
+      "en": "Squeaking only",
+      "bn": "শুধু চিঁচিঁ শব্দ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Dust/glazing on pads",
+         "bn": "প্যাডে ধুলা/চকচকে হয়ে গেছে"
+        },
+        "likelihood": 60
+       },
+       {
+        "text": {
+         "en": "Pads nearly worn",
+         "bn": "প্যাড প্রায় শেষ"
+        },
+        "likelihood": 40
+       }
+      ],
+      "urgency": "SAFE",
+      "costMinBdt": 0,
+      "costMaxBdt": 900,
+      "advice": {
+       "en": "Clean the brake; check pad thickness with the guided check.",
+       "bn": "ব্রেক পরিষ্কার করুন; গাইডেড চেকে প্যাডের পুরুত্ব দেখুন।"
+      },
+      "partId": "brake_front",
+      "garageType": "bike_mechanic"
+     }
+    }
+   ]
+  },
+  {
+   "id": "brake_q2",
+   "question": {
+    "en": "Is it a disc brake (with fluid reservoir)?",
+    "bn": "এটা কি ডিস্ক ব্রেক (তেলের রিজার্ভার আছে)?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Air in brake line",
+         "bn": "ব্রেক লাইনে বাতাস"
+        },
+        "likelihood": 50
+       },
+       {
+        "text": {
+         "en": "Old/low brake fluid or leak",
+         "bn": "ব্রেক ফ্লুইড পুরনো/কম বা লিক"
+        },
+        "likelihood": 35
+       },
+       {
+        "text": {
+         "en": "Worn pads",
+         "bn": "প্যাড ক্ষয়"
+        },
+        "likelihood": 15
+       }
+      ],
+      "urgency": "STOP_NOW",
+      "costMinBdt": 300,
+      "costMaxBdt": 1500,
+      "advice": {
+       "en": "Spongy disc brake is dangerous: bleed the brake and refill fluid before riding.",
+       "bn": "নরম ডিস্ক ব্রেক বিপজ্জনক: চালানোর আগে ব্লিডিং করে ফ্লুইড ভরুন।"
+      },
+      "partId": "brake_fluid",
+      "garageType": "bike_mechanic"
+     }
+    },
+    {
+     "label": {
+      "en": "No",
+      "bn": "না"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Drum brake shoes worn",
+         "bn": "ড্রাম ব্রেকের শু ক্ষয়"
+        },
+        "likelihood": 60
+       },
+       {
+        "text": {
+         "en": "Brake cable/rod needs adjustment",
+         "bn": "ব্রেকের তার/রড অ্যাডজাস্ট দরকার"
+        },
+        "likelihood": 40
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 0,
+      "costMaxBdt": 800,
+      "advice": {
+       "en": "Adjust the brake nut; replace shoes if indicator is past the limit.",
+       "bn": "ব্রেকের নাট টাইট দিন; ইন্ডিকেটর সীমা পার হলে শু বদলান।"
+      },
+      "partId": "brake_rear",
+      "garageType": "bike_mechanic"
+     }
+    }
+   ]
+  },
+  {
+   "id": "start_q1",
+   "question": {
+    "en": "Does the starter/horn work normally?",
+    "bn": "সেল্ফ/হর্ন কি স্বাভাবিক কাজ করে?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "next": "start_q2"
+    },
+    {
+     "label": {
+      "en": "Weak / clicking / dead",
+      "bn": "দুর্বল / টিক টিক / একদম না"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Weak or old battery",
+         "bn": "ব্যাটারি দুর্বল বা পুরনো"
+        },
+        "likelihood": 60
+       },
+       {
+        "text": {
+         "en": "Loose/corroded terminals",
+         "bn": "টার্মিনাল ঢিলা/মরিচা"
+        },
+        "likelihood": 25
+       },
+       {
+        "text": {
+         "en": "Charging (regulator) fault",
+         "bn": "চার্জিং (রেগুলেটর) সমস্যা"
+        },
+        "likelihood": 15
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 0,
+      "costMaxBdt": 3500,
+      "advice": {
+       "en": "Try kick start; check terminals; test battery voltage (should be 12.6V+).",
+       "bn": "কিক দিয়ে চেষ্টা করুন; টার্মিনাল দেখুন; ব্যাটারি ভোল্টেজ ১২.৬V+ হওয়া উচিত।"
+      },
+      "partId": "battery",
+      "garageType": "bike_mechanic"
+     }
+    }
+   ]
+  },
+  {
+   "id": "start_q2",
+   "question": {
+    "en": "Is it worse in the morning / when cold?",
+    "bn": "সকালে / ঠান্ডায় কি বেশি সমস্যা হয়?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Choke/idle setting (carburettor) or cold-start sensor (FI)",
+         "bn": "চোক/আইডল সেটিং (কার্বুরেটর) বা কোল্ড-স্টার্ট সেন্সর (FI)"
+        },
+        "likelihood": 45
+       },
+       {
+        "text": {
+         "en": "Worn spark plug",
+         "bn": "স্পার্ক প্লাগ ক্ষয়"
+        },
+        "likelihood": 35
+       },
+       {
+        "text": {
+         "en": "Old engine oil too thick",
+         "bn": "পুরনো তেল ঘন হয়ে গেছে"
+        },
+        "likelihood": 20
+       }
+      ],
+      "urgency": "SAFE",
+      "costMinBdt": 150,
+      "costMaxBdt": 1200,
+      "advice": {
+       "en": "Use choke on carb bikes; clean/replace plug; carb tuning.",
+       "bn": "কার্বুরেটর বাইকে চোক দিন; প্লাগ পরিষ্কার/বদলান; কার্ব টিউনিং করান।"
+      },
+      "partId": "spark_plug",
+      "garageType": "bike_mechanic"
+     }
+    },
+    {
+     "label": {
+      "en": "No",
+      "bn": "না"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Fouled spark plug",
+         "bn": "স্পার্ক প্লাগে কার্বন জমেছে"
+        },
+        "likelihood": 40
+       },
+       {
+        "text": {
+         "en": "Dirty carburettor / fuel filter",
+         "bn": "কার্বুরেটর / ফুয়েল ফিল্টার ময়লা"
+        },
+        "likelihood": 35
+       },
+       {
+        "text": {
+         "en": "Water or bad fuel",
+         "bn": "পানি বা ভেজাল তেল"
+        },
+        "likelihood": 25
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 200,
+      "costMaxBdt": 1500,
+      "advice": {
+       "en": "Check plug spark; drain carb bowl; refuel from a trusted pump.",
+       "bn": "প্লাগে স্পার্ক দেখুন; কার্বের তেল ফেলে দিন; বিশ্বস্ত পাম্প থেকে তেল নিন।"
+      },
+      "partId": "spark_plug",
+      "garageType": "bike_mechanic"
+     }
+    }
+   ]
+  },
+  {
+   "id": "smoke_q1",
+   "question": {
+    "en": "What colour is the smoke?",
+    "bn": "ধোঁয়ার রং কী?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Blue / grey, smells of oil",
+      "bn": "নীল / ধূসর, তেলের গন্ধ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Worn piston rings / cylinder",
+         "bn": "পিস্টন রিং / সিলিন্ডার ক্ষয়"
+        },
+        "likelihood": 55
+       },
+       {
+        "text": {
+         "en": "Valve stem seals leaking",
+         "bn": "ভালভ সিল লিক"
+        },
+        "likelihood": 30
+       },
+       {
+        "text": {
+         "en": "Oil overfilled",
+         "bn": "অতিরিক্ত তেল দেওয়া হয়েছে"
+        },
+        "likelihood": 15
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 2500,
+      "costMaxBdt": 12000,
+      "advice": {
+       "en": "Check oil level often; plan an engine top overhaul.",
+       "bn": "নিয়মিত তেলের লেভেল দেখুন; ইঞ্জিন টপ ওভারহল প্ল্যান করুন।"
+      },
+      "partId": "engine_oil",
+      "garageType": "bike_mechanic"
+     }
+    },
+    {
+     "label": {
+      "en": "Black, smells of fuel",
+      "bn": "কালো, তেলের (পেট্রোল) গন্ধ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Rich mixture: carb needs tuning",
+         "bn": "মিশ্রণ বেশি: কার্ব টিউনিং দরকার"
+        },
+        "likelihood": 50
+       },
+       {
+        "text": {
+         "en": "Clogged air filter",
+         "bn": "এয়ার ফিল্টার বন্ধ"
+        },
+        "likelihood": 40
+       },
+       {
+        "text": {
+         "en": "Choke stuck on",
+         "bn": "চোক আটকে আছে"
+        },
+        "likelihood": 10
+       }
+      ],
+      "urgency": "SAFE",
+      "costMinBdt": 200,
+      "costMaxBdt": 1000,
+      "advice": {
+       "en": "Clean/replace air filter and get carb tuned.",
+       "bn": "এয়ার ফিল্টার পরিষ্কার/বদলান ও কার্ব টিউন করান।"
+      },
+      "partId": "air_filter",
+      "garageType": "bike_mechanic"
+     }
+    },
+    {
+     "label": {
+      "en": "White, only on cold start, disappears",
+      "bn": "সাদা, শুধু ঠান্ডায়, পরে চলে যায়"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Normal condensation",
+         "bn": "স্বাভাবিক বাষ্প"
+        },
+        "likelihood": 90
+       }
+      ],
+      "urgency": "SAFE",
+      "costMinBdt": 0,
+      "costMaxBdt": 0,
+      "advice": {
+       "en": "Normal. If it stays thick after warm-up, get it checked.",
+       "bn": "স্বাভাবিক। গরম হওয়ার পরও ঘন থাকলে চেক করান।"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "mil_q1",
+   "question": {
+    "en": "Have you checked tyre pressure in the last 2 weeks?",
+    "bn": "গত ২ সপ্তাহে কি টায়ারের হাওয়া চেক করেছেন?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "No",
+      "bn": "না"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Low tyre pressure",
+         "bn": "টায়ারে হাওয়া কম"
+        },
+        "likelihood": 60
+       },
+       {
+        "text": {
+         "en": "Chain too tight/dry",
+         "bn": "চেইন টাইট/শুকনো"
+        },
+        "likelihood": 20
+       },
+       {
+        "text": {
+         "en": "Dirty air filter",
+         "bn": "এয়ার ফিল্টার ময়লা"
+        },
+        "likelihood": 20
+       }
+      ],
+      "urgency": "SAFE",
+      "costMinBdt": 0,
+      "costMaxBdt": 500,
+      "advice": {
+       "en": "Fill to recommended pressure (usually 25/33 psi front/rear) and lube chain.",
+       "bn": "নির্দেশিত হাওয়া দিন (সাধারণত সামনে ২৫/পেছনে ৩৩ psi) ও চেইনে তেল দিন।"
+      },
+      "partId": "chain",
+      "garageType": "bike_mechanic"
+     }
+    },
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "next": "mil_q2"
+    }
+   ]
+  },
+  {
+   "id": "mil_q2",
+   "question": {
+    "en": "Does the wheel spin freely when lifted (no drag)?",
+    "bn": "চাকা তুলে ঘোরালে কি সহজে ঘোরে?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Dirty air filter / spark plug",
+         "bn": "এয়ার ফিল্টার / স্পার্ক প্লাগ ময়লা"
+        },
+        "likelihood": 45
+       },
+       {
+        "text": {
+         "en": "Carb/FI tuning off",
+         "bn": "কার্ব/FI টিউনিং ঠিক নেই"
+        },
+        "likelihood": 35
+       },
+       {
+        "text": {
+         "en": "Riding style / traffic / fuel quality",
+         "bn": "চালানোর ধরন / জ্যাম / তেলের মান"
+        },
+        "likelihood": 20
+       }
+      ],
+      "urgency": "SAFE",
+      "costMinBdt": 300,
+      "costMaxBdt": 1500,
+      "advice": {
+       "en": "Do a tune-up: air filter, plug, carb cleaning.",
+       "bn": "টিউন-আপ করান: এয়ার ফিল্টার, প্লাগ, কার্ব পরিষ্কার।"
+      },
+      "partId": "air_filter",
+      "garageType": "bike_mechanic"
+     }
+    },
+    {
+     "label": {
+      "en": "No",
+      "bn": "না"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Dragging brake",
+         "bn": "ব্রেক লেগে থাকছে"
+        },
+        "likelihood": 70
+       },
+       {
+        "text": {
+         "en": "Dry/tight wheel bearing",
+         "bn": "হুইল বিয়ারিং শুকনো/টাইট"
+        },
+        "likelihood": 30
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 200,
+      "costMaxBdt": 1200,
+      "advice": {
+       "en": "Loosen brake adjustment; grease/replace bearing.",
+       "bn": "ব্রেক অ্যাডজাস্টমেন্ট ঢিলা দিন; বিয়ারিং গ্রিজ/বদলান।"
+      },
+      "partId": "brake_rear",
+      "garageType": "bike_mechanic"
+     }
+    }
+   ]
+  },
+  {
+   "id": "noise_q1",
+   "question": {
+    "en": "Where does the noise come from?",
+    "bn": "শব্দ কোথা থেকে আসে?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Chain area, rhythmic slapping",
+      "bn": "চেইনের দিক থেকে, তালে তালে"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Chain too loose",
+         "bn": "চেইন বেশি ঢিলা"
+        },
+        "likelihood": 60
+       },
+       {
+        "text": {
+         "en": "Worn sprocket teeth",
+         "bn": "স্প্রোকেটের দাঁত ক্ষয়"
+        },
+        "likelihood": 30
+       },
+       {
+        "text": {
+         "en": "Dry chain",
+         "bn": "চেইন শুকনো"
+        },
+        "likelihood": 10
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 0,
+      "costMaxBdt": 4000,
+      "advice": {
+       "en": "Adjust and lube; replace chain-sprocket set if teeth are hooked.",
+       "bn": "টাইট দিয়ে তেল দিন; দাঁত বাঁকা হলে চেইন-স্প্রোকেট সেট বদলান।"
+      },
+      "partId": "chain",
+      "garageType": "bike_mechanic"
+     }
+    },
+    {
+     "label": {
+      "en": "Engine, ticking that rises with RPM",
+      "bn": "ইঞ্জিন থেকে, RPM বাড়লে টিকটিক বাড়ে"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Valve clearance (tappet) needs adjustment",
+         "bn": "ভালভ ক্লিয়ারেন্স (ট্যাপেট) অ্যাডজাস্ট দরকার"
+        },
+        "likelihood": 60
+       },
+       {
+        "text": {
+         "en": "Low engine oil",
+         "bn": "ইঞ্জিন অয়েল কম"
+        },
+        "likelihood": 30
+       },
+       {
+        "text": {
+         "en": "Cam chain tensioner",
+         "bn": "ক্যাম চেইন টেনশনার"
+        },
+        "likelihood": 10
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 300,
+      "costMaxBdt": 2000,
+      "advice": {
+       "en": "Check oil level now; get tappet set.",
+       "bn": "এখনই তেলের লেভেল দেখুন; ট্যাপেট সেট করান।"
+      },
+      "partId": "engine_oil",
+      "garageType": "bike_mechanic"
+     }
+    },
+    {
+     "label": {
+      "en": "Front, over bumps",
+      "bn": "সামনে, ঝাঁকুনিতে"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Fork oil low / worn bushes",
+         "bn": "ফর্ক অয়েল কম / বুশ ক্ষয়"
+        },
+        "likelihood": 50
+       },
+       {
+        "text": {
+         "en": "Loose steering bearing",
+         "bn": "স্টিয়ারিং বিয়ারিং ঢিলা"
+        },
+        "likelihood": 35
+       },
+       {
+        "text": {
+         "en": "Loose mudguard/bolts",
+         "bn": "মাডগার্ড/বোল্ট ঢিলা"
+        },
+        "likelihood": 15
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 0,
+      "costMaxBdt": 2500,
+      "advice": {
+       "en": "Check bolts; service fork.",
+       "bn": "বোল্ট দেখুন; ফর্ক সার্ভিস করান।"
+      },
+      "partId": "fork_oil",
+      "garageType": "bike_mechanic"
+     }
+    }
+   ]
+  },
+  {
+   "id": "pick_q1",
+   "question": {
+    "en": "Is the check-engine / FI light on?",
+    "bn": "চেক ইঞ্জিন / FI বাতি কি জ্বলছে?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "FI sensor fault (TPS, O2, MAP)",
+         "bn": "FI সেন্সর সমস্যা (TPS, O2, MAP)"
+        },
+        "likelihood": 60
+       },
+       {
+        "text": {
+         "en": "Injector clogged",
+         "bn": "ইনজেক্টর বন্ধ"
+        },
+        "likelihood": 25
+       },
+       {
+        "text": {
+         "en": "Low fuel pressure",
+         "bn": "ফুয়েল প্রেসার কম"
+        },
+        "likelihood": 15
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 500,
+      "costMaxBdt": 6000,
+      "advice": {
+       "en": "Visit an authorised service centre with a scanner for your brand.",
+       "bn": "আপনার ব্র্যান্ডের স্ক্যানার আছে এমন সার্ভিস সেন্টারে যান।"
+      },
+      "garageType": "bike_mechanic"
+     }
+    },
+    {
+     "label": {
+      "en": "No",
+      "bn": "না"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Worn spark plug / weak ignition",
+         "bn": "স্পার্ক প্লাগ ক্ষয় / দুর্বল ইগনিশন"
+        },
+        "likelihood": 40
+       },
+       {
+        "text": {
+         "en": "Clutch slipping",
+         "bn": "ক্লাচ স্লিপ করছে"
+        },
+        "likelihood": 25
+       },
+       {
+        "text": {
+         "en": "Dirty carburettor / air filter",
+         "bn": "কার্বুরেটর / এয়ার ফিল্টার ময়লা"
+        },
+        "likelihood": 25
+       },
+       {
+        "text": {
+         "en": "Chain too tight",
+         "bn": "চেইন বেশি টাইট"
+        },
+        "likelihood": 10
+       }
+      ],
+      "urgency": "SAFE",
+      "costMinBdt": 200,
+      "costMaxBdt": 2500,
+      "advice": {
+       "en": "Replace plug and clean air filter first — cheapest fixes.",
+       "bn": "প্রথমে প্লাগ বদলান ও এয়ার ফিল্টার পরিষ্কার করুন — সবচেয়ে সস্তা সমাধান।"
+      },
+      "partId": "spark_plug",
+      "garageType": "bike_mechanic"
+     }
+    }
+   ]
+  },
+  {
+   "id": "heat_q1",
+   "question": {
+    "en": "Is the bike liquid-cooled (has a radiator)?",
+    "bn": "বাইকে কি রেডিয়েটর আছে (লিকুইড কুলড)?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Low coolant / leak",
+         "bn": "কুল্যান্ট কম / লিক"
+        },
+        "likelihood": 50
+       },
+       {
+        "text": {
+         "en": "Radiator fan not working",
+         "bn": "রেডিয়েটর ফ্যান কাজ করছে না"
+        },
+        "likelihood": 35
+       },
+       {
+        "text": {
+         "en": "Thermostat stuck",
+         "bn": "থার্মোস্ট্যাট আটকে আছে"
+        },
+        "likelihood": 15
+       }
+      ],
+      "urgency": "STOP_NOW",
+      "costMinBdt": 300,
+      "costMaxBdt": 3000,
+      "advice": {
+       "en": "Stop and let it cool. Do not open the cap hot.",
+       "bn": "থামুন ও ঠান্ডা হতে দিন। গরম অবস্থায় ক্যাপ খুলবেন না।"
+      },
+      "garageType": "bike_mechanic"
+     }
+    },
+    {
+     "label": {
+      "en": "No",
+      "bn": "না"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Low or old engine oil",
+         "bn": "ইঞ্জিন অয়েল কম বা পুরনো"
+        },
+        "likelihood": 55
+       },
+       {
+        "text": {
+         "en": "Lean mixture (carb tuning)",
+         "bn": "মিশ্রণ কম (কার্ব টিউনিং)"
+        },
+        "likelihood": 30
+       },
+       {
+        "text": {
+         "en": "Long idling in traffic",
+         "bn": "জ্যামে দীর্ঘ সময় স্টার্ট রাখা"
+        },
+        "likelihood": 15
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 450,
+      "costMaxBdt": 1500,
+      "advice": {
+       "en": "Check oil level now; change oil if overdue.",
+       "bn": "এখনই তেলের লেভেল দেখুন; সময় পেরোলে তেল বদলান।"
+      },
+      "partId": "engine_oil",
+      "garageType": "bike_mechanic"
+     }
+    }
+   ]
+  }
+ ]
+}

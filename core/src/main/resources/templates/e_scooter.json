@@ -1,0 +1,302 @@
+{
+ "id": "e_scooter",
+ "version": 1,
+ "name": {
+  "en": "Electric scooter / e-bike",
+  "bn": "ইলেকট্রিক স্কুটার / ই-বাইক"
+ },
+ "defaultEnergy": "ELECTRIC_LITHIUM",
+ "parts": [
+  {
+   "id": "traction_battery",
+   "name": {
+    "en": "Battery pack (capacity)",
+    "bn": "ব্যাটারি প্যাক (ক্ষমতা)"
+   },
+   "category": "TRACTION_BATTERY",
+   "weight": 25,
+   "intervalKm": 30000,
+   "intervalMonths": 36,
+   "costMinBdt": 20000,
+   "costMaxBdt": 60000
+  },
+  {
+   "id": "terminals",
+   "name": {
+    "en": "Connectors & wiring check",
+    "bn": "কানেক্টর ও ওয়্যারিং চেক"
+   },
+   "category": "ELECTRICAL",
+   "weight": 6,
+   "intervalMonths": 3,
+   "checkId": "battery_terminal",
+   "costMinBdt": 0,
+   "costMaxBdt": 300
+  },
+  {
+   "id": "brake_front",
+   "name": {
+    "en": "Front brake",
+    "bn": "সামনের ব্রেক"
+   },
+   "category": "BRAKES",
+   "weight": 15,
+   "intervalKm": 6000,
+   "intervalMonths": 12,
+   "checkId": "brake_pad",
+   "costMinBdt": 300,
+   "costMaxBdt": 900
+  },
+  {
+   "id": "brake_rear",
+   "name": {
+    "en": "Rear brake",
+    "bn": "পেছনের ব্রেক"
+   },
+   "category": "BRAKES",
+   "weight": 10,
+   "intervalKm": 8000,
+   "intervalMonths": 12,
+   "checkId": "brake_pad",
+   "costMinBdt": 300,
+   "costMaxBdt": 800
+  },
+  {
+   "id": "tyre_front",
+   "name": {
+    "en": "Front tyre",
+    "bn": "সামনের টায়ার"
+   },
+   "category": "TYRES",
+   "weight": 10,
+   "intervalKm": 12000,
+   "intervalMonths": 36,
+   "checkId": "tyre_tread",
+   "costMinBdt": 1500,
+   "costMaxBdt": 3000
+  },
+  {
+   "id": "tyre_rear",
+   "name": {
+    "en": "Rear tyre",
+    "bn": "পেছনের টায়ার"
+   },
+   "category": "TYRES",
+   "weight": 12,
+   "intervalKm": 10000,
+   "intervalMonths": 36,
+   "checkId": "tyre_tread",
+   "costMinBdt": 1500,
+   "costMaxBdt": 3500
+  },
+  {
+   "id": "hub_motor",
+   "name": {
+    "en": "Hub motor bearings check",
+    "bn": "হাব মোটর বিয়ারিং চেক"
+   },
+   "category": "ELECTRICAL",
+   "weight": 6,
+   "intervalKm": 10000,
+   "intervalMonths": 12,
+   "costMinBdt": 300,
+   "costMaxBdt": 1500
+  }
+ ],
+ "documents": [
+  "REGISTRATION",
+  "TAX_TOKEN",
+  "INSURANCE",
+  "DRIVING_LICENCE"
+ ],
+ "checks": [
+  {
+   "id": "tyre_tread",
+   "title": {
+    "en": "Tyre tread check",
+    "bn": "টায়ারের গ্রিপ (ট্রেড) চেক"
+   },
+   "steps": [
+    {
+     "en": "Park on flat ground and look at the centre of the tyre.",
+     "bn": "সমান জায়গায় পার্ক করে টায়ারের মাঝখানটা দেখুন।"
+    },
+    {
+     "en": "Find the small raised bar (wear indicator) inside the grooves.",
+     "bn": "খাঁজের ভেতরে ছোট উঁচু দাগ (ওয়্যার ইন্ডিকেটর) খুঁজুন।"
+    },
+    {
+     "en": "Insert a 1-taka coin edge into the groove and compare.",
+     "bn": "১ টাকার কয়েনের কিনারা খাঁজে ঢুকিয়ে তুলনা করুন।"
+    }
+   ],
+   "references": [
+    {
+     "label": {
+      "en": "Deep grooves",
+      "bn": "গভীর খাঁজ"
+     },
+     "description": {
+      "en": "Grooves clearly deeper than the wear bar (>2 mm).",
+      "bn": "খাঁজ ওয়্যার দাগের চেয়ে স্পষ্ট গভীর (>২ মিমি)।"
+     },
+     "passes": true,
+     "image": "tyre_good"
+    },
+    {
+     "label": {
+      "en": "Level with wear bar",
+      "bn": "ওয়্যার দাগের সমান"
+     },
+     "description": {
+      "en": "Tread is flush with the indicator: replace soon.",
+      "bn": "ট্রেড ইন্ডিকেটরের সমান: শীঘ্রই বদলান।"
+     },
+     "passes": false,
+     "image": "tyre_worn"
+    },
+    {
+     "label": {
+      "en": "Bald / cracked / bulge",
+      "bn": "মসৃণ / ফাটা / ফোলা"
+     },
+     "description": {
+      "en": "No grooves, cracks in sidewall or a bulge: unsafe.",
+      "bn": "খাঁজ নেই, পাশে ফাটল বা ফোলা: বিপজ্জনক।"
+     },
+     "passes": false,
+     "image": "tyre_bald"
+    }
+   ]
+  },
+  {
+   "id": "brake_pad",
+   "title": {
+    "en": "Brake pad thickness",
+    "bn": "ব্রেক প্যাডের পুরুত্ব"
+   },
+   "steps": [
+    {
+     "en": "Look through the caliper gap with a phone torch.",
+     "bn": "ফোনের টর্চ দিয়ে ক্যালিপারের ফাঁক দিয়ে দেখুন।"
+    },
+    {
+     "en": "Find the pad material between the metal plate and the disc.",
+     "bn": "ধাতব প্লেট আর ডিস্কের মাঝে প্যাডের অংশ দেখুন।"
+    },
+    {
+     "en": "For drum brakes: check the wear-indicator arrow on the hub.",
+     "bn": "ড্রাম ব্রেকে: হাবের ওয়্যার ইন্ডিকেটর তীর দেখুন।"
+    }
+   ],
+   "references": [
+    {
+     "label": {
+      "en": "3 mm or more",
+      "bn": "৩ মিমি বা বেশি"
+     },
+     "description": {
+      "en": "Plenty of pad left.",
+      "bn": "যথেষ্ট প্যাড আছে।"
+     },
+     "passes": true,
+     "image": "pad_good"
+    },
+    {
+     "label": {
+      "en": "Less than 2 mm",
+      "bn": "২ মিমির কম"
+     },
+     "description": {
+      "en": "Replace pads this week.",
+      "bn": "এই সপ্তাহে প্যাড বদলান।"
+     },
+     "passes": false,
+     "image": "pad_thin"
+    },
+    {
+     "label": {
+      "en": "Metal on metal / grinding",
+      "bn": "ধাতুতে ধাতু ঘষা / কিচকিচ শব্দ"
+     },
+     "description": {
+      "en": "Stop riding: disc is being damaged.",
+      "bn": "চালানো বন্ধ করুন: ডিস্ক নষ্ট হচ্ছে।"
+     },
+     "passes": false,
+     "image": "pad_gone"
+    }
+   ]
+  },
+  {
+   "id": "battery_terminal",
+   "title": {
+    "en": "Battery terminals",
+    "bn": "ব্যাটারি টার্মিনাল"
+   },
+   "steps": [
+    {
+     "en": "Engine off. Look at both battery terminals.",
+     "bn": "ইঞ্জিন বন্ধ। ব্যাটারির দুই টার্মিনাল দেখুন।"
+    },
+    {
+     "en": "Try to wiggle each cable clamp by hand.",
+     "bn": "হাত দিয়ে প্রতিটি ক্লাম্প নাড়িয়ে দেখুন।"
+    }
+   ],
+   "references": [
+    {
+     "label": {
+      "en": "Clean and tight",
+      "bn": "পরিষ্কার ও টাইট"
+     },
+     "description": {
+      "en": "No corrosion, clamps don't move.",
+      "bn": "মরিচা নেই, ক্লাম্প নড়ে না।"
+     },
+     "passes": true,
+     "image": "batt_good"
+    },
+    {
+     "label": {
+      "en": "White/green powder",
+      "bn": "সাদা/সবুজ গুঁড়া"
+     },
+     "description": {
+      "en": "Corrosion: clean with baking soda water.",
+      "bn": "মরিচা: খাবার সোডা পানি দিয়ে পরিষ্কার করুন।"
+     },
+     "passes": false,
+     "image": "batt_corroded"
+    },
+    {
+     "label": {
+      "en": "Loose clamp",
+      "bn": "ক্লাম্প ঢিলা"
+     },
+     "description": {
+      "en": "Tighten; loose terminals cause slow start.",
+      "bn": "টাইট দিন; ঢিলা টার্মিনালে স্টার্ট দেরিতে হয়।"
+     },
+     "passes": false,
+     "image": "batt_loose"
+    }
+   ]
+  }
+ ],
+ "symptomTreeId": "easy_bike",
+ "fleetFriendly": true,
+ "models": [
+  {
+   "id": "generic_lithium_scooter",
+   "brand": "Generic",
+   "model": "Lithium e-scooter"
+  },
+  {
+   "id": "generic_lead_scooter",
+   "brand": "Generic",
+   "model": "Lead-acid e-scooter",
+   "energyType": "ELECTRIC_LEAD_ACID"
+  }
+ ]
+}

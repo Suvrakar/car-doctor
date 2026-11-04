@@ -1,0 +1,9 @@
+{
+  "_note": "SAMPLE DATA ONLY. Replace with your hand-picked, verified garages (or serve this file via Remote Config key 'garages'). Do not ship these placeholder entries.",
+  "garages": [
+    {"id": "sample-1", "name": "Sample Bike Workshop (demo)", "type": "bike_mechanic", "area": "Mirpur, Dhaka", "phone": "", "lat": 23.8069, "lng": 90.3687, "featured": true, "verified": false, "sample": true},
+    {"id": "sample-2", "name": "Sample Car Care (demo)", "type": "car_workshop", "area": "Tejgaon, Dhaka", "phone": "", "lat": 23.7639, "lng": 90.3889, "featured": false, "verified": false, "sample": true},
+    {"id": "sample-3", "name": "Sample Easy-bike Battery Shop (demo)", "type": "battery_shop", "area": "Jatrabari, Dhaka", "phone": "", "lat": 23.7104, "lng": 90.4348, "featured": false, "verified": false, "sample": true},
+    {"id": "sample-4", "name": "Sample CNG Conversion Centre (demo)", "type": "cng_kit", "area": "Gabtoli, Dhaka", "phone": "", "lat": 23.7838, "lng": 90.3448, "featured": false, "verified": false, "sample": true}
+  ]
+}

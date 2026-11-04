@@ -1,0 +1,353 @@
+{
+ "id": "heavy",
+ "entries": [
+  {
+   "id": "black_smoke",
+   "label": {
+    "en": "Black smoke",
+    "bn": "কালো ধোঁয়া"
+   },
+   "start": "hb_q1"
+  },
+  {
+   "id": "air_brake",
+   "label": {
+    "en": "Air brake pressure low",
+    "bn": "এয়ার ব্রেক প্রেসার কম"
+   },
+   "start": "ha_q1"
+  },
+  {
+   "id": "overheat",
+   "label": {
+    "en": "Overheating",
+    "bn": "অতিরিক্ত গরম"
+   },
+   "start": "ho_q1"
+  },
+  {
+   "id": "tyre",
+   "label": {
+    "en": "Uneven tyre wear",
+    "bn": "টায়ার অসমান ক্ষয়"
+   },
+   "start": "ht_q1"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "hb_q1",
+   "question": {
+    "en": "Only when loaded / climbing?",
+    "bn": "শুধু লোড নিয়ে / চড়াইয়ে?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Clogged air filter",
+         "bn": "এয়ার ফিল্টার বন্ধ"
+        },
+        "likelihood": 45
+       },
+       {
+        "text": {
+         "en": "Overloading",
+         "bn": "অতিরিক্ত লোড"
+        },
+        "likelihood": 30
+       },
+       {
+        "text": {
+         "en": "Injector/pump timing",
+         "bn": "ইনজেক্টর/পাম্প টাইমিং"
+        },
+        "likelihood": 25
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 1500,
+      "costMaxBdt": 20000,
+      "advice": {
+       "en": "Replace air filter; respect rated load.",
+       "bn": "এয়ার ফিল্টার বদলান; নির্ধারিত লোড মানুন।"
+      },
+      "partId": "air_filter",
+      "garageType": "car_workshop"
+     }
+    },
+    {
+     "label": {
+      "en": "No",
+      "bn": "না"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Injector nozzles worn",
+         "bn": "ইনজেক্টর নজল ক্ষয়"
+        },
+        "likelihood": 55
+       },
+       {
+        "text": {
+         "en": "Turbo issue",
+         "bn": "টার্বো সমস্যা"
+        },
+        "likelihood": 25
+       },
+       {
+        "text": {
+         "en": "Water in diesel",
+         "bn": "ডিজেলে পানি"
+        },
+        "likelihood": 20
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 3000,
+      "costMaxBdt": 40000,
+      "advice": {
+       "en": "Drain water separator; get injectors tested.",
+       "bn": "ওয়াটার সেপারেটর ড্রেন করুন; ইনজেক্টর টেস্ট করান।"
+      },
+      "partId": "fuel_filter",
+      "garageType": "car_workshop"
+     }
+    }
+   ]
+  },
+  {
+   "id": "ha_q1",
+   "question": {
+    "en": "Does pressure drop with the engine off?",
+    "bn": "ইঞ্জিন বন্ধ করলে কি প্রেসার নেমে যায়?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Air leak in lines, valves or chambers",
+         "bn": "লাইন, ভালভ বা চেম্বারে বাতাস লিক"
+        },
+        "likelihood": 85
+       },
+       {
+        "text": {
+         "en": "Tank drain valve leaking",
+         "bn": "ট্যাংক ড্রেন ভালভ লিক"
+        },
+        "likelihood": 15
+       }
+      ],
+      "urgency": "STOP_NOW",
+      "costMinBdt": 500,
+      "costMaxBdt": 8000,
+      "advice": {
+       "en": "Do not drive until pressure holds. Brake failure risk.",
+       "bn": "প্রেসার না থাকা পর্যন্ত চালাবেন না। ব্রেক ফেলের ঝুঁকি।"
+      },
+      "partId": "brake_air",
+      "garageType": "car_workshop"
+     }
+    },
+    {
+     "label": {
+      "en": "No",
+      "bn": "না"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Compressor worn / governor fault",
+         "bn": "কম্প্রেসর ক্ষয় / গভর্নর সমস্যা"
+        },
+        "likelihood": 70
+       },
+       {
+        "text": {
+         "en": "Water/oil in tanks",
+         "bn": "ট্যাংকে পানি/তেল"
+        },
+        "likelihood": 30
+       }
+      ],
+      "urgency": "STOP_NOW",
+      "costMinBdt": 2000,
+      "costMaxBdt": 25000,
+      "advice": {
+       "en": "Drain tanks daily; service compressor.",
+       "bn": "প্রতিদিন ট্যাংক ড্রেন করুন; কম্প্রেসর সার্ভিস করান।"
+      },
+      "partId": "brake_air",
+      "garageType": "car_workshop"
+     }
+    }
+   ]
+  },
+  {
+   "id": "ho_q1",
+   "question": {
+    "en": "Is the coolant level low?",
+    "bn": "কুল্যান্ট কি কম?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Hose/radiator leak",
+         "bn": "হোস/রেডিয়েটর লিক"
+        },
+        "likelihood": 70
+       },
+       {
+        "text": {
+         "en": "Head gasket",
+         "bn": "হেড গ্যাসকেট"
+        },
+        "likelihood": 30
+       }
+      ],
+      "urgency": "STOP_NOW",
+      "costMinBdt": 1000,
+      "costMaxBdt": 40000,
+      "advice": {
+       "en": "Stop and cool down; fix leak.",
+       "bn": "থামুন ও ঠান্ডা করুন; লিক ঠিক করুন।"
+      },
+      "partId": "coolant",
+      "garageType": "car_workshop"
+     }
+    },
+    {
+     "label": {
+      "en": "No",
+      "bn": "না"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Fan belt loose/broken",
+         "bn": "ফ্যান বেল্ট ঢিলা/ছেঁড়া"
+        },
+        "likelihood": 45
+       },
+       {
+        "text": {
+         "en": "Radiator clogged",
+         "bn": "রেডিয়েটর বন্ধ"
+        },
+        "likelihood": 35
+       },
+       {
+        "text": {
+         "en": "Thermostat",
+         "bn": "থার্মোস্ট্যাট"
+        },
+        "likelihood": 20
+       }
+      ],
+      "urgency": "STOP_NOW",
+      "costMinBdt": 500,
+      "costMaxBdt": 12000,
+      "advice": {
+       "en": "Check the fan belt first.",
+       "bn": "আগে ফ্যান বেল্ট দেখুন।"
+      },
+      "partId": "coolant",
+      "garageType": "car_workshop"
+     }
+    }
+   ]
+  },
+  {
+   "id": "ht_q1",
+   "question": {
+    "en": "Where is the wear?",
+    "bn": "কোথায় ক্ষয়?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Inner or outer edge",
+      "bn": "ভেতরের বা বাইরের কিনারায়"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Wheel alignment / king pin wear",
+         "bn": "অ্যালাইনমেন্ট / কিং পিন ক্ষয়"
+        },
+        "likelihood": 80
+       },
+       {
+        "text": {
+         "en": "Bent axle",
+         "bn": "এক্সেল বাঁকা"
+        },
+        "likelihood": 20
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 1500,
+      "costMaxBdt": 15000,
+      "advice": {
+       "en": "Get alignment and king pins checked.",
+       "bn": "অ্যালাইনমেন্ট ও কিং পিন চেক করান।"
+      },
+      "partId": "tyres",
+      "garageType": "car_workshop"
+     }
+    },
+    {
+     "label": {
+      "en": "Centre",
+      "bn": "মাঝখানে"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Over-inflation",
+         "bn": "অতিরিক্ত হাওয়া"
+        },
+        "likelihood": 100
+       }
+      ],
+      "urgency": "SAFE",
+      "costMinBdt": 0,
+      "costMaxBdt": 0,
+      "advice": {
+       "en": "Inflate to the recommended pressure for the load.",
+       "bn": "লোড অনুযায়ী নির্দেশিত হাওয়া দিন।"
+      },
+      "partId": "tyres",
+      "garageType": "car_workshop"
+     }
+    }
+   ]
+  }
+ ]
+}

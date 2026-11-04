@@ -1,0 +1,548 @@
+{
+ "id": "easy_bike",
+ "entries": [
+  {
+   "id": "range",
+   "label": {
+    "en": "Range dropped (runs fewer km per charge)",
+    "bn": "রেঞ্জ কমে গেছে (এক চার্জে কম চলে)"
+   },
+   "start": "rg_q1"
+  },
+  {
+   "id": "no_power",
+   "label": {
+    "en": "No power / cuts out",
+    "bn": "পাওয়ার নেই / হঠাৎ বন্ধ হয়"
+   },
+   "start": "np_q1"
+  },
+  {
+   "id": "charging",
+   "label": {
+    "en": "Charging problem",
+    "bn": "চার্জ হতে সমস্যা"
+   },
+   "start": "ch_q1"
+  },
+  {
+   "id": "noise",
+   "label": {
+    "en": "Motor noise / jerk",
+    "bn": "মোটরে শব্দ / ঝাঁকুনি"
+   },
+   "start": "mn_q1"
+  },
+  {
+   "id": "brake",
+   "label": {
+    "en": "Brakes weak",
+    "bn": "ব্রেক দুর্বল"
+   },
+   "start": "eb_br"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "rg_q1",
+   "question": {
+    "en": "Has the range dropped to about half or less?",
+    "bn": "রেঞ্জ কি প্রায় অর্ধেক বা তার কম হয়ে গেছে?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "next": "rg_q2"
+    },
+    {
+     "label": {
+      "en": "Only slightly (10–30%)",
+      "bn": "সামান্য (১০–৩০%)"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Low battery water (lead-acid)",
+         "bn": "ব্যাটারিতে পানি কম (লেড-অ্যাসিড)"
+        },
+        "likelihood": 40
+       },
+       {
+        "text": {
+         "en": "Low tyre pressure / overloading",
+         "bn": "টায়ারে হাওয়া কম / অতিরিক্ত যাত্রী"
+        },
+        "likelihood": 35
+       },
+       {
+        "text": {
+         "en": "Normal ageing",
+         "bn": "স্বাভাবিক বয়সজনিত"
+        },
+        "likelihood": 25
+       }
+      ],
+      "urgency": "SAFE",
+      "costMinBdt": 0,
+      "costMaxBdt": 500,
+      "advice": {
+       "en": "Top up distilled water, fill tyres, avoid overloading.",
+       "bn": "ডিস্টিলড পানি দিন, টায়ারে হাওয়া দিন, অতিরিক্ত লোড এড়ান।"
+      },
+      "partId": "battery_water",
+      "garageType": "battery_shop"
+     }
+    }
+   ]
+  },
+  {
+   "id": "rg_q2",
+   "question": {
+    "en": "Is one battery hotter or bulging compared with others after a ride?",
+    "bn": "চালানোর পর কি একটি ব্যাটারি অন্যগুলোর চেয়ে বেশি গরম বা ফোলা?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "One dead/weak battery dragging the whole set",
+         "bn": "একটি দুর্বল ব্যাটারি পুরো সেটকে নামিয়ে দিচ্ছে"
+        },
+        "likelihood": 80
+       },
+       {
+        "text": {
+         "en": "Shorted cell",
+         "bn": "সেল শর্ট"
+        },
+        "likelihood": 20
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 8000,
+      "costMaxBdt": 18000,
+      "advice": {
+       "en": "Test each battery's voltage under load; replace only the weak one to save money.",
+       "bn": "লোডে প্রতিটি ব্যাটারির ভোল্টেজ টেস্ট করুন; শুধু দুর্বলটি বদলে টাকা বাঁচান।"
+      },
+      "partId": "traction_battery",
+      "garageType": "battery_shop"
+     }
+    },
+    {
+     "label": {
+      "en": "No",
+      "bn": "না"
+     },
+     "next": "rg_q3"
+    }
+   ]
+  },
+  {
+   "id": "rg_q3",
+   "question": {
+    "en": "Does the charger's indicator turn green (full) much faster than before?",
+    "bn": "চার্জারের বাতি কি আগের চেয়ে অনেক তাড়াতাড়ি সবুজ (ফুল) হয়?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Battery set capacity worn out (sulphation)",
+         "bn": "ব্যাটারি সেটের ক্ষমতা শেষ (সালফেশন)"
+        },
+        "likelihood": 75
+       },
+       {
+        "text": {
+         "en": "Charger cutting off early",
+         "bn": "চার্জার আগেই বন্ধ হয়ে যাচ্ছে"
+        },
+        "likelihood": 25
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 40000,
+      "costMaxBdt": 75000,
+      "advice": {
+       "en": "Set is near end of life. Get a capacity test before buying a new set.",
+       "bn": "সেট প্রায় শেষ। নতুন কেনার আগে ক্যাপাসিটি টেস্ট করান।"
+      },
+      "partId": "traction_battery",
+      "garageType": "battery_shop"
+     }
+    },
+    {
+     "label": {
+      "en": "No",
+      "bn": "না"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Faulty charger not fully charging",
+         "bn": "চার্জার ফুল চার্জ দিচ্ছে না"
+        },
+        "likelihood": 50
+       },
+       {
+        "text": {
+         "en": "Loose/corroded terminals",
+         "bn": "টার্মিনাল ঢিলা/মরিচা"
+        },
+        "likelihood": 30
+       },
+       {
+        "text": {
+         "en": "Dragging brakes / bearings",
+         "bn": "ব্রেক / বিয়ারিং লেগে আছে"
+        },
+        "likelihood": 20
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 200,
+      "costMaxBdt": 4000,
+      "advice": {
+       "en": "Check charger output voltage and clean all terminals.",
+       "bn": "চার্জারের আউটপুট ভোল্টেজ দেখুন ও সব টার্মিনাল পরিষ্কার করুন।"
+      },
+      "partId": "charger_check",
+      "garageType": "battery_shop"
+     }
+    }
+   ]
+  },
+  {
+   "id": "np_q1",
+   "question": {
+    "en": "Does the display/horn still work when it cuts out?",
+    "bn": "বন্ধ হলে কি ডিসপ্লে/হর্ন চলে?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Controller fault or overheating",
+         "bn": "কন্ট্রোলার সমস্যা বা অতিরিক্ত গরম"
+        },
+        "likelihood": 50
+       },
+       {
+        "text": {
+         "en": "Throttle wiring loose",
+         "bn": "থ্রটলের তার ঢিলা"
+        },
+        "likelihood": 30
+       },
+       {
+        "text": {
+         "en": "Low-voltage cutoff on hills (weak battery)",
+         "bn": "চড়াইয়ে ভোল্টেজ কমে কাটঅফ (দুর্বল ব্যাটারি)"
+        },
+        "likelihood": 20
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 500,
+      "costMaxBdt": 6000,
+      "advice": {
+       "en": "Check throttle connector; let controller cool.",
+       "bn": "থ্রটল কানেক্টর দেখুন; কন্ট্রোলার ঠান্ডা হতে দিন।"
+      },
+      "partId": "motor_controller",
+      "garageType": "battery_shop"
+     }
+    },
+    {
+     "label": {
+      "en": "No",
+      "bn": "না"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Main fuse / breaker tripped",
+         "bn": "মেইন ফিউজ / ব্রেকার পড়ে গেছে"
+        },
+        "likelihood": 45
+       },
+       {
+        "text": {
+         "en": "Loose main terminal",
+         "bn": "মেইন টার্মিনাল ঢিলা"
+        },
+        "likelihood": 40
+       },
+       {
+        "text": {
+         "en": "Key switch fault",
+         "bn": "চাবি সুইচ সমস্যা"
+        },
+        "likelihood": 15
+       }
+      ],
+      "urgency": "STOP_NOW",
+      "costMinBdt": 0,
+      "costMaxBdt": 1500,
+      "advice": {
+       "en": "Loose high-current terminals can spark and burn wiring. Stop and tighten/repair.",
+       "bn": "ঢিলা টার্মিনালে স্পার্ক হয়ে তার পুড়তে পারে। থামুন ও ঠিক করুন।"
+      },
+      "partId": "terminals",
+      "garageType": "battery_shop"
+     }
+    }
+   ]
+  },
+  {
+   "id": "ch_q1",
+   "question": {
+    "en": "What happens when you plug in the charger?",
+    "bn": "চার্জার লাগালে কী হয়?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Nothing / no light",
+      "bn": "কিছুই না / বাতি জ্বলে না"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Charger fuse or charger dead",
+         "bn": "চার্জারের ফিউজ বা চার্জার নষ্ট"
+        },
+        "likelihood": 60
+       },
+       {
+        "text": {
+         "en": "Charging socket loose",
+         "bn": "চার্জিং সকেট ঢিলা"
+        },
+        "likelihood": 40
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 200,
+      "costMaxBdt": 5000,
+      "advice": {
+       "en": "Test with another charger; check socket.",
+       "bn": "অন্য চার্জার দিয়ে টেস্ট করুন; সকেট দেখুন।"
+      },
+      "partId": "charger_check",
+      "garageType": "battery_shop"
+     }
+    },
+    {
+     "label": {
+      "en": "Batteries get very hot / smell",
+      "bn": "ব্যাটারি খুব গরম / গন্ধ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Overcharging (charger fault)",
+         "bn": "ওভারচার্জিং (চার্জার সমস্যা)"
+        },
+        "likelihood": 60
+       },
+       {
+        "text": {
+         "en": "Low water exposing plates",
+         "bn": "পানি কমে প্লেট বের হয়ে গেছে"
+        },
+        "likelihood": 40
+       }
+      ],
+      "urgency": "STOP_NOW",
+      "costMinBdt": 200,
+      "costMaxBdt": 5000,
+      "advice": {
+       "en": "Unplug immediately. Charge in open air. Fire and acid risk.",
+       "bn": "এখনই চার্জার খুলুন। খোলা জায়গায় চার্জ দিন। আগুন ও অ্যাসিডের ঝুঁকি।"
+      },
+      "partId": "battery_water",
+      "garageType": "battery_shop"
+     }
+    }
+   ]
+  },
+  {
+   "id": "mn_q1",
+   "question": {
+    "en": "Is there grinding from the rear axle?",
+    "bn": "পেছনের এক্সেল থেকে কি ঘষার শব্দ আসে?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Differential/gear oil low",
+         "bn": "ডিফারেনশিয়াল অয়েল কম"
+        },
+        "likelihood": 50
+       },
+       {
+        "text": {
+         "en": "Worn bearings",
+         "bn": "বিয়ারিং ক্ষয়"
+        },
+        "likelihood": 50
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 300,
+      "costMaxBdt": 3000,
+      "advice": {
+       "en": "Check differential oil and bearings.",
+       "bn": "ডিফারেনশিয়াল অয়েল ও বিয়ারিং দেখুন।"
+      },
+      "partId": "differential_oil",
+      "garageType": "battery_shop"
+     }
+    },
+    {
+     "label": {
+      "en": "No",
+      "bn": "না"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Motor hall sensor / controller",
+         "bn": "মোটর হল সেন্সর / কন্ট্রোলার"
+        },
+        "likelihood": 60
+       },
+       {
+        "text": {
+         "en": "Loose motor mounting",
+         "bn": "মোটর মাউন্টিং ঢিলা"
+        },
+        "likelihood": 40
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 500,
+      "costMaxBdt": 5000,
+      "advice": {
+       "en": "Have motor & controller checked.",
+       "bn": "মোটর ও কন্ট্রোলার চেক করান।"
+      },
+      "partId": "motor_controller",
+      "garageType": "battery_shop"
+     }
+    }
+   ]
+  },
+  {
+   "id": "eb_br",
+   "question": {
+    "en": "Does the brake lever pull all the way?",
+    "bn": "ব্রেক লিভার কি পুরোটা চলে যায়?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Brake shoes worn / cable stretched",
+         "bn": "ব্রেক শু ক্ষয় / তার ঢিলা"
+        },
+        "likelihood": 80
+       },
+       {
+        "text": {
+         "en": "Oil on brake drum",
+         "bn": "ড্রামে তেল"
+        },
+        "likelihood": 20
+       }
+      ],
+      "urgency": "STOP_NOW",
+      "costMinBdt": 300,
+      "costMaxBdt": 900,
+      "advice": {
+       "en": "With passengers, weak brakes are dangerous. Fix before next trip.",
+       "bn": "যাত্রী নিয়ে দুর্বল ব্রেক বিপজ্জনক। পরের ট্রিপের আগে ঠিক করুন।"
+      },
+      "partId": "brakes",
+      "garageType": "battery_shop"
+     }
+    },
+    {
+     "label": {
+      "en": "No",
+      "bn": "না"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Needs adjustment",
+         "bn": "অ্যাডজাস্ট দরকার"
+        },
+        "likelihood": 70
+       },
+       {
+        "text": {
+         "en": "Glazed shoes",
+         "bn": "শু মসৃণ হয়ে গেছে"
+        },
+        "likelihood": 30
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 0,
+      "costMaxBdt": 600,
+      "advice": {
+       "en": "Adjust brake and clean drum.",
+       "bn": "ব্রেক অ্যাডজাস্ট করুন ও ড্রাম পরিষ্কার করুন।"
+      },
+      "partId": "brakes",
+      "garageType": "battery_shop"
+     }
+    }
+   ]
+  }
+ ]
+}

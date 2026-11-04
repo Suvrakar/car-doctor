@@ -1,0 +1,73 @@
+# GariDoctor (গাড়িডাক্তার)
+
+**A health doctor for every vehicle.** One Android app that tracks, checks and explains the health of any vehicle — car, motorcycle, scooter, CNG auto-rickshaw, microbus, pickup, truck, or electric easy-bike — in **Bangla and English**, running almost entirely on the phone.
+
+[![Build](https://github.com/limon27121/GariDoctor/actions/workflows/build.yml/badge.svg)](https://github.com/limon27121/GariDoctor/actions/workflows/build.yml)
+
+> "Your Pulsar is at **72/100**. Engine oil is 400 km overdue (−13), chain hasn't been adjusted in 1,200 km (−8), and your tax token expires in 9 days (−3)."
+
+## What's in this repo
+
+| Module | What it is |
+|---|---|
+| [`core/`](core) | Pure Kotlin (JVM) domain engine — no Android dependency, fully unit-tested. Health score, maintenance scheduler, template system, fuel/CNG/charge anomaly detection, symptom decision trees, OBD-II decoding, odometer OCR parsing, battery health, paper expiry, Vehicle Passport, fleet summary, Pro codes. |
+| [`core/src/main/resources/templates`](core/src/main/resources/templates) | 9 vehicle-type templates (JSON) with **54 Bangladesh model presets** (Pulsar, FZS, Apache, Splendor, Axio, Premio, Prius, HiAce, Bajaj RE, easy-bike 48V/60V…). |
+| [`core/src/main/resources/symptoms`](core/src/main/resources/symptoms) | 5 bilingual symptom decision trees, 29 entry symptoms, each leaf with urgency colour + approx. BDT cost. |
+| [`core/src/main/resources/obd/dtc.json`](core/src/main/resources/obd/dtc.json) | Offline OBD fault-code dictionary in Bangla + English. |
+| [`app/`](app) | Android app: Kotlin + Jetpack Compose, Room, WorkManager, ML Kit text recognition, TensorFlow Lite, Bluetooth SPP (ELM327), PdfDocument + ZXing QR, Firebase Remote Config (optional). |
+| [`tools/`](tools) | Generators for templates and symptom trees (`python3 tools/gen_templates.py`, `python3 tools/gen_symptoms.py`). |
+| [`docs/`](docs) | [Architecture & database](docs/ARCHITECTURE.md), [screens](docs/SCREENS.md), [product & business plan](docs/PRODUCT.md). |
+
+## Features
+
+- **Vehicle Health Score 0–100**: oil, brakes, tyres, battery, chain/belt, filters, plugs, coolant, OBD fault codes, mileage drop and papers each pull the score down, with a plain-language reason for every point.
+- **One app, every vehicle**: each vehicle type is a JSON template (parts, intervals, papers, guided checks, symptom tree, model overrides). Add a vehicle type by adding a template; push fixes through **Firebase Remote Config** without an app update.
+- **Smart maintenance schedule**: km **or** months, whichever comes first, per-model defaults, user-editable, daily on-device reminders via WorkManager.
+- **Odometer without typing**: photograph the meter → ML Kit on-device OCR (handles Bangla digits, trip/clock confusion); or GPS trip estimate.
+- **Fuel / CNG / charge tracker**: km/L, km/m³, km/charge (tank-to-tank method), cost per km, and **anomaly alerts** ("Mileage dropped 18% this month — common causes: …").
+- **Symptom doctor**: tap-through questions in Bangla → possible causes with likelihood, **urgency colour** (safe / fix this week / stop now), approx. cost, and a "confirm with a mechanic" disclaimer.
+- **Camera checks**: warning-light scanner (TFLite, Teachable Machine model drop-in, manual picker fallback) and guided visual checks (tyre tread, chain slack, brake pads, oil, battery terminals, coolant, easy-bike battery water).
+- **OBD mode (cars)**: ELM327 Bluetooth dongle, fault codes decoded offline in Bangla, live data (Pro), voltage → health score.
+- **Papers**: registration, fitness, tax token, insurance, driving licence, route permit, CNG cylinder retest — reminders at 30/15/7/3/1 days, weekly once expired.
+- **Vehicle Passport**: a shareable PDF with health score, service history, papers, mileage and a QR fingerprint. Sellers share it to get a better price.
+- **Easy-bike battery health**: charge cycles, range fade, water top-up reminders, and an alert when one weak battery is pulling the whole set down.
+- **Garage finder + SOS**: filter by bike mechanic / car workshop / battery shop / CNG kit; SOS sends location + vehicle + latest diagnosis by SMS or WhatsApp.
+- **Fleet mode**: every vehicle's score, overdue services and expiring papers on one screen, with driver names.
+- **Money hooks**: Pro unlock (multi-vehicle, PDF, live OBD, fleet), offline promo codes for Facebook-group admins and dongle bundles, featured garage listings, sponsored maintenance tips at the exact moment a part is due (Remote Config `sponsor_<CATEGORY>`).
+
+## Build
+
+Requirements: JDK 17+, Android SDK 35 (for `:app`).
+
+```bash
+./gradlew :core:test -PcoreOnly        # domain engine tests; no Android SDK needed
+./gradlew :app:assembleDebug           # APK at app/build/outputs/apk/debug/
+```
+
+CI builds both on every push and uploads the debug APK as an artifact (Actions → Build → `garidoctor-debug-apk`).
+
+### Optional: Firebase
+Put your `google-services.json` in `app/` and the Google Services plugin is applied automatically. Remote Config keys:
+
+| Key | Value |
+|---|---|
+| `template_<id>` | Full template JSON. Applied only if `version` is newer and it validates. |
+| `symptoms_<id>` | Symptom tree JSON. |
+| `garages` | Garage directory JSON (same format as `app/src/main/assets/garages.json`). |
+| `sponsor_<CATEGORY>` | `{"brand":"…","text":{"en":"…","bn":"…"}}`, e.g. `sponsor_ENGINE_OIL`. |
+
+### Promo codes
+```bash
+./gradlew :core:proCodes -PcoreOnly -Pfrom=1 -Pcount=50 -Psalt=YOUR_SECRET
+./gradlew :app:assembleRelease -PgariProSalt=YOUR_SECRET
+```
+
+### Warning-light model
+Train an image model in Teachable Machine (labels = ids in `WarningLights.kt`), export as TensorFlow Lite (float), and drop `warning_lights.tflite` + `warning_lights_labels.txt` into `app/src/main/assets/`.
+
+## Safety
+Diagnoses are always shown as **possible causes** with urgency, and users are told to confirm with a mechanic. Intervals and costs are typical defaults for Bangladesh, not manufacturer guarantees; users can edit them.
+
+## Status
+- Done: Phase 1 (MVP) and most of Phase 2/3 features at the engine and UI level.
+- Still needed before a store release: Play Billing for the paid Pro unlock, AdMob in the free tier, Firebase Auth/Firestore text backup, a hand-verified garage list (the bundled list is marked sample), reference photos for the guided checks, and a trained warning-light model.

@@ -1,0 +1,346 @@
+{
+ "id": "cng_auto",
+ "entries": [
+  {
+   "id": "gas_smell",
+   "label": {
+    "en": "Smell of gas",
+    "bn": "গ্যাসের গন্ধ"
+   },
+   "start": "gs_q1"
+  },
+  {
+   "id": "no_start",
+   "label": {
+    "en": "Hard to start",
+    "bn": "স্টার্ট নিতে সমস্যা"
+   },
+   "start": "ns_q1"
+  },
+  {
+   "id": "low_power",
+   "label": {
+    "en": "Low power / poor mileage on gas",
+    "bn": "পাওয়ার কম / গ্যাসে মাইলেজ কম"
+   },
+   "start": "lp_q1"
+  },
+  {
+   "id": "brake",
+   "label": {
+    "en": "Brakes weak",
+    "bn": "ব্রেক দুর্বল"
+   },
+   "start": "cb_q1"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "gs_q1",
+   "question": {
+    "en": "Is the smell strong near the cylinder or engine?",
+    "bn": "সিলিন্ডার বা ইঞ্জিনের কাছে কি গন্ধ তীব্র?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Gas leak at fittings, pipe or regulator",
+         "bn": "ফিটিং, পাইপ বা রেগুলেটরে গ্যাস লিক"
+        },
+        "likelihood": 85
+       },
+       {
+        "text": {
+         "en": "Cylinder valve leak",
+         "bn": "সিলিন্ডার ভালভ লিক"
+        },
+        "likelihood": 15
+       }
+      ],
+      "urgency": "STOP_NOW",
+      "costMinBdt": 300,
+      "costMaxBdt": 4000,
+      "advice": {
+       "en": "Stop, engine off, close cylinder valve, no smoking or sparks. Get a leak test.",
+       "bn": "থামুন, ইঞ্জিন বন্ধ, সিলিন্ডার ভালভ বন্ধ, ধূমপান/আগুন নয়। লিক টেস্ট করান।"
+      },
+      "partId": "cng_kit_tune",
+      "garageType": "cng_kit"
+     }
+    },
+    {
+     "label": {
+      "en": "Faint, only after refilling",
+      "bn": "হালকা, শুধু গ্যাস নেওয়ার পর"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Filling valve O-ring worn",
+         "bn": "ফিলিং ভালভের ও-রিং ক্ষয়"
+        },
+        "likelihood": 70
+       },
+       {
+        "text": {
+         "en": "Normal residue at nozzle",
+         "bn": "নজলে স্বাভাবিক অবশিষ্ট গ্যাস"
+        },
+        "likelihood": 30
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 100,
+      "costMaxBdt": 800,
+      "advice": {
+       "en": "Get filling valve checked soon.",
+       "bn": "শীঘ্রই ফিলিং ভালভ চেক করান।"
+      },
+      "partId": "cng_kit_tune",
+      "garageType": "cng_kit"
+     }
+    }
+   ]
+  },
+  {
+   "id": "ns_q1",
+   "question": {
+    "en": "Is it worse in the morning?",
+    "bn": "সকালে কি বেশি সমস্যা?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Spark plug worn (CNG needs frequent replacement)",
+         "bn": "স্পার্ক প্লাগ ক্ষয় (সিএনজিতে ঘন ঘন বদলাতে হয়)"
+        },
+        "likelihood": 60
+       },
+       {
+        "text": {
+         "en": "Weak battery",
+         "bn": "দুর্বল ব্যাটারি"
+        },
+        "likelihood": 40
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 200,
+      "costMaxBdt": 4500,
+      "advice": {
+       "en": "Replace plug; check battery.",
+       "bn": "প্লাগ বদলান; ব্যাটারি দেখুন।"
+      },
+      "partId": "spark_plug",
+      "garageType": "bike_mechanic"
+     }
+    },
+    {
+     "label": {
+      "en": "No",
+      "bn": "না"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Regulator/mixer needs tuning",
+         "bn": "রেগুলেটর/মিক্সার টিউনিং দরকার"
+        },
+        "likelihood": 55
+       },
+       {
+        "text": {
+         "en": "Air filter clogged",
+         "bn": "এয়ার ফিল্টার বন্ধ"
+        },
+        "likelihood": 45
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 300,
+      "costMaxBdt": 1500,
+      "advice": {
+       "en": "Service kit and air filter.",
+       "bn": "কিট ও এয়ার ফিল্টার সার্ভিস করান।"
+      },
+      "partId": "cng_kit_tune",
+      "garageType": "cng_kit"
+     }
+    }
+   ]
+  },
+  {
+   "id": "lp_q1",
+   "question": {
+    "en": "When was the CNG kit last tuned?",
+    "bn": "সিএনজি কিট শেষ কবে টিউন করা হয়েছে?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "More than 3 months ago / don't know",
+      "bn": "৩ মাসের বেশি / জানি না"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Kit tuning drifted",
+         "bn": "কিট টিউনিং নড়ে গেছে"
+        },
+        "likelihood": 50
+       },
+       {
+        "text": {
+         "en": "Clogged CNG filter",
+         "bn": "সিএনজি ফিল্টার বন্ধ"
+        },
+        "likelihood": 30
+       },
+       {
+        "text": {
+         "en": "Worn plug",
+         "bn": "প্লাগ ক্ষয়"
+        },
+        "likelihood": 20
+       }
+      ],
+      "urgency": "SAFE",
+      "costMinBdt": 300,
+      "costMaxBdt": 1500,
+      "advice": {
+       "en": "Get kit tuned and filter replaced.",
+       "bn": "কিট টিউন ও ফিল্টার বদলান।"
+      },
+      "partId": "cng_kit_tune",
+      "garageType": "cng_kit"
+     }
+    },
+    {
+     "label": {
+      "en": "Recently",
+      "bn": "সম্প্রতি"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Clutch slipping",
+         "bn": "ক্লাচ স্লিপ"
+        },
+        "likelihood": 40
+       },
+       {
+        "text": {
+         "en": "Dragging brakes / low tyre pressure",
+         "bn": "ব্রেক লেগে থাকা / টায়ারে হাওয়া কম"
+        },
+        "likelihood": 35
+       },
+       {
+        "text": {
+         "en": "Engine compression low",
+         "bn": "ইঞ্জিন কম্প্রেশন কম"
+        },
+        "likelihood": 25
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 0,
+      "costMaxBdt": 6000,
+      "advice": {
+       "en": "Check clutch free play and tyre pressure.",
+       "bn": "ক্লাচ ফ্রি প্লে ও টায়ারের হাওয়া দেখুন।"
+      },
+      "partId": "clutch",
+      "garageType": "bike_mechanic"
+     }
+    }
+   ]
+  },
+  {
+   "id": "cb_q1",
+   "question": {
+    "en": "Does the pedal/lever go too far?",
+    "bn": "প্যাডেল/লিভার কি অনেক দূর যায়?"
+   },
+   "options": [
+    {
+     "label": {
+      "en": "Yes",
+      "bn": "হ্যাঁ"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Brake shoes worn",
+         "bn": "ব্রেক শু ক্ষয়"
+        },
+        "likelihood": 70
+       },
+       {
+        "text": {
+         "en": "Brake fluid/cable issue",
+         "bn": "ব্রেক ফ্লুইড/তার সমস্যা"
+        },
+        "likelihood": 30
+       }
+      ],
+      "urgency": "STOP_NOW",
+      "costMinBdt": 400,
+      "costMaxBdt": 1500,
+      "advice": {
+       "en": "Fix before carrying passengers.",
+       "bn": "যাত্রী তোলার আগে ঠিক করুন।"
+      },
+      "partId": "brakes",
+      "garageType": "bike_mechanic"
+     }
+    },
+    {
+     "label": {
+      "en": "No",
+      "bn": "না"
+     },
+     "diagnosis": {
+      "causes": [
+       {
+        "text": {
+         "en": "Needs adjustment",
+         "bn": "অ্যাডজাস্ট দরকার"
+        },
+        "likelihood": 100
+       }
+      ],
+      "urgency": "THIS_WEEK",
+      "costMinBdt": 0,
+      "costMaxBdt": 300,
+      "advice": {
+       "en": "Adjust brake.",
+       "bn": "ব্রেক অ্যাডজাস্ট করুন।"
+      },
+      "partId": "brakes",
+      "garageType": "bike_mechanic"
+     }
+    }
+   ]
+  }
+ ]
+}

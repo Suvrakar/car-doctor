@@ -1,0 +1,518 @@
+[
+ {
+  "code": "P0010",
+  "title": {
+   "en": "Camshaft position actuator circuit",
+   "bn": "ক্যামশ্যাফট অ্যাকচুয়েটর সার্কিট সমস্যা"
+  },
+  "severity": 2,
+  "advice": {
+   "en": "Check VVT solenoid wiring and oil level.",
+   "bn": "ভিভিটি সোলেনয়েড তার ও তেলের লেভেল দেখুন।"
+  }
+ },
+ {
+  "code": "P0011",
+  "title": {
+   "en": "Camshaft timing over-advanced",
+   "bn": "ক্যামশ্যাফট টাইমিং বেশি অ্যাডভান্সড"
+  },
+  "severity": 2,
+  "advice": {
+   "en": "Often low or dirty oil. Change oil, then re-scan.",
+   "bn": "প্রায়ই তেল কম বা ময়লা। তেল বদলে আবার স্ক্যান করুন।"
+  }
+ },
+ {
+  "code": "P0100",
+  "title": {
+   "en": "Mass air flow (MAF) circuit",
+   "bn": "এয়ার ফ্লো (MAF) সেন্সর সার্কিট"
+  },
+  "severity": 2,
+  "advice": {
+   "en": "Clean MAF sensor; check connector.",
+   "bn": "MAF সেন্সর পরিষ্কার করুন; কানেক্টর দেখুন।"
+  }
+ },
+ {
+  "code": "P0101",
+  "title": {
+   "en": "MAF sensor range/performance",
+   "bn": "MAF সেন্সর রিডিং ঠিক নেই"
+  },
+  "severity": 2,
+  "advice": {
+   "en": "Dirty air filter or MAF; check for intake leaks.",
+   "bn": "এয়ার ফিল্টার বা MAF ময়লা; ইনটেক লিক দেখুন।"
+  }
+ },
+ {
+  "code": "P0113",
+  "title": {
+   "en": "Intake air temp sensor high",
+   "bn": "ইনটেক বাতাস তাপমাত্রা সেন্সর হাই"
+  },
+  "severity": 1,
+  "advice": {
+   "en": "Check sensor connector.",
+   "bn": "সেন্সর কানেক্টর দেখুন।"
+  }
+ },
+ {
+  "code": "P0115",
+  "title": {
+   "en": "Coolant temp sensor circuit",
+   "bn": "কুল্যান্ট তাপমাত্রা সেন্সর সার্কিট"
+  },
+  "severity": 2,
+  "advice": {
+   "en": "Replace sensor if readings are wrong; watch the gauge.",
+   "bn": "রিডিং ভুল হলে সেন্সর বদলান; গেজ খেয়াল রাখুন।"
+  }
+ },
+ {
+  "code": "P0117",
+  "title": {
+   "en": "Coolant temp sensor low input",
+   "bn": "কুল্যান্ট তাপমাত্রা সেন্সর লো"
+  },
+  "severity": 2,
+  "advice": {
+   "en": "Check wiring short.",
+   "bn": "তার শর্ট আছে কিনা দেখুন।"
+  }
+ },
+ {
+  "code": "P0120",
+  "title": {
+   "en": "Throttle position sensor circuit",
+   "bn": "থ্রটল পজিশন সেন্সর সার্কিট"
+  },
+  "severity": 2,
+  "advice": {
+   "en": "Clean throttle body; check TPS.",
+   "bn": "থ্রটল বডি পরিষ্কার করুন; TPS দেখুন।"
+  }
+ },
+ {
+  "code": "P0128",
+  "title": {
+   "en": "Coolant below thermostat temperature",
+   "bn": "কুল্যান্ট তাপমাত্রা কম (থার্মোস্ট্যাট)"
+  },
+  "severity": 1,
+  "advice": {
+   "en": "Thermostat stuck open — replace.",
+   "bn": "থার্মোস্ট্যাট খোলা আটকে আছে — বদলান।"
+  }
+ },
+ {
+  "code": "P0130",
+  "title": {
+   "en": "O2 sensor circuit (bank 1 sensor 1)",
+   "bn": "অক্সিজেন সেন্সর সার্কিট (B1S1)"
+  },
+  "severity": 2,
+  "advice": {
+   "en": "Check O2 sensor and wiring.",
+   "bn": "O2 সেন্সর ও তার দেখুন।"
+  }
+ },
+ {
+  "code": "P0133",
+  "title": {
+   "en": "O2 sensor slow response (B1S1)",
+   "bn": "অক্সিজেন সেন্সর ধীর (B1S1)"
+  },
+  "severity": 1,
+  "advice": {
+   "en": "Ageing O2 sensor; affects mileage.",
+   "bn": "O2 সেন্সর পুরনো; মাইলেজ কমায়।"
+  }
+ },
+ {
+  "code": "P0134",
+  "title": {
+   "en": "O2 sensor no activity (B1S1)",
+   "bn": "অক্সিজেন সেন্সর কাজ করছে না (B1S1)"
+  },
+  "severity": 2,
+  "advice": {
+   "en": "Heater circuit or sensor dead.",
+   "bn": "হিটার সার্কিট বা সেন্সর নষ্ট।"
+  }
+ },
+ {
+  "code": "P0135",
+  "title": {
+   "en": "O2 sensor heater circuit (B1S1)",
+   "bn": "অক্সিজেন সেন্সর হিটার সার্কিট (B1S1)"
+  },
+  "severity": 1,
+  "advice": {
+   "en": "Check fuse and heater resistance.",
+   "bn": "ফিউজ ও হিটার রেজিস্ট্যান্স দেখুন।"
+  }
+ },
+ {
+  "code": "P0141",
+  "title": {
+   "en": "O2 sensor heater circuit (B1S2)",
+   "bn": "অক্সিজেন সেন্সর হিটার সার্কিট (B1S2)"
+  },
+  "severity": 1,
+  "advice": {
+   "en": "Rear O2 heater fault.",
+   "bn": "পেছনের O2 হিটার সমস্যা।"
+  }
+ },
+ {
+  "code": "P0171",
+  "title": {
+   "en": "System too lean (bank 1)",
+   "bn": "মিশ্রণে বাতাস বেশি (লিন)"
+  },
+  "severity": 2,
+  "advice": {
+   "en": "Vacuum leak, dirty MAF, weak fuel pump. Common after CNG conversion.",
+   "bn": "ভ্যাকুয়াম লিক, ময়লা MAF, দুর্বল ফুয়েল পাম্প। সিএনজি কনভার্সনের পর সাধারণ।"
+  }
+ },
+ {
+  "code": "P0172",
+  "title": {
+   "en": "System too rich (bank 1)",
+   "bn": "মিশ্রণে তেল বেশি (রিচ)"
+  },
+  "severity": 2,
+  "advice": {
+   "en": "Leaking injector, dirty air filter, bad O2 sensor.",
+   "bn": "ইনজেক্টর লিক, ময়লা এয়ার ফিল্টার, খারাপ O2 সেন্সর।"
+  }
+ },
+ {
+  "code": "P0174",
+  "title": {
+   "en": "System too lean (bank 2)",
+   "bn": "মিশ্রণে বাতাস বেশি (ব্যাংক ২)"
+  },
+  "severity": 2,
+  "advice": {
+   "en": "Check for vacuum leaks.",
+   "bn": "ভ্যাকুয়াম লিক দেখুন।"
+  }
+ },
+ {
+  "code": "P0300",
+  "title": {
+   "en": "Random/multiple cylinder misfire",
+   "bn": "একাধিক সিলিন্ডারে মিসফায়ার"
+  },
+  "severity": 3,
+  "advice": {
+   "en": "Plugs, coils, injectors or CNG tuning. Don't drive hard.",
+   "bn": "প্লাগ, কয়েল, ইনজেক্টর বা সিএনজি টিউনিং। জোরে চালাবেন না।"
+  }
+ },
+ {
+  "code": "P0301",
+  "title": {
+   "en": "Cylinder 1 misfire",
+   "bn": "১ নম্বর সিলিন্ডারে মিসফায়ার"
+  },
+  "severity": 3,
+  "advice": {
+   "en": "Swap coil/plug to another cylinder to test.",
+   "bn": "কয়েল/প্লাগ অন্য সিলিন্ডারে বদলে টেস্ট করুন।"
+  }
+ },
+ {
+  "code": "P0302",
+  "title": {
+   "en": "Cylinder 2 misfire",
+   "bn": "২ নম্বর সিলিন্ডারে মিসফায়ার"
+  },
+  "severity": 3,
+  "advice": {
+   "en": "Check plug, coil, injector of cylinder 2.",
+   "bn": "২ নম্বর সিলিন্ডারের প্লাগ, কয়েল, ইনজেক্টর দেখুন।"
+  }
+ },
+ {
+  "code": "P0303",
+  "title": {
+   "en": "Cylinder 3 misfire",
+   "bn": "৩ নম্বর সিলিন্ডারে মিসফায়ার"
+  },
+  "severity": 3,
+  "advice": {
+   "en": "Check plug, coil, injector of cylinder 3.",
+   "bn": "৩ নম্বর সিলিন্ডারের প্লাগ, কয়েল, ইনজেক্টর দেখুন।"
+  }
+ },
+ {
+  "code": "P0304",
+  "title": {
+   "en": "Cylinder 4 misfire",
+   "bn": "৪ নম্বর সিলিন্ডারে মিসফায়ার"
+  },
+  "severity": 3,
+  "advice": {
+   "en": "Check plug, coil, injector of cylinder 4.",
+   "bn": "৪ নম্বর সিলিন্ডারের প্লাগ, কয়েল, ইনজেক্টর দেখুন।"
+  }
+ },
+ {
+  "code": "P0325",
+  "title": {
+   "en": "Knock sensor circuit",
+   "bn": "নক সেন্সর সার্কিট"
+  },
+  "severity": 1,
+  "advice": {
+   "en": "Check sensor wiring.",
+   "bn": "সেন্সরের তার দেখুন।"
+  }
+ },
+ {
+  "code": "P0335",
+  "title": {
+   "en": "Crankshaft position sensor circuit",
+   "bn": "ক্র্যাংকশ্যাফট সেন্সর সার্কিট"
+  },
+  "severity": 3,
+  "advice": {
+   "en": "Car may stall or not start. Replace sensor.",
+   "bn": "গাড়ি বন্ধ হয়ে যেতে বা স্টার্ট না নিতে পারে। সেন্সর বদলান।"
+  }
+ },
+ {
+  "code": "P0340",
+  "title": {
+   "en": "Camshaft position sensor circuit",
+   "bn": "ক্যামশ্যাফট সেন্সর সার্কিট"
+  },
+  "severity": 3,
+  "advice": {
+   "en": "May cause no-start. Check sensor.",
+   "bn": "স্টার্ট না নিতে পারে। সেন্সর দেখুন।"
+  }
+ },
+ {
+  "code": "P0401",
+  "title": {
+   "en": "EGR flow insufficient",
+   "bn": "ইজিআর প্রবাহ কম"
+  },
+  "severity": 1,
+  "advice": {
+   "en": "Clean EGR valve and passages.",
+   "bn": "ইজিআর ভালভ পরিষ্কার করুন।"
+  }
+ },
+ {
+  "code": "P0420",
+  "title": {
+   "en": "Catalytic converter efficiency low (bank 1)",
+   "bn": "ক্যাটালিটিক কনভার্টার দুর্বল"
+  },
+  "severity": 1,
+  "advice": {
+   "en": "Often caused by long-term misfire or O2 sensor.",
+   "bn": "দীর্ঘ মিসফায়ার বা O2 সেন্সরের কারণে হয়।"
+  }
+ },
+ {
+  "code": "P0440",
+  "title": {
+   "en": "EVAP system malfunction",
+   "bn": "ইভাপ (তেলের বাষ্প) সিস্টেম সমস্যা"
+  },
+  "severity": 1,
+  "advice": {
+   "en": "Check fuel cap and EVAP hoses.",
+   "bn": "ফুয়েল ক্যাপ ও ইভাপ হোস দেখুন।"
+  }
+ },
+ {
+  "code": "P0442",
+  "title": {
+   "en": "EVAP small leak",
+   "bn": "ইভাপ সিস্টেমে ছোট লিক"
+  },
+  "severity": 1,
+  "advice": {
+   "en": "Tighten or replace fuel cap.",
+   "bn": "ফুয়েল ক্যাপ টাইট দিন বা বদলান।"
+  }
+ },
+ {
+  "code": "P0455",
+  "title": {
+   "en": "EVAP large leak",
+   "bn": "ইভাপ সিস্টেমে বড় লিক"
+  },
+  "severity": 1,
+  "advice": {
+   "en": "Fuel cap missing/loose or hose cracked.",
+   "bn": "ফুয়েল ক্যাপ নেই/ঢিলা বা হোস ফাটা।"
+  }
+ },
+ {
+  "code": "P0500",
+  "title": {
+   "en": "Vehicle speed sensor",
+   "bn": "গতি সেন্সর"
+  },
+  "severity": 2,
+  "advice": {
+   "en": "Speedometer and gear shifts may be affected.",
+   "bn": "স্পিডোমিটার ও গিয়ার শিফট প্রভাবিত হতে পারে।"
+  }
+ },
+ {
+  "code": "P0505",
+  "title": {
+   "en": "Idle air control system",
+   "bn": "আইডল এয়ার কন্ট্রোল সমস্যা"
+  },
+  "severity": 1,
+  "advice": {
+   "en": "Clean throttle body / IAC valve.",
+   "bn": "থ্রটল বডি / IAC ভালভ পরিষ্কার করুন।"
+  }
+ },
+ {
+  "code": "P0562",
+  "title": {
+   "en": "System voltage low",
+   "bn": "সিস্টেম ভোল্টেজ কম"
+  },
+  "severity": 2,
+  "advice": {
+   "en": "Weak battery or alternator.",
+   "bn": "দুর্বল ব্যাটারি বা অল্টারনেটর।"
+  }
+ },
+ {
+  "code": "P0563",
+  "title": {
+   "en": "System voltage high",
+   "bn": "সিস্টেম ভোল্টেজ বেশি"
+  },
+  "severity": 2,
+  "advice": {
+   "en": "Alternator regulator fault.",
+   "bn": "অল্টারনেটর রেগুলেটর সমস্যা।"
+  }
+ },
+ {
+  "code": "P0700",
+  "title": {
+   "en": "Transmission control fault",
+   "bn": "ট্রান্সমিশন কন্ট্রোল সমস্যা"
+  },
+  "severity": 2,
+  "advice": {
+   "en": "Read transmission module codes; check ATF.",
+   "bn": "ট্রান্সমিশন কোড পড়ুন; ATF দেখুন।"
+  }
+ },
+ {
+  "code": "P0715",
+  "title": {
+   "en": "Transmission input speed sensor",
+   "bn": "ট্রান্সমিশন ইনপুট স্পিড সেন্সর"
+  },
+  "severity": 2,
+  "advice": {
+   "en": "Harsh shifts likely. Check sensor and ATF.",
+   "bn": "গিয়ার ঝাঁকুনি দিতে পারে। সেন্সর ও ATF দেখুন।"
+  }
+ },
+ {
+  "code": "P0741",
+  "title": {
+   "en": "Torque converter clutch stuck off",
+   "bn": "টর্ক কনভার্টার ক্লাচ সমস্যা"
+  },
+  "severity": 2,
+  "advice": {
+   "en": "Change ATF; workshop diagnosis.",
+   "bn": "ATF বদলান; ওয়ার্কশপে দেখান।"
+  }
+ },
+ {
+  "code": "P0A80",
+  "title": {
+   "en": "Replace hybrid battery pack",
+   "bn": "হাইব্রিড ব্যাটারি প্যাক বদলাতে হবে"
+  },
+  "severity": 3,
+  "advice": {
+   "en": "Hybrid battery weak. Get module-level test before replacing the whole pack.",
+   "bn": "হাইব্রিড ব্যাটারি দুর্বল। পুরো প্যাক বদলানোর আগে মডিউল টেস্ট করান।"
+  }
+ },
+ {
+  "code": "P1259",
+  "title": {
+   "en": "VTEC system malfunction (Honda)",
+   "bn": "ভিটেক সিস্টেম সমস্যা (হোন্ডা)"
+  },
+  "severity": 2,
+  "advice": {
+   "en": "Check oil level and VTEC solenoid.",
+   "bn": "তেলের লেভেল ও ভিটেক সোলেনয়েড দেখুন।"
+  }
+ },
+ {
+  "code": "C0035",
+  "title": {
+   "en": "Left front wheel speed sensor",
+   "bn": "বাম সামনের চাকার স্পিড সেন্সর"
+  },
+  "severity": 2,
+  "advice": {
+   "en": "ABS may be disabled. Check sensor and wiring.",
+   "bn": "ABS বন্ধ থাকতে পারে। সেন্সর ও তার দেখুন।"
+  }
+ },
+ {
+  "code": "C0040",
+  "title": {
+   "en": "Right front wheel speed sensor",
+   "bn": "ডান সামনের চাকার স্পিড সেন্সর"
+  },
+  "severity": 2,
+  "advice": {
+   "en": "ABS may be disabled.",
+   "bn": "ABS বন্ধ থাকতে পারে।"
+  }
+ },
+ {
+  "code": "B0001",
+  "title": {
+   "en": "Driver airbag circuit",
+   "bn": "চালকের এয়ারব্যাগ সার্কিট"
+  },
+  "severity": 3,
+  "advice": {
+   "en": "Airbag may not deploy. Workshop check.",
+   "bn": "এয়ারব্যাগ কাজ নাও করতে পারে। ওয়ার্কশপে দেখান।"
+  }
+ },
+ {
+  "code": "U0100",
+  "title": {
+   "en": "Lost communication with ECM",
+   "bn": "ইসিএম এর সাথে যোগাযোগ বিচ্ছিন্ন"
+  },
+  "severity": 3,
+  "advice": {
+   "en": "Check battery, ground and CAN wiring.",
+   "bn": "ব্যাটারি, গ্রাউন্ড ও CAN তার দেখুন।"
+  }
+ }
+]
