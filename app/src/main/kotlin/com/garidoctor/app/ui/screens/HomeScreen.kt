@@ -54,6 +54,7 @@ fun HomeScreen(vm: MainViewModel, onOpen: (Long) -> Unit, onAdd: () -> Unit, onN
             return@Scaffold
         }
         LazyColumn(Modifier.padding(pad), contentPadding = PaddingValues(16.dp, 8.dp, 16.dp, 96.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            if (!pro) item { com.garidoctor.app.ads.BannerAd() }
             items(st.snapshot.vehicles, key = { it.id }) { v ->
                 val c = st.checkups[v.id]
                 val tpl = st.registry.template(v.templateId)
@@ -84,6 +85,10 @@ fun HomeScreen(vm: MainViewModel, onOpen: (Long) -> Unit, onAdd: () -> Unit, onN
 /** Pro unlock: promo/bundle code redemption (Play Billing hooks in here for paid unlocks). */
 @Composable
 fun ProDialog(vm: MainViewModel, reason: String, onDismiss: () -> Unit) {
+    val ctx = androidx.compose.ui.platform.LocalContext.current
+    val price by vm.proPrice.collectAsStateWithLifecycle()
+    val pro by vm.pro.collectAsStateWithLifecycle()
+    LaunchedEffect(pro) { if (pro) onDismiss() }
     var code by remember { mutableStateOf("") }
     var error by remember { mutableStateOf(false) }
     AlertDialog(onDismissRequest = onDismiss,
@@ -91,7 +96,10 @@ fun ProDialog(vm: MainViewModel, reason: String, onDismiss: () -> Unit) {
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(reason)
-                Text(t("One-time ৳299–499. Have a code from a Facebook group, garage or dongle bundle?", "এককালীন ৳২৯৯–৪৯৯। ফেসবুক গ্রুপ, গ্যারেজ বা ডঙ্গল বান্ডেলের কোড আছে?"), style = MaterialTheme.typography.bodySmall)
+                price?.let { p ->
+                    Button(onClick = { ctx.findActivity()?.let { vm.buyPro(it) } }, modifier = Modifier.fillMaxWidth()) { Text(t("Buy Pro · $p (one-time)", "প্রো কিনুন · $p (এককালীন)")) }
+                }
+                Text(t("Have a code from a Facebook group, garage or dongle bundle?", "ফেসবুক গ্রুপ, গ্যারেজ বা ডঙ্গল বান্ডেলের কোড আছে?"), style = MaterialTheme.typography.bodySmall)
                 OutlinedTextField(code, { code = it; error = false }, label = { Text("GD-XXXX-XXXX-XXXX") }, isError = error, singleLine = true)
                 if (error) Text(t("Invalid code", "কোডটি সঠিক নয়"), color = MaterialTheme.colorScheme.error)
             }

@@ -70,6 +70,22 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun redeem(code: String): Boolean = ProCodes.isValid(code, BuildConfig.PRO_SALT).also { if (it) prefs.setPro(true, code.trim().uppercase()) }
     fun setSos(list: List<SosContact>) = prefs.setSos(list)
 
+    // ---- Play Billing ----
+    val proPrice: StateFlow<String?> = g.billing.price
+    fun buyPro(activity: android.app.Activity): Boolean = g.billing.buy(activity)
+
+    // ---- backup ----
+    val cloudAvailable: Boolean get() = g.cloud.available
+    fun cloudEmail(): String? = g.cloud.userEmail
+    suspend fun exportBackup(): String = g.backup.export()
+    suspend fun restoreBackup(text: String): Int = g.backup.restore(text)
+    suspend fun cloudSignIn(email: String, password: String, create: Boolean) = g.cloud.signIn(email, password, create)
+    fun cloudSignOut() = g.cloud.signOut()
+    suspend fun cloudUpload() = g.cloud.upload(g.backup.export(), today())
+    suspend fun cloudRestore(): Int = g.cloud.download()?.let { g.backup.restore(it) } ?: error("No cloud backup yet")
+
+    fun setInterval(vehicleId: Long, partId: String, km: Int?, months: Int?) = io { repo.setInterval(vehicleId, partId, km, months) }
+
     private fun io(block: suspend () -> Unit) { viewModelScope.launch { block() } }
     fun addVehicle(v: VehicleEntity, onDone: (Long) -> Unit) = viewModelScope.launch { onDone(repo.addVehicle(v)) }
     fun updateVehicle(v: VehicleEntity) = io { repo.updateVehicle(v) }

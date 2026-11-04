@@ -42,9 +42,19 @@ fun VehicleScreen(vm: MainViewModel, id: Long, onBack: () -> Unit, nav: (String)
     val rec = st.snapshot.records[id]!!
     var confirmDelete by remember { mutableStateOf(false) }
     var showPro by remember { mutableStateOf(false) }
+    var showProFull by remember { mutableStateOf(false) }
     val electric = VehicleDoctor.isElectric(rec.vehicle.energyType)
+    var editing by remember { mutableStateOf(false) }
+    val makePassport: () -> Unit = {
+        val p = VehiclePassport.build(rec.vehicle, tpl.name.get(lang), tpl.model(v.modelPresetId)?.let { "${it.brand} ${it.model}" },
+            c.health, rec.services, rec.documents, c.fuel, today())
+        runCatching { PassportPdf.write(ctx, p, { pid -> tpl.part(pid)?.name?.get(lang) ?: pid }, lang) }
+            .onSuccess { PassportPdf.share(ctx, it) }
+            .onFailure { Toast.makeText(ctx, it.message, Toast.LENGTH_LONG).show() }
+    }
 
     Screen(v.nickname, onBack, actions = {
+        IconButton(onClick = { editing = true }) { Icon(Icons.Default.Edit, t("Edit", "সম্পাদনা")) }
         IconButton(onClick = { confirmDelete = true }) { Icon(Icons.Default.Delete, t("Delete", "মুছুন")) }
     }) { pad ->
         LazyColumn(Modifier.padding(pad), contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -81,12 +91,7 @@ fun VehicleScreen(vm: MainViewModel, id: Long, onBack: () -> Unit, nav: (String)
                     if (tpl.supportsObd) Action(Icons.Default.Bluetooth, t("OBD scan", "OBD স্ক্যান")) { nav("obd/$id") }
                     if (electric) Action(Icons.Default.BatteryStd, t("Battery health", "ব্যাটারি হেলথ")) { nav("battery/$id") }
                     Action(Icons.Default.PictureAsPdf, t("Passport PDF", "পাসপোর্ট পিডিএফ")) {
-                        if (!vm.allowed(ProFeature.PASSPORT_PDF)) { showPro = true; return@Action }
-                        val p = VehiclePassport.build(rec.vehicle, tpl.name.get(lang), tpl.model(v.modelPresetId)?.let { "${it.brand} ${it.model}" },
-                            c.health, rec.services, rec.documents, c.fuel, today())
-                        runCatching { PassportPdf.write(ctx, p, { pid -> tpl.part(pid)?.name?.get(lang) ?: pid }, lang) }
-                            .onSuccess { PassportPdf.share(ctx, it) }
-                            .onFailure { Toast.makeText(ctx, it.message, Toast.LENGTH_LONG).show() }
+                        if (vm.allowed(ProFeature.PASSPORT_PDF)) { makePassport() } else { showPro = true }
                     }
                 }
             }
@@ -142,7 +147,20 @@ fun VehicleScreen(vm: MainViewModel, id: Long, onBack: () -> Unit, nav: (String)
         text = { Text(t("All logs, papers and photos records for this vehicle will be deleted.", "এই গাড়ির সব লগ ও কাগজের তথ্য মুছে যাবে।")) },
         confirmButton = { TextButton(onClick = { confirmDelete = false; vm.deleteVehicle(v); onBack() }) { Text(t("Delete", "মুছুন"), color = Bad) } },
         dismissButton = { TextButton(onClick = { confirmDelete = false }) { Text(t("Cancel", "বাতিল")) } })
-    if (showPro) ProDialog(vm, t("The Vehicle Passport PDF is a Pro feature. Share it when selling to get a better price.", "ভেহিকল পাসপোর্ট পিডিএফ প্রো ফিচার। বিক্রির সময় শেয়ার করে ভালো দাম পান।")) { showPro = false }
+    if (showPro) AlertDialog(onDismissRequest = { showPro = false },
+        title = { Text(t("Vehicle Passport", "ভেহিকল পাসপোর্ট")) },
+        text = { Text(t("The Passport PDF is a Pro feature. Share it when selling to get a better price. Or watch a short ad for one free passport.",
+            "পাসপোর্ট পিডিএফ প্রো ফিচার। বিক্রির সময় শেয়ার করে ভালো দাম পান। অথবা একটি ছোট বিজ্ঞাপন দেখে একবার ফ্রি পাসপোর্ট নিন।")) },
+        confirmButton = { TextButton(onClick = { showPro = false; showProFull = true }) { Text(t("Get Pro", "প্রো নিন")) } },
+        dismissButton = {
+            TextButton(onClick = {
+                showPro = false
+                val shown = ctx.findActivity()?.let { a -> com.garidoctor.app.ads.Ads.showRewarded(a) { makePassport() } } ?: false
+                if (!shown) Toast.makeText(ctx, t2(lang, "Ad not ready yet, try again in a moment", "বিজ্ঞাপন এখনো প্রস্তুত নয়, একটু পরে চেষ্টা করুন"), Toast.LENGTH_SHORT).show()
+            }) { Text(t("Watch ad · 1 free", "বিজ্ঞাপন দেখুন · ১টি ফ্রি")) }
+        })
+    if (showProFull) ProDialog(vm, t("Unlock Pro: multiple vehicles, unlimited passports, live OBD graphs, fleet mode, no ads.", "প্রো আনলক: একাধিক গাড়ি, আনলিমিটেড পাসপোর্ট, লাইভ OBD গ্রাফ, ফ্লিট মোড, বিজ্ঞাপন নেই।")) { showProFull = false }
+    if (editing) EditVehicleDialog(vm, v) { editing = false }
 }
 
 @Composable
@@ -155,3 +173,32 @@ private fun Action(icon: ImageVector, label: String, onClick: () -> Unit) {
         }
     }
 }
+
+private fun t2(lang: com.garidoctor.core.model.Lang, en: String, bn: String) = if (lang == com.garidoctor.core.model.Lang.BN) bn else en
+
+@Composable
+private fun EditVehicleDialog(vm: MainViewModel, v: com.garidoctor.app.data.VehicleEntity, onDismiss: () -> Unit) {
+    var nickname by remember { mutableStateOf(v.nickname) }
+    var reg by remember { mutableStateOf(v.registrationNo ?: "") }
+    var driver by remember { mutableStateOf(v.driverName ?: "") }
+    var driverPhone by remember { mutableStateOf(v.driverPhone ?: "") }
+    var range by remember { mutableStateOf(v.ratedRangeKm?.toInt()?.toString() ?: "") }
+    AlertDialog(onDismissRequest = onDismiss, title = { Text(t("Edit vehicle", "গাড়ির তথ্য সম্পাদনা")) }, text = {
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedTextField(nickname, { nickname = it }, label = { Text(t("Nickname", "নাম")) }, singleLine = true)
+            OutlinedTextField(reg, { reg = it }, label = { Text(t("Registration no.", "রেজিস্ট্রেশন নম্বর")) }, singleLine = true)
+            OutlinedTextField(driver, { driver = it }, label = { Text(t("Driver name", "চালকের নাম")) }, singleLine = true)
+            NumberField(driverPhone, { driverPhone = it }, t("Driver phone", "চালকের ফোন"))
+            if (VehicleDoctor.isElectric(v.toModelEnergy())) NumberField(range, { range = it }, t("Rated range per charge (km)", "এক চার্জে রেঞ্জ (কিমি)"))
+        }
+    }, confirmButton = {
+        TextButton(enabled = nickname.isNotBlank(), onClick = {
+            vm.updateVehicle(v.copy(nickname = nickname.trim(), registrationNo = reg.trim().ifBlank { null }, driverName = driver.trim().ifBlank { null },
+                driverPhone = driverPhone.ifBlank { null }, ratedRangeKm = range.toDoubleOrNull() ?: v.ratedRangeKm))
+            onDismiss()
+        }) { Text(t("Save", "সেভ")) }
+    }, dismissButton = { TextButton(onClick = onDismiss) { Text(t("Cancel", "বাতিল")) } })
+}
+
+private fun com.garidoctor.app.data.VehicleEntity.toModelEnergy() =
+    runCatching { com.garidoctor.core.model.EnergyType.valueOf(energyType) }.getOrDefault(com.garidoctor.core.model.EnergyType.OCTANE)

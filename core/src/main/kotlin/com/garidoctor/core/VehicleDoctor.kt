@@ -17,6 +17,7 @@ import com.garidoctor.core.model.VoltageReading
 import com.garidoctor.core.obd.DiagnosticTroubleCode
 import com.garidoctor.core.schedule.MaintenanceScheduler
 import com.garidoctor.core.schedule.PartStatus
+import com.garidoctor.core.template.IntervalOverride
 import com.garidoctor.core.template.VehicleTemplate
 
 /** All records for one vehicle, as loaded from the local database. */
@@ -30,6 +31,8 @@ data class VehicleRecords(
     val symptoms: List<ReportedSymptom> = emptyList(),
     val voltage: VoltageReading? = null,
     val faultCodes: List<DiagnosticTroubleCode> = emptyList(),
+    /** User-edited intervals for this vehicle, keyed by part id. */
+    val intervalOverrides: Map<String, IntervalOverride> = emptyMap(),
 )
 
 data class Checkup(val parts: List<PartStatus>, val fuel: FuelStats, val health: HealthReport)
@@ -38,7 +41,7 @@ data class Checkup(val parts: List<PartStatus>, val fuel: FuelStats, val health:
 object VehicleDoctor {
     fun checkup(t: VehicleTemplate, r: VehicleRecords, today: Long): Checkup {
         val parts = MaintenanceScheduler.statuses(
-            t.effectiveParts(r.vehicle.modelPresetId), r.services, r.vehicle.odometerKm, today, r.baselineKm, r.vehicle.createdAtEpochDay,
+            t.effectiveParts(r.vehicle.modelPresetId, r.intervalOverrides), r.services, r.vehicle.odometerKm, today, r.baselineKm, r.vehicle.createdAtEpochDay,
         )
         val fuel = FuelAnalyzer.stats(r.fuel, EfficiencyUnit.of(r.vehicle.energyType), today)
         val health = HealthScoreEngine.compute(

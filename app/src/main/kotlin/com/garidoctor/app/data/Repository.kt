@@ -13,6 +13,7 @@ import com.garidoctor.core.model.VehicleDocument
 import com.garidoctor.core.model.VoltageReading
 import com.garidoctor.core.obd.DiagnosticTroubleCode
 import com.garidoctor.core.obd.DtcInfo
+import com.garidoctor.core.template.IntervalOverride
 import com.garidoctor.core.template.TemplateRegistry
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -37,6 +38,7 @@ data class Snapshot(
     val faultCodes: List<FaultCodeEntity> = emptyList(),
     val voltages: List<VoltageEntity> = emptyList(),
     val checks: List<CheckEntity> = emptyList(),
+    val overrides: List<IntervalOverrideEntity> = emptyList(),
 )
 
 class Repository(private val dao: GariDao, val registry: () -> TemplateRegistry, val dtc: Map<String, DtcInfo>) {
@@ -44,25 +46,27 @@ class Repository(private val dao: GariDao, val registry: () -> TemplateRegistry,
     val snapshot: Flow<Snapshot> = combine(
         combine(dao.vehicles(), dao.services(), dao.fuel(), dao.documents()) { v, s, f, d -> Quad(v, s, f, d) },
         combine(dao.symptoms(), dao.faultCodes(), dao.voltages(), dao.checks()) { sy, fc, vo, ch -> Quad(sy, fc, vo, ch) },
-    ) { a, b -> build(a.a, a.b, a.c, a.d, b.a, b.b, b.c, b.d) }
+        dao.intervalOverrides(),
+    ) { a, b, o -> build(a.a, a.b, a.c, a.d, b.a, b.b, b.c, b.d, o) }
 
     private data class Quad<A, B, C, D>(val a: A, val b: B, val c: C, val d: D)
 
     private fun build(
         v: List<VehicleEntity>, s: List<ServiceEntity>, f: List<FuelEntity>, d: List<DocumentEntity>,
         sy: List<SymptomEntity>, fc: List<FaultCodeEntity>, vo: List<VoltageEntity>, ch: List<CheckEntity>,
+        ov: List<IntervalOverrideEntity>,
     ): Snapshot {
         val records = v.associate { ve ->
             ve.id to records(ve, s.filter { it.vehicleId == ve.id }, f.filter { it.vehicleId == ve.id }, d.filter { it.vehicleId == ve.id },
                 sy.filter { it.vehicleId == ve.id }, fc.filter { it.vehicleId == ve.id }, vo.filter { it.vehicleId == ve.id }.maxByOrNull { it.epochDay },
-                ch.filter { it.vehicleId == ve.id })
+                ch.filter { it.vehicleId == ve.id }, ov.filter { it.vehicleId == ve.id })
         }
-        return Snapshot(v, records, s, f, d, sy, fc, vo, ch)
+        return Snapshot(v, records, s, f, d, sy, fc, vo, ch, ov)
     }
 
     private fun records(
         ve: VehicleEntity, s: List<ServiceEntity>, f: List<FuelEntity>, d: List<DocumentEntity>, sy: List<SymptomEntity>,
-        fc: List<FaultCodeEntity>, vo: VoltageEntity?, ch: List<CheckEntity>,
+        fc: List<FaultCodeEntity>, vo: VoltageEntity?, ch: List<CheckEntity>, ov: List<IntervalOverrideEntity>,
     ) = VehicleRecords(
         vehicle = ve.toModel(),
         baselineKm = ve.baselineKm,
@@ -73,12 +77,13 @@ class Repository(private val dao: GariDao, val registry: () -> TemplateRegistry,
         symptoms = sy.map { ReportedSymptom(it.partId, it.symptomId, it.epochDay, it.resolved) },
         voltage = vo?.let { VoltageReading(it.volts, it.nominalVolts, it.epochDay) },
         faultCodes = fc.map { DiagnosticTroubleCode(it.code, dtc[it.code]) },
+        intervalOverrides = ov.associate { it.partId to IntervalOverride(it.intervalKm, it.intervalMonths) },
     )
 
     /** Records loaded directly (for workers that don't observe flows). */
     suspend fun recordsOnce(ve: VehicleEntity) = records(
         ve, dao.servicesOnce(ve.id), dao.fuelOnce(ve.id), dao.documentsOnce(ve.id), dao.symptomsOnce(ve.id),
-        dao.faultCodesOnce(ve.id), dao.latestVoltage(ve.id), dao.checksOnce(ve.id),
+        dao.faultCodesOnce(ve.id), dao.latestVoltage(ve.id), dao.checksOnce(ve.id), dao.intervalOverridesOnce(ve.id),
     )
 
     fun checkup(r: VehicleRecords) = registry().template(r.vehicle.templateId)?.let { VehicleDoctor.checkup(it, r, today()) }
@@ -117,4 +122,7 @@ class Repository(private val dao: GariDao, val registry: () -> TemplateRegistry,
         codes.forEach { dao.insert(FaultCodeEntity(vehicleId = vehicleId, code = it, epochDay = today())) }
     }
     suspend fun vehiclesOnce() = dao.vehiclesOnce()
+    suspend fun setInterval(vehicleId: Long, partId: String, km: Int?, months: Int?) =
+        if (km == null && months == null) dao.deleteOverride(vehicleId, partId)
+        else dao.upsert(IntervalOverrideEntity(vehicleId, partId, km, months))
 }

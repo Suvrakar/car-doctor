@@ -75,15 +75,18 @@ data class VehicleTemplate(
     fun model(id: String?): ModelPreset? = id?.let { mid -> models.firstOrNull { it.id == mid } }
     fun check(id: String?): GuidedCheck? = id?.let { cid -> checks.firstOrNull { it.id == cid } }
 
-    /** Effective interval for a part after applying model overrides. */
-    fun effectivePart(partId: String, modelId: String?): PartTemplate? {
-        val base = part(partId) ?: return null
-        val o = model(modelId)?.overrides?.get(partId) ?: return base
-        return base.copy(
-            intervalKm = o.intervalKm ?: base.intervalKm,
-            intervalMonths = o.intervalMonths ?: base.intervalMonths,
-        )
+    /**
+     * Effective interval for a part: template default → model preset override → the user's own
+     * override for this vehicle (users can always edit intervals).
+     */
+    fun effectivePart(partId: String, modelId: String?, user: Map<String, IntervalOverride> = emptyMap()): PartTemplate? {
+        var p = part(partId) ?: return null
+        listOfNotNull(model(modelId)?.overrides?.get(partId), user[partId]).forEach { o ->
+            p = p.copy(intervalKm = o.intervalKm ?: p.intervalKm, intervalMonths = o.intervalMonths ?: p.intervalMonths)
+        }
+        return p
     }
 
-    fun effectiveParts(modelId: String?): List<PartTemplate> = parts.map { effectivePart(it.id, modelId)!! }
+    fun effectiveParts(modelId: String?, user: Map<String, IntervalOverride> = emptyMap()): List<PartTemplate> =
+        parts.map { effectivePart(it.id, modelId, user)!! }
 }

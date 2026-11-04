@@ -3,6 +3,7 @@ package com.garidoctor.app.data
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
@@ -52,4 +53,31 @@ interface GariDao {
 
     @Query("SELECT * FROM odometer_log ORDER BY epochDay") fun odometerLog(): Flow<List<OdometerEntity>>
     @Insert suspend fun insert(o: OdometerEntity): Long
+
+    @Query("SELECT * FROM interval_overrides") fun intervalOverrides(): Flow<List<IntervalOverrideEntity>>
+    @Query("SELECT * FROM interval_overrides WHERE vehicleId = :v") suspend fun intervalOverridesOnce(v: Long): List<IntervalOverrideEntity>
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun upsert(o: IntervalOverrideEntity)
+    @Query("DELETE FROM interval_overrides WHERE vehicleId = :v AND partId = :p") suspend fun deleteOverride(v: Long, p: String)
+
+    // ---- backup / restore (everything is small text; photos stay on the phone) ----
+    @Query("SELECT * FROM services") suspend fun allServices(): List<ServiceEntity>
+    @Query("SELECT * FROM fuel") suspend fun allFuel(): List<FuelEntity>
+    @Query("SELECT * FROM documents") suspend fun allDocuments(): List<DocumentEntity>
+    @Query("SELECT * FROM checks") suspend fun allChecks(): List<CheckEntity>
+    @Query("SELECT * FROM symptoms") suspend fun allSymptoms(): List<SymptomEntity>
+    @Query("SELECT * FROM voltages") suspend fun allVoltages(): List<VoltageEntity>
+    @Query("SELECT * FROM fault_codes") suspend fun allFaultCodes(): List<FaultCodeEntity>
+    @Query("SELECT * FROM odometer_log") suspend fun allOdometer(): List<OdometerEntity>
+    @Query("SELECT * FROM interval_overrides") suspend fun allOverrides(): List<IntervalOverrideEntity>
+    @Query("DELETE FROM vehicles") suspend fun deleteAllVehicles() // children cascade
+    @Insert suspend fun insertVehicles(v: List<VehicleEntity>)
+    @Insert suspend fun insertServices(v: List<ServiceEntity>)
+    @Insert suspend fun insertFuel(v: List<FuelEntity>)
+    @Insert suspend fun insertDocuments(v: List<DocumentEntity>)
+    @Insert suspend fun insertChecks(v: List<CheckEntity>)
+    @Insert suspend fun insertSymptoms(v: List<SymptomEntity>)
+    @Insert suspend fun insertVoltages(v: List<VoltageEntity>)
+    @Insert suspend fun insertFaultCodes(v: List<FaultCodeEntity>)
+    @Insert suspend fun insertOdometer(v: List<OdometerEntity>)
+    @Insert suspend fun insertOverrides(v: List<IntervalOverrideEntity>)
 }

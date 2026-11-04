@@ -4,7 +4,9 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import kotlinx.serialization.Serializable
 
+@Serializable
 @Entity(tableName = "vehicles")
 data class VehicleEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
@@ -24,6 +26,7 @@ data class VehicleEntity(
 )
 
 
+@Serializable
 @Entity(tableName = "services", foreignKeys = [ForeignKey(entity = VehicleEntity::class, parentColumns = ["id"], childColumns = ["vehicleId"], onDelete = ForeignKey.CASCADE)], indices = [Index("vehicleId")])
 data class ServiceEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
@@ -37,6 +40,7 @@ data class ServiceEntity(
     val receiptPath: String? = null,
 )
 
+@Serializable
 @Entity(tableName = "fuel", foreignKeys = [ForeignKey(entity = VehicleEntity::class, parentColumns = ["id"], childColumns = ["vehicleId"], onDelete = ForeignKey.CASCADE)], indices = [Index("vehicleId")])
 data class FuelEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
@@ -51,6 +55,7 @@ data class FuelEntity(
     val rangeKm: Double? = null,
 )
 
+@Serializable
 @Entity(tableName = "documents", foreignKeys = [ForeignKey(entity = VehicleEntity::class, parentColumns = ["id"], childColumns = ["vehicleId"], onDelete = ForeignKey.CASCADE)], indices = [Index("vehicleId")])
 data class DocumentEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
@@ -60,6 +65,7 @@ data class DocumentEntity(
     val number: String? = null,
 )
 
+@Serializable
 @Entity(tableName = "checks", foreignKeys = [ForeignKey(entity = VehicleEntity::class, parentColumns = ["id"], childColumns = ["vehicleId"], onDelete = ForeignKey.CASCADE)], indices = [Index("vehicleId")])
 data class CheckEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
@@ -70,6 +76,7 @@ data class CheckEntity(
     val epochDay: Long,
 )
 
+@Serializable
 @Entity(tableName = "symptoms", foreignKeys = [ForeignKey(entity = VehicleEntity::class, parentColumns = ["id"], childColumns = ["vehicleId"], onDelete = ForeignKey.CASCADE)], indices = [Index("vehicleId")])
 data class SymptomEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
@@ -82,6 +89,7 @@ data class SymptomEntity(
     val resolved: Boolean = false,
 )
 
+@Serializable
 @Entity(tableName = "voltages", foreignKeys = [ForeignKey(entity = VehicleEntity::class, parentColumns = ["id"], childColumns = ["vehicleId"], onDelete = ForeignKey.CASCADE)], indices = [Index("vehicleId")])
 data class VoltageEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
@@ -91,6 +99,7 @@ data class VoltageEntity(
     val epochDay: Long,
 )
 
+@Serializable
 @Entity(tableName = "fault_codes", foreignKeys = [ForeignKey(entity = VehicleEntity::class, parentColumns = ["id"], childColumns = ["vehicleId"], onDelete = ForeignKey.CASCADE)], indices = [Index("vehicleId")])
 data class FaultCodeEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
@@ -100,6 +109,7 @@ data class FaultCodeEntity(
     val cleared: Boolean = false,
 )
 
+@Serializable
 @Entity(tableName = "odometer_log", foreignKeys = [ForeignKey(entity = VehicleEntity::class, parentColumns = ["id"], childColumns = ["vehicleId"], onDelete = ForeignKey.CASCADE)], indices = [Index("vehicleId")])
 data class OdometerEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
@@ -108,4 +118,14 @@ data class OdometerEntity(
     val epochDay: Long,
     /** manual | photo | gps | fuel | obd */
     val source: String,
+)
+
+/** User-edited service interval for one part of one vehicle ("defaults per model, editable by the user"). */
+@Serializable
+@Entity(tableName = "interval_overrides", primaryKeys = ["vehicleId", "partId"], foreignKeys = [ForeignKey(entity = VehicleEntity::class, parentColumns = ["id"], childColumns = ["vehicleId"], onDelete = ForeignKey.CASCADE)])
+data class IntervalOverrideEntity(
+    val vehicleId: Long,
+    val partId: String,
+    val intervalKm: Int?,
+    val intervalMonths: Int?,
 )

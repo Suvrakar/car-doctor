@@ -33,7 +33,9 @@
 - **Easy-bike battery health**: charge cycles, range fade, water top-up reminders, and an alert when one weak battery is pulling the whole set down.
 - **Garage finder + SOS**: filter by bike mechanic / car workshop / battery shop / CNG kit; SOS sends location + vehicle + latest diagnosis by SMS or WhatsApp.
 - **Fleet mode**: every vehicle's score, overdue services and expiring papers on one screen, with driver names.
-- **Money hooks**: Pro unlock (multi-vehicle, PDF, live OBD, fleet), offline promo codes for Facebook-group admins and dongle bundles, featured garage listings, sponsored maintenance tips at the exact moment a part is due (Remote Config `sponsor_<CATEGORY>`).
+- **Editable schedules**: every part's km/month interval can be changed per vehicle (template default → model preset → user override).
+- **Backup**: export/restore a small JSON file (works offline), plus optional free cloud backup (Firebase Auth email + one Firestore document per user, see `firestore.rules`). Photos never leave the phone.
+- **Money hooks**: one-time **Pro unlock via Google Play Billing** (product id `garidoctor_pro`), offline promo codes for Facebook-group admins and dongle bundles, **AdMob** in the free tier (home banner + rewarded ad for one free passport), featured garage listings, sponsored maintenance tips at the exact moment a part is due (Remote Config `sponsor_<CATEGORY>`).
 
 ## Build
 
@@ -56,6 +58,12 @@ Put your `google-services.json` in `app/` and the Google Services plugin is appl
 | `garages` | Garage directory JSON (same format as `app/src/main/assets/garages.json`). |
 | `sponsor_<CATEGORY>` | `{"brand":"…","text":{"en":"…","bn":"…"}}`, e.g. `sponsor_ENGINE_OIL`. |
 
+### Play Billing & AdMob
+Create an in-app product `garidoctor_pro` in Play Console. AdMob uses Google's public **test ids** by default; pass real ones for release:
+```bash
+./gradlew :app:assembleRelease -PadmobAppId=ca-app-pub-xxx~yyy -PadmobRewardedId=ca-app-pub-xxx/zzz -PadmobBannerId=ca-app-pub-xxx/www
+```
+
 ### Promo codes
 ```bash
 ./gradlew :core:proCodes -PcoreOnly -Pfrom=1 -Pcount=50 -Psalt=YOUR_SECRET
@@ -69,5 +77,10 @@ Train an image model in Teachable Machine (labels = ids in `WarningLights.kt`), 
 Diagnoses are always shown as **possible causes** with urgency, and users are told to confirm with a mechanic. Intervals and costs are typical defaults for Bangladesh, not manufacturer guarantees; users can edit them.
 
 ## Status
-- Done: Phase 1 (MVP) and most of Phase 2/3 features at the engine and UI level.
-- Still needed before a store release: Play Billing for the paid Pro unlock, AdMob in the free tier, Firebase Auth/Firestore text backup, a hand-verified garage list (the bundled list is marked sample), reference photos for the guided checks, and a trained warning-light model.
+Every feature in the product plan (Phases 1–3) is implemented in the engine and the app.
+
+Content you still need to supply before a store release:
+- a hand-verified garage list (the bundled list is clearly marked as sample data), via Remote Config `garages`
+- a trained warning-light model (`warning_lights.tflite`); the manual symbol picker works without it
+- your own `google-services.json`, Play Console product and AdMob ids
+- real photos for guided checks are optional; drawn reference diagrams are built in

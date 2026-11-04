@@ -25,6 +25,13 @@ android {
         versionName = "0.1.0"
         // Salt for offline promo codes. Override with -PgariProSalt=... for release builds.
         buildConfigField("String", "PRO_SALT", "\"${providers.gradleProperty("gariProSalt").getOrElse("garidoctor-dev-salt")}\"")
+        // AdMob: Google's public TEST ids by default. Pass real ids for release:
+        //   -PadmobAppId=ca-app-pub-xxx~yyy -PadmobRewardedId=ca-app-pub-xxx/zzz -PadmobBannerId=ca-app-pub-xxx/www
+        manifestPlaceholders["admobAppId"] = providers.gradleProperty("admobAppId").getOrElse("ca-app-pub-3940256099942544~3347511713")
+        buildConfigField("String", "ADMOB_REWARDED", "\"${providers.gradleProperty("admobRewardedId").getOrElse("ca-app-pub-3940256099942544/5224354917")}\"")
+        buildConfigField("String", "ADMOB_BANNER", "\"${providers.gradleProperty("admobBannerId").getOrElse("ca-app-pub-3940256099942544/6300978111")}\"")
+        // Play Console in-app product id for the one-time Pro unlock.
+        buildConfigField("String", "PRO_PRODUCT_ID", "\"garidoctor_pro\"")
     }
 
     buildTypes {
@@ -74,5 +81,10 @@ dependencies {
     implementation(libs.tflite)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.config)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+    implementation(libs.kotlinx.coroutines.play)
+    implementation(libs.billing)
+    implementation(libs.play.ads)
     testImplementation(libs.junit)
 }

@@ -49,7 +49,7 @@ fun DocumentsScreen(vm: MainViewModel, id: Long, onBack: () -> Unit) {
                         Text(when {
                             status == null -> t("Not added — tap to add expiry date", "যোগ করা হয়নি — মেয়াদের তারিখ দিতে ট্যাপ করুন")
                             status.daysLeft < 0 -> t("Expired ${-status.daysLeft} days ago", "${n(-status.daysLeft)} দিন আগে মেয়াদ শেষ")
-                            else -> t("Expires ${LocalDate.ofEpochDay(d.expiryEpochDay)} (${status.daysLeft} days)", "মেয়াদ ${LocalDate.ofEpochDay(d.expiryEpochDay)} (${n(status.daysLeft)} দিন)")
+                            else -> t("Expires ${LocalDate.ofEpochDay(d!!.expiryEpochDay)} (${status.daysLeft} days)", "মেয়াদ ${LocalDate.ofEpochDay(d.expiryEpochDay)} (${n(status.daysLeft)} দিন)")
                         }, color = if (status != null && status.state != ExpiryState.VALID) color else MaterialTheme.colorScheme.onSurfaceVariant)
                     },
                     trailingContent = { if (d != null) IconButton(onClick = { vm.deleteDocument(d.id) }) { Icon(Icons.Default.Delete, null) } },

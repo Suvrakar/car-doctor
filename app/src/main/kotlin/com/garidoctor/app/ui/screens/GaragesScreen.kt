@@ -85,7 +85,7 @@ fun GaragesScreen(vm: MainViewModel, onBack: () -> Unit) {
         var phone by remember { mutableStateOf("") }
         val v = st.snapshot.vehicles.firstOrNull { it.id == vehicleId }
         val diag = st.snapshot.symptoms.filter { it.vehicleId == vehicleId && !it.resolved }.maxByOrNull { it.epochDay }?.summary
-            ?: st.checkups[vehicleId]?.health?.deductions?.firstOrNull()?.reason?.get(lang)
+            ?: vehicleId?.let { st.checkups[it] }?.health?.deductions?.firstOrNull()?.reason?.get(lang)
         val text = Sos.message(lang, v?.nickname ?: "-", v?.registrationNo, diag, Sos.lastLocation(ctx))
         AlertDialog(onDismissRequest = { sosOpen = false }, title = { Text("SOS") }, text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {

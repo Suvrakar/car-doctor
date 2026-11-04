@@ -53,6 +53,13 @@ class TemplateTests {
         assertEquals(4, moto.effectivePart("engine_oil", "yamaha_fzs_v3")!!.intervalMonths)
     }
 
+    @Test fun userOverrideWinsOverModel() {
+        val moto = reg.template("motorcycle")!!
+        val p = moto.effectivePart("engine_oil", "yamaha_fzs_v3", mapOf("engine_oil" to com.garidoctor.core.template.IntervalOverride(intervalKm = 1200)))!!
+        assertEquals(1200, p.intervalKm)
+        assertEquals(4, p.intervalMonths)
+    }
+
     @Test fun remoteTemplateNewerVersionReplacesAndInvalidRejected() {
         val r = TemplateRegistry.fromClasspath()
         val issues = r.applyRemoteTemplate("""{"id":"motorcycle","version":2,"name":{"en":"Bike","bn":"বাইক"},"defaultEnergy":"OCTANE","parts":[{"id":"engine_oil","name":{"en":"Oil","bn":"তেল"},"category":"ENGINE_OIL","intervalKm":1200,"weight":20}],"documents":["REGISTRATION"]}""")

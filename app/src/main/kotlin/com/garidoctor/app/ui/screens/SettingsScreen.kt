@@ -2,7 +2,12 @@
 
 package com.garidoctor.app.ui.screens
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -34,6 +39,7 @@ fun SettingsScreen(vm: MainViewModel, onBack: () -> Unit) {
                 Text(if (pro) t("Pro is active ✓", "প্রো চালু আছে ✓") else t("Multiple vehicles, PDF passport, live OBD graphs, fleet mode, no ads.", "একাধিক গাড়ি, পিডিএফ পাসপোর্ট, লাইভ OBD গ্রাফ, ফ্লিট মোড, বিজ্ঞাপন নেই।"))
                 if (!pro) Button(onClick = { showPro = true }) { Text(t("Unlock / redeem code", "আনলক / কোড রিডিম")) }
             }
+            BackupSection(vm)
             SectionCard(t("SOS contacts", "SOS কন্টাক্ট")) {
                 if (contacts.isEmpty()) Text(t("Add contacts from the SOS screen.", "SOS স্ক্রিন থেকে কন্টাক্ট যোগ করুন।"), style = MaterialTheme.typography.bodySmall)
                 contacts.forEach { c ->
@@ -48,4 +54,74 @@ fun SettingsScreen(vm: MainViewModel, onBack: () -> Unit) {
         }
     }
     if (showPro) ProDialog(vm, t("Unlock everything once.", "একবারেই সব আনলক করুন।")) { showPro = false }
+}
+
+@Composable
+private fun BackupSection(vm: MainViewModel) {
+    val ctx = androidx.compose.ui.platform.LocalContext.current
+    val scope = rememberCoroutineScope()
+    var msg by remember { mutableStateOf<String?>(null) }
+    var busy by remember { mutableStateOf(false) }
+    var confirmRestore by remember { mutableStateOf<(() -> Unit)?>(null) }
+    val okExport = t("Backup saved ✓", "ব্যাকআপ সেভ হয়েছে ✓")
+    val okRestore = t("Restored vehicles: ", "ফেরত আনা গাড়ি: ")
+    val failed = t("Failed: ", "ব্যর্থ: ")
+    fun launchOp(block: suspend () -> String) {
+        busy = true
+        scope.launch { msg = runCatching { block() }.getOrElse { failed + (it.message ?: it.javaClass.simpleName) }; busy = false }
+    }
+    val exportLauncher = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
+        if (uri != null) launchOp {
+            val text = vm.exportBackup()
+            withContext(Dispatchers.IO) { ctx.contentResolver.openOutputStream(uri)!!.use { it.write(text.toByteArray()) } }
+            okExport
+        }
+    }
+    val importLauncher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        if (uri != null) confirmRestore = {
+            launchOp {
+                val text = withContext(Dispatchers.IO) { ctx.contentResolver.openInputStream(uri)!!.use { it.readBytes().toString(Charsets.UTF_8) } }
+                okRestore + vm.restoreBackup(text)
+            }
+        }
+    }
+    SectionCard(t("Backup", "ব্যাকআপ")) {
+        Text(t("Logs, papers and settings as a small text file. Photos stay on this phone.", "লগ, কাগজ ও সেটিংস একটি ছোট টেক্সট ফাইলে। ছবি এই ফোনেই থাকে।"), style = MaterialTheme.typography.bodySmall)
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedButton(enabled = !busy, onClick = { exportLauncher.launch("garidoctor-backup-${com.garidoctor.app.data.today()}.json") }) { Text(t("Export file", "ফাইলে সেভ")) }
+            OutlinedButton(enabled = !busy, onClick = { importLauncher.launch(arrayOf("application/json", "text/plain", "*/*")) }) { Text(t("Restore file", "ফাইল থেকে ফেরত")) }
+        }
+        if (vm.cloudAvailable) {
+            var email by remember { mutableStateOf("") }
+            var password by remember { mutableStateOf("") }
+            var signedIn by remember { mutableStateOf(vm.cloudEmail()) }
+            HorizontalDivider()
+            Text(t("Cloud backup (free)", "ক্লাউড ব্যাকআপ (ফ্রি)"), style = MaterialTheme.typography.titleSmall)
+            if (signedIn == null) {
+                OutlinedTextField(email, { email = it }, label = { Text(t("Email", "ইমেইল")) }, singleLine = true)
+                OutlinedTextField(password, { password = it }, label = { Text(t("Password (6+ characters)", "পাসওয়ার্ড (৬+ অক্ষর)")) }, singleLine = true,
+                    visualTransformation = androidx.compose.ui.text.input.PasswordVisualTransformation())
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Button(enabled = !busy && email.contains('@') && password.length >= 6, onClick = { launchOp { vm.cloudSignIn(email, password, false); signedIn = vm.cloudEmail(); "✓" } }) { Text(t("Sign in", "সাইন ইন")) }
+                    OutlinedButton(enabled = !busy && email.contains('@') && password.length >= 6, onClick = { launchOp { vm.cloudSignIn(email, password, true); signedIn = vm.cloudEmail(); "✓" } }) { Text(t("Create account", "অ্যাকাউন্ট খুলুন")) }
+                }
+            } else {
+                Text(signedIn!!, style = MaterialTheme.typography.bodySmall)
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Button(enabled = !busy, onClick = { launchOp { vm.cloudUpload(); okExport } }) { Text(t("Back up now", "এখন ব্যাকআপ")) }
+                    OutlinedButton(enabled = !busy, onClick = { confirmRestore = { launchOp { okRestore + vm.cloudRestore() } } }) { Text(t("Restore", "ফেরত আনুন")) }
+                }
+                TextButton(onClick = { vm.cloudSignOut(); signedIn = null }) { Text(t("Sign out", "সাইন আউট")) }
+            }
+        }
+        if (busy) LinearProgressIndicator(Modifier.fillMaxWidth())
+        msg?.let { Text(it, style = MaterialTheme.typography.bodySmall) }
+    }
+    confirmRestore?.let { action ->
+        AlertDialog(onDismissRequest = { confirmRestore = null },
+            title = { Text(t("Replace data on this phone?", "এই ফোনের তথ্য বদলে যাবে?")) },
+            text = { Text(t("All vehicles and logs on this phone will be replaced by the backup.", "এই ফোনের সব গাড়ি ও লগ ব্যাকআপ দিয়ে বদলে যাবে।")) },
+            confirmButton = { TextButton(onClick = { confirmRestore = null; action() }) { Text(t("Restore", "ফেরত আনুন")) } },
+            dismissButton = { TextButton(onClick = { confirmRestore = null }) { Text(t("Cancel", "বাতিল")) } })
+    }
 }

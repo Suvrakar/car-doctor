@@ -11,6 +11,8 @@ import com.garidoctor.core.obd.DtcInfo
 import com.garidoctor.core.obd.LiveData
 import com.garidoctor.core.obd.ObdDecoder
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import java.io.Closeable
@@ -47,7 +49,9 @@ class ElmClient(private val context: Context) : Closeable {
             s.outputStream.flush()
             val sb = StringBuilder()
             val input = s.inputStream
-            while (true) {
+            // Poll instead of a blocking read so withTimeout can actually cancel a silent dongle.
+            while (isActive) {
+                if (input.available() <= 0) { delay(10); continue }
                 val b = input.read()
                 if (b < 0 || b.toChar() == '>') break
                 sb.append(b.toChar())

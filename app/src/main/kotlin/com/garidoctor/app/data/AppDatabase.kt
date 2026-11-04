@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [VehicleEntity::class, ServiceEntity::class, FuelEntity::class, DocumentEntity::class, CheckEntity::class,
-        SymptomEntity::class, VoltageEntity::class, FaultCodeEntity::class, OdometerEntity::class],
+        SymptomEntity::class, VoltageEntity::class, FaultCodeEntity::class, OdometerEntity::class, IntervalOverrideEntity::class],
     version = 1,
     exportSchema = true,
 )

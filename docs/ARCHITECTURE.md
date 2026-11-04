@@ -80,8 +80,15 @@ A part counts once (its worst deduction). Score = clamp(100 − Σ, 0, 100). Ban
 | `voltages` | id, vehicleId, volts, nominalVolts, epochDay | Multimeter or OBD PID 0x42. |
 | `fault_codes` | id, vehicleId, code, epochDay, cleared | Replaced on each OBD read. |
 | `odometer_log` | id, vehicleId, km, epochDay, source | manual / photo / gps / fuel / obd. |
+| `interval_overrides` | (vehicleId, partId) PK, intervalKm?, intervalMonths? | User-edited intervals; applied after the model preset. |
 
 All child tables cascade on vehicle delete. Dates are `LocalDate.toEpochDay()` (timezone-free). Settings (language, Pro, SOS contacts) are in SharedPreferences.
 
-## Sync (planned)
-Firestore document per user: `users/{uid}/vehicles/{id}` with nested arrays for services/fuel/documents (text only, < 1 MB). Last-writer-wins per record using `(epochDay, id)`.
+## Backup
+`BackupManager` serialises every table to one JSON document (`format: garidoctor-backup`). It is saved to a user-chosen file (Storage Access Framework) or to Firestore `users/{uid}` as a single text field (free tier, rules in `firestore.rules`). Restore replaces local data inside one Room transaction. Receipt photo paths are kept but photos themselves never leave the phone.
+
+## Monetisation plumbing
+- `ProBilling`: Play Billing 7, one-time in-app product, restores purchases on start, acknowledges new ones.
+- `ProCodes`: offline promo codes (`./gradlew :core:proCodes`).
+- `Ads`: AdMob banner on home + rewarded ad → one free passport. Never shown to Pro users.
+- Sponsored tips: Remote Config `sponsor_<PartCategory>` shown next to due parts, labelled "Sponsored".

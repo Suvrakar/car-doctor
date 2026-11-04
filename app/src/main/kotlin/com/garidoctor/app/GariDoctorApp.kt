@@ -4,7 +4,11 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
+import com.garidoctor.app.ads.Ads
+import com.garidoctor.app.backup.CloudBackup
+import com.garidoctor.app.billing.ProBilling
 import com.garidoctor.app.data.AppDatabase
+import com.garidoctor.app.data.BackupManager
 import com.garidoctor.app.data.Prefs
 import com.garidoctor.app.data.Repository
 import com.garidoctor.app.remote.RemoteContent
@@ -19,6 +23,9 @@ class GariDoctorApp : Application() {
     lateinit var prefs: Prefs; private set
     lateinit var repository: Repository; private set
     lateinit var remote: RemoteContent; private set
+    lateinit var billing: ProBilling; private set
+    lateinit var backup: BackupManager; private set
+    lateinit var cloud: CloudBackup; private set
     private val _registry = MutableStateFlow(TemplateRegistry.fromClasspath())
     val registry: StateFlow<TemplateRegistry> = _registry
 
@@ -27,7 +34,12 @@ class GariDoctorApp : Application() {
         instance = this
         prefs = Prefs(this)
         val dtc = javaClass.classLoader?.getResourceAsStream("obd/dtc.json")?.bufferedReader()?.use { ObdDecoder.loadDictionary(it.readText()) } ?: emptyMap()
-        repository = Repository(AppDatabase.get(this).dao(), { _registry.value }, dtc)
+        val db = AppDatabase.get(this)
+        repository = Repository(db.dao(), { _registry.value }, dtc)
+        backup = BackupManager(db)
+        cloud = CloudBackup(this)
+        billing = ProBilling(this, prefs).also { it.start() }
+        if (!prefs.pro.value) Ads.init(this)
         remote = RemoteContent(this)
         remote.fetch { applyRemote -> _registry.value = TemplateRegistry.fromClasspath().also(applyRemote) }
         createChannels()

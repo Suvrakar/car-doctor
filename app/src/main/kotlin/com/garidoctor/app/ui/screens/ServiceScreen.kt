@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Receipt
+import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -34,6 +35,7 @@ fun ServiceScreen(vm: MainViewModel, id: Long, onBack: () -> Unit) {
     val tpl = st.registry.template(v.templateId) ?: return
     val c = st.checkups[id] ?: return
     var logPart by remember { mutableStateOf<String?>(null) }
+    var editPart by remember { mutableStateOf<String?>(null) }
     val history = st.snapshot.services.filter { it.vehicleId == id }
 
     Screen(t("Service log", "সার্ভিস লগ"), onBack) { pad ->
@@ -47,10 +49,13 @@ fun ServiceScreen(vm: MainViewModel, id: Long, onBack: () -> Unit) {
                         Text(every.joinToString(" ") + (s.lastService?.let { " · " + t("last at ${"%,d".format(it.odometerKm)} km", "শেষ ${n(it.odometerKm)} কিমিতে") } ?: ""))
                     },
                     trailingContent = {
-                        when (s.state) {
-                            DueState.OVERDUE -> Text(t("Overdue", "সময় পেরিয়েছে"), color = Bad)
-                            DueState.DUE_SOON -> Text(t("Due soon", "শীঘ্রই"), color = Warn)
-                            else -> {}
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            when (s.state) {
+                                DueState.OVERDUE -> Text(t("Overdue", "সময় পেরিয়েছে"), color = Bad)
+                                DueState.DUE_SOON -> Text(t("Due soon", "শীঘ্রই"), color = Warn)
+                                else -> {}
+                            }
+                            IconButton(onClick = { editPart = s.part.id }) { Icon(Icons.Default.Tune, t("Edit interval", "সময়সূচি বদলান")) }
                         }
                     },
                     modifier = Modifier.clickableItem { logPart = s.part.id },
@@ -67,6 +72,12 @@ fun ServiceScreen(vm: MainViewModel, id: Long, onBack: () -> Unit) {
                 )
             }
         }
+    }
+    editPart?.let { pid ->
+        val base = tpl.effectivePart(pid, v.modelPresetId)!!
+        val current = c.parts.first { it.part.id == pid }.part
+        IntervalDialog(base.name.tr(), base.intervalKm, base.intervalMonths, current.intervalKm, current.intervalMonths,
+            onSave = { km, months -> vm.setInterval(id, pid, km, months) }, onDismiss = { editPart = null })
     }
     logPart?.let { pid ->
         LogServiceDialog(vm, id, pid, tpl.part(pid)?.name?.tr() ?: pid, v.odometerKm) { logPart = null }
@@ -106,4 +117,28 @@ private fun LogServiceDialog(vm: MainViewModel, vehicleId: Long, partId: String,
             onDismiss()
         }) { Text(t("Save", "সেভ")) }
     }, dismissButton = { TextButton(onClick = onDismiss) { Text(t("Cancel", "বাতিল")) } })
+}
+
+/** "Defaults per model, editable by the user": override km / months for one part of this vehicle. */
+@Composable
+private fun IntervalDialog(name: String, defKm: Int?, defMonths: Int?, curKm: Int?, curMonths: Int?, onSave: (Int?, Int?) -> Unit, onDismiss: () -> Unit) {
+    var km by remember { mutableStateOf(curKm?.toString() ?: "") }
+    var months by remember { mutableStateOf(curMonths?.toString() ?: "") }
+    AlertDialog(onDismissRequest = onDismiss, title = { Text(name) }, text = {
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(t("Whichever comes first. Default: ", "যেটা আগে আসে। ডিফল্ট: ") +
+                listOfNotNull(defKm?.let { "${n(it)} ${t("km", "কিমি")}" }, defMonths?.let { "${n(it)} ${t("months", "মাস")}" }).joinToString(" / "),
+                style = MaterialTheme.typography.bodySmall)
+            NumberField(km, { km = it }, t("Every … km", "প্রতি … কিমি"))
+            NumberField(months, { months = it }, t("Every … months", "প্রতি … মাস"))
+        }
+    }, confirmButton = {
+        TextButton(enabled = km.toIntOrNull()?.let { it > 0 } ?: true, onClick = {
+            val k = km.toIntOrNull()?.takeIf { it > 0 && it != defKm }
+            val m = months.toIntOrNull()?.takeIf { it > 0 && it != defMonths }
+            onSave(k, m); onDismiss()
+        }) { Text(t("Save", "সেভ")) }
+    }, dismissButton = {
+        TextButton(onClick = { onSave(null, null); onDismiss() }) { Text(t("Reset to default", "ডিফল্টে ফেরান")) }
+    })
 }

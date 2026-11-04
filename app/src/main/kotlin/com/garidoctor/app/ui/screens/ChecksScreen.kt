@@ -66,9 +66,13 @@ fun ChecksScreen(vm: MainViewModel, id: Long, onBack: () -> Unit) {
                         }
                         result = r.passes
                     }, modifier = Modifier.fillMaxWidth()) {
-                        Column(Modifier.padding(16.dp)) {
-                            Text(r.label.tr(), style = MaterialTheme.typography.titleSmall, color = if (r.passes) Good else Bad)
-                            Text(r.description.tr(), style = MaterialTheme.typography.bodySmall)
+                        Row(Modifier.padding(12.dp), verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                            ReferenceArt(r.image)
+                            Spacer(Modifier.width(12.dp))
+                            Column(Modifier.weight(1f)) {
+                                Text(r.label.tr(), style = MaterialTheme.typography.titleSmall, color = if (r.passes) Good else Bad)
+                                Text(r.description.tr(), style = MaterialTheme.typography.bodySmall)
+                            }
                         }
                     }
                 }

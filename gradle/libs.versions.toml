@@ -17,6 +17,8 @@ zxing = "3.5.3"
 firebaseBom = "33.7.0"
 googleServices = "4.4.2"
 tflite = "2.16.1"
+billing = "7.1.1"
+playAds = "23.6.0"
 junit = "4.13.2"
 
 [libraries]
@@ -44,6 +46,11 @@ zxing-core = { module = "com.google.zxing:core", version.ref = "zxing" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-config = { module = "com.google.firebase:firebase-config" }
 tflite = { module = "org.tensorflow:tensorflow-lite", version.ref = "tflite" }
+billing = { module = "com.android.billingclient:billing-ktx", version.ref = "billing" }
+play-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "playAds" }
+firebase-auth = { module = "com.google.firebase:firebase-auth" }
+firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
+kotlinx-coroutines-play = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "coroutines" }
 junit = { module = "junit:junit", version.ref = "junit" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 
