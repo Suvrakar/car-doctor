@@ -48,6 +48,7 @@ fun SettingsScreen(vm: MainViewModel, onBack: (() -> Unit)?, bottomBar: @Composa
                 Text(if (pro) t("Pro is active ✓", "প্রো চালু আছে ✓") else t("Multiple vehicles, PDF passport, live OBD graphs, fleet mode, no ads.", "একাধিক গাড়ি, পিডিএফ পাসপোর্ট, লাইভ OBD গ্রাফ, ফ্লিট মোড, বিজ্ঞাপন নেই।"))
                 if (!pro) Button(onClick = { showPro = true }) { Text(t("Unlock / redeem code", "আনলক / কোড রিডিম")) }
             }
+            AiSection(vm)
             BackupSection(vm)
             SectionCard(t("SOS contacts", "SOS কন্টাক্ট")) {
                 if (contacts.isEmpty()) Text(t("Add contacts from the SOS screen.", "SOS স্ক্রিন থেকে কন্টাক্ট যোগ করুন।"), style = MaterialTheme.typography.bodySmall)
@@ -182,6 +183,33 @@ private fun AppearanceSection(vm: MainViewModel) {
                     contentAlignment = Alignment.Center,
                 ) { if (selected) Icon(Icons.Default.Check, null, tint = androidx.compose.ui.graphics.Color.White) }
             }
+        }
+    }
+}
+
+/** AI reading: consent switch, today's allowance, and what stays on the phone. */
+@Composable
+private fun AiSection(vm: MainViewModel) {
+    val consent by vm.aiConsent.collectAsStateWithLifecycle()
+    val quota by vm.ai.quota.collectAsStateWithLifecycle()
+    val pro by vm.pro.collectAsStateWithLifecycle()
+    LaunchedEffect(consent) { if (consent) vm.ai.refreshQuota() }
+    SectionCard(t("AI reading", "AI দিয়ে পড়া")) {
+        Text(t("Papers, bills and voice are read on your phone first, for free and offline. Cloud AI (Google Gemini) is used only when you tap “Read with AI”.",
+            "কাগজ, বিল ও কথা প্রথমে আপনার ফোনেই পড়া হয়, ফ্রি ও অফলাইনে। শুধু “AI দিয়ে পড়ুন” চাপলে ক্লাউড AI (গুগল Gemini) ব্যবহার হয়।"),
+            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Column(Modifier.weight(1f)) {
+                Text(t("Allow cloud AI", "ক্লাউড AI চালু"), style = MaterialTheme.typography.bodyLarge)
+                Text(t("Sends only the photo or sentence you choose.", "শুধু আপনার বেছে নেওয়া ছবি বা বাক্য পাঠায়।"), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            Switch(checked = consent, onCheckedChange = { vm.setAiConsent(it) })
+        }
+        if (!vm.ai.enabled) Text(t("Cloud AI isn't available in this build or is paused.", "এই বিল্ডে ক্লাউড AI নেই বা বন্ধ আছে।"), style = MaterialTheme.typography.bodySmall)
+        quota?.let { q ->
+            Text(t("Today: ${q.remaining} of ${q.limit + q.bonus} AI reads left", "আজ: ${n(q.limit + q.bonus)}টির মধ্যে ${n(q.remaining)}টি AI পড়া বাকি"), style = MaterialTheme.typography.labelLarge)
+            if (!pro) Text(t("Pro gives ${30} reads a day. Watching a short ad adds one more (up to 3 a day).", "প্রো-তে দিনে ${n(30)}টি। ছোট বিজ্ঞাপন দেখলে আরও একটি (দিনে সর্বোচ্চ ৩টি)।"),
+                style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }

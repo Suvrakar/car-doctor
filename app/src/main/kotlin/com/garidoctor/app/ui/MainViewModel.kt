@@ -84,6 +84,18 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     suspend fun cloudUpload() = g.cloud.upload(g.backup.export(), today())
     suspend fun cloudRestore(): Int = g.cloud.download()?.let { g.backup.restore(it) } ?: error("No cloud backup yet")
 
+    // ---- AI ----
+    val ai = g.ai
+    val aiConsent: StateFlow<Boolean> = prefs.aiConsent
+    fun setAiConsent(v: Boolean) = prefs.setAiConsent(v)
+    fun refreshAiQuota() = io { ai.refreshQuota() }
+    /** Saves a scanned paper: updates the existing paper of that type, or adds it. */
+    fun savePaper(vehicleId: Long, type: com.garidoctor.core.model.DocumentType, expiryEpochDay: Long, number: String?) {
+        val existing = state.value.snapshot.documents.firstOrNull { it.vehicleId == vehicleId && it.type == type.name }
+        if (existing != null) updateDocument(existing.copy(expiryEpochDay = expiryEpochDay, number = number ?: existing.number))
+        else addDocument(DocumentEntity(vehicleId = vehicleId, type = type.name, expiryEpochDay = expiryEpochDay, number = number))
+    }
+
     fun setInterval(vehicleId: Long, partId: String, km: Int?, months: Int?) = io { repo.setInterval(vehicleId, partId, km, months) }
 
     private fun io(block: suspend () -> Unit) { viewModelScope.launch { block() } }

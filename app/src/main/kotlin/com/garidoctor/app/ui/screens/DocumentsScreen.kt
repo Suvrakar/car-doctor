@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.DocumentScanner
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -31,11 +32,18 @@ fun DocumentsScreen(vm: MainViewModel, id: Long, onBack: () -> Unit) {
     val tpl = st.registry.template(v.templateId) ?: return
     val docs = st.snapshot.documents.filter { it.vehicleId == id }
     var editing by remember { mutableStateOf<Pair<DocumentType, DocumentEntity?>?>(null) }
+    var scanning by remember { mutableStateOf(false) }
 
     Screen(t("Papers & expiry", "কাগজপত্র ও মেয়াদ"), onBack) { pad ->
         LazyColumn(Modifier.padding(pad), contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             item {
                 Text(t("You'll get reminders 30, 15, 7, 3 and 1 day before expiry — avoid police fines.", "মেয়াদ শেষের ৩০, ১৫, ৭, ৩ ও ১ দিন আগে রিমাইন্ডার পাবেন — পুলিশের জরিমানা এড়ান।"), style = MaterialTheme.typography.bodySmall)
+            }
+            item {
+                StatusBanner(Icons.Default.DocumentScanner, com.garidoctor.app.ui.theme.Tone.GOOD,
+                    t("Scan a paper", "কাগজ স্ক্যান করুন"),
+                    t("Take a photo of the registration, tax token, fitness, insurance or licence. The app reads the expiry date and sets reminders.",
+                        "রেজিস্ট্রেশন, ট্যাক্স টোকেন, ফিটনেস, ইন্স্যুরেন্স বা লাইসেন্সের ছবি তুলুন। অ্যাপ মেয়াদের তারিখ পড়ে রিমাইন্ডার দেবে।")) { scanning = true }
             }
             item {
                 GroupCard {
@@ -59,6 +67,7 @@ fun DocumentsScreen(vm: MainViewModel, id: Long, onBack: () -> Unit) {
             }
         }
     }
+    if (scanning) PaperScanFlow(vm, id, tpl.documents) { scanning = false }
     editing?.let { (type, existing) ->
         var day by remember(type) { mutableLongStateOf(existing?.expiryEpochDay ?: today().plus(365)) }
         var number by remember(type) { mutableStateOf(existing?.number ?: "") }

@@ -36,11 +36,18 @@ fun ServiceScreen(vm: MainViewModel, id: Long, onBack: () -> Unit) {
     val c = st.checkups[id] ?: return
     var logPart by remember { mutableStateOf<String?>(null) }
     var editPart by remember { mutableStateOf<String?>(null) }
+    var scanning by remember { mutableStateOf(false) }
     val history = st.snapshot.services.filter { it.vehicleId == id }
 
     Screen(t("Service log", "সার্ভিস লগ"), onBack) { pad ->
         LazyColumn(Modifier.padding(pad), contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            item { Text(t("Tap a part to mark it serviced", "সার্ভিস করা পার্টসে ট্যাপ করুন"), style = MaterialTheme.typography.titleSmall) }
+            item {
+                StatusBanner(Icons.Default.Receipt, com.garidoctor.app.ui.theme.Tone.GOOD,
+                    t("Scan a garage bill", "গ্যারেজের বিল স্ক্যান করুন"),
+                    t("Take a photo of the bill. The app finds the parts, costs, date and odometer and logs them for you.",
+                        "বিলের ছবি তুলুন। অ্যাপ পার্টস, খরচ, তারিখ ও ওডোমিটার খুঁজে লগ করে দেবে।")) { scanning = true }
+            }
+            item { Text(t("Or tap a part to mark it serviced", "অথবা সার্ভিস করা পার্টসে ট্যাপ করুন"), style = MaterialTheme.typography.titleSmall) }
             items(c.parts, key = { it.part.id }) { s ->
                 ListItem(
                     headlineContent = { Text(s.part.name.tr()) },
@@ -73,6 +80,7 @@ fun ServiceScreen(vm: MainViewModel, id: Long, onBack: () -> Unit) {
             }
         }
     }
+    if (scanning) ReceiptScanFlow(vm, v, tpl) { scanning = false }
     editPart?.let { pid ->
         val base = tpl.effectivePart(pid, v.modelPresetId)!!
         val current = c.parts.first { it.part.id == pid }.part

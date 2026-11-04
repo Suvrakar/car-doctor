@@ -26,6 +26,7 @@ class GariDoctorApp : Application() {
     lateinit var billing: ProBilling; private set
     lateinit var backup: BackupManager; private set
     lateinit var cloud: CloudBackup; private set
+    lateinit var ai: com.garidoctor.app.ai.AiService; private set
     private val _registry = MutableStateFlow(TemplateRegistry.fromClasspath())
     val registry: StateFlow<TemplateRegistry> = _registry
 
@@ -43,6 +44,11 @@ class GariDoctorApp : Application() {
         if (!prefs.pro.value) Ads.init(this)
         remote = RemoteContent(this)
         remote.fetch { applyRemote -> _registry.value = TemplateRegistry.fromClasspath().also(applyRemote) }
+        // App Check must be installed before any Firebase AI / Firestore call (required for AI Logic).
+        if (runCatching { com.google.firebase.FirebaseApp.getApps(this).isNotEmpty() }.getOrDefault(false)) {
+            runCatching { com.garidoctor.app.ai.AppCheckSetup.install() }
+        }
+        ai = com.garidoctor.app.ai.AiService(this, prefs, remote)
         createChannels()
         ReminderWorker.schedule(this)
     }

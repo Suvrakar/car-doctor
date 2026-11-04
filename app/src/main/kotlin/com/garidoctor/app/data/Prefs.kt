@@ -42,6 +42,11 @@ class Prefs(context: Context) {
     val accent: StateFlow<String> = _accent
     fun setAccent(v: String) { sp.edit().putString("accent", v).apply(); _accent.value = v }
 
+    // ---- Cloud AI consent (photos/voice text leave the phone only after this is true) ----
+    private val _aiConsent = MutableStateFlow(sp.getBoolean("ai_consent", false))
+    val aiConsent: StateFlow<Boolean> = _aiConsent
+    fun setAiConsent(v: Boolean) { sp.edit().putBoolean("ai_consent", v).apply(); _aiConsent.value = v }
+
     var lastNotifiedDay: Long
         get() = sp.getLong("last_notified_day", 0)
         set(v) { sp.edit().putLong("last_notified_day", v).apply() }

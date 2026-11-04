@@ -1,10 +1,36 @@
 rules_version = '2';
-// GariDoctor cloud backup: each signed-in user can read/write only their own backup document.
+// GariDoctor / Car Doctor Firestore rules.
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // Cloud backup: each signed-in user reads/writes only their own document.
     match /users/{uid} {
       allow read, write: if request.auth != null && request.auth.uid == uid
                          && (request.resource == null || request.resource.data.backup.size() < 900000);
+    }
+
+    // Cloud-AI allowance, one document per user per UTC day (key = days since 1970-01-01 UTC).
+    // The app reserves one use before every Gemini request. These rules make the counter
+    // tamper-proof: only today's document, only +1 per write, never above the hard cap
+    // (40 = AiQuota.HARD_CAP), and at most 3 rewarded-ad bonus uses a day.
+    // The per-plan limit (free 3 / Pro 30, from Remote Config) is applied by the app.
+    match /usage/{uid}/days/{day} {
+      function isOwner() { return request.auth != null && request.auth.uid == uid; }
+      function isToday() { return int(day) == math.floor(request.time.toMillis() / 86400000); }
+      function onlyCounters() { return request.resource.data.keys().hasOnly(['count', 'bonus']); }
+      function next() { return request.resource.data; }
+
+      allow read: if isOwner();
+      allow create: if isOwner() && isToday() && onlyCounters()
+        && ((next().count == 1 && next().bonus == 0) || (next().count == 0 && next().bonus == 1));
+      allow update: if isOwner() && isToday() && onlyCounters()
+        && (
+          // one AI use
+          (next().count == resource.data.count + 1 && next().bonus == resource.data.bonus && next().count <= 40)
+          // one rewarded-ad bonus
+          || (next().bonus == resource.data.bonus + 1 && next().count == resource.data.count && next().bonus <= 3)
+        );
+      allow delete: if false;
     }
   }
 }

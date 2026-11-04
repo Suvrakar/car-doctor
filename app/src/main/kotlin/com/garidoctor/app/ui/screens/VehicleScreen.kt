@@ -55,6 +55,9 @@ fun VehicleScreen(vm: MainViewModel, id: Long, onBack: () -> Unit, nav: (String)
     var editing by remember { mutableStateOf(false) }
     var menu by remember { mutableStateOf(false) }
     var showHealthy by remember { mutableStateOf(false) }
+    var scanPaper by remember { mutableStateOf(false) }
+    var scanBill by remember { mutableStateOf(false) }
+    var speak by remember { mutableStateOf(false) }
     val electric = VehicleDoctor.isElectric(rec.vehicle.energyType)
     val makePassport: () -> Unit = {
         val p = VehiclePassport.build(rec.vehicle, tpl.name.get(lang), tpl.model(v.modelPresetId)?.let { "${it.brand} ${it.model}" },
@@ -66,6 +69,10 @@ fun VehicleScreen(vm: MainViewModel, id: Long, onBack: () -> Unit, nav: (String)
     val passport: () -> Unit = { if (vm.allowed(ProFeature.PASSPORT_PDF)) { makePassport() } else { showPro = true } }
 
     val actions = buildList {
+        // AI-assisted logging first: no typing.
+        add(QuickAction(Icons.Default.Mic, t("Speak", "বলুন")) { speak = true })
+        add(QuickAction(Icons.Default.Receipt, t("Scan bill", "বিল স্ক্যান")) { scanBill = true })
+        add(QuickAction(Icons.Default.DocumentScanner, t("Scan paper", "কাগজ স্ক্যান")) { scanPaper = true })
         add(QuickAction(Icons.Default.Build, t("Log service", "সার্ভিস লগ")) { nav("service/$id") })
         add(QuickAction(if (electric) Icons.Default.BatteryChargingFull else Icons.Default.LocalGasStation, if (electric) t("Charge", "চার্জ") else t("Fuel", "জ্বালানি")) { nav("fuel/$id") })
         add(QuickAction(Icons.Default.HealthAndSafety, t("Doctor", "ডাক্তার")) { nav("symptoms/$id") })
@@ -192,6 +199,9 @@ fun VehicleScreen(vm: MainViewModel, id: Long, onBack: () -> Unit, nav: (String)
         })
     if (showProFull) ProDialog(vm, t("Unlock Pro: multiple vehicles, unlimited passports, live OBD graphs, fleet mode, no ads.", "প্রো আনলক: একাধিক গাড়ি, আনলিমিটেড পাসপোর্ট, লাইভ OBD গ্রাফ, ফ্লিট মোড, বিজ্ঞাপন নেই।")) { showProFull = false }
     if (editing) EditVehicleDialog(vm, v) { editing = false }
+    if (scanPaper) PaperScanFlow(vm, id, tpl.documents) { scanPaper = false }
+    if (scanBill) ReceiptScanFlow(vm, v, tpl) { scanBill = false }
+    if (speak) VoiceLogFlow(vm, v, tpl) { speak = false }
 }
 
 @Composable

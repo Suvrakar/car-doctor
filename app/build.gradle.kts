@@ -9,6 +9,8 @@ plugins {
 
 // Firebase (Remote Config templates, Crashlytics/Analytics later) is optional:
 // drop your google-services.json into app/ and the plugin is applied automatically.
+val enableNano = providers.gradleProperty("enableNano").isPresent
+
 if (file("google-services.json").exists()) {
     apply(plugin = "com.google.gms.google-services")
 }
@@ -51,6 +53,10 @@ android {
         buildConfig = true
     }
     androidResources { noCompress += "tflite" }
+
+    // On-device Gemini Nano (ML Kit GenAI Prompt API, beta) is opt-in until verified on a real
+    // device: build with -PenableNano to compile the Nano implementation instead of the stub.
+    sourceSets.getByName("main").java.srcDir(if (enableNano) "src/nano/kotlin" else "src/nanoOff/kotlin")
     packaging { resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" } }
 }
 
@@ -77,12 +83,17 @@ dependencies {
     ksp(libs.room.compiler)
     implementation(libs.work.runtime)
     implementation(libs.mlkit.text)
+    implementation(libs.androidx.exifinterface)
     implementation(libs.zxing.core)
     implementation(libs.tflite)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.config)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.ai)
+    implementation(libs.firebase.appcheck.playintegrity)
+    debugImplementation(libs.firebase.appcheck.debug)
+    if (enableNano) implementation(libs.mlkit.genai.prompt)
     implementation(libs.kotlinx.coroutines.play)
     implementation(libs.billing)
     implementation(libs.play.ads)
