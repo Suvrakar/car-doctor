@@ -6,6 +6,7 @@ import com.garidoctor.core.fuel.EfficiencyTrend
 import com.garidoctor.core.model.CheckResult
 import com.garidoctor.core.model.L10n
 import com.garidoctor.core.model.Lang
+import com.garidoctor.core.model.Translations
 import com.garidoctor.core.model.ReportedSymptom
 import com.garidoctor.core.model.VehicleDocument
 import com.garidoctor.core.model.VoltageReading
@@ -46,8 +47,8 @@ data class HealthReport(val score: Int, val band: HealthBand, val deductions: Li
             val head = "আপনার $vehicleName এর স্কোর ${Bn.digits(score)}/১০০।"
             if (top.isEmpty()) "$head সবকিছু ঠিক আছে!" else "$head ${Bn.digits(top)}।"
         } else {
-            val head = "Your $vehicleName is at $score/100."
-            if (top.isEmpty()) "$head Everything looks good!" else "$head $top."
+            val head = Translations.format(lang, "Your {0} is at {1}/100.", vehicleName, score)
+            if (top.isEmpty()) "$head ${Translations.tr(lang, "Everything looks good!")}" else "$head $top."
         }
     }
 }

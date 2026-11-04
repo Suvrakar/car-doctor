@@ -44,7 +44,8 @@ class MainActivity : AppCompatActivity() {
             CompositionLocalProvider(LocalLang provides lang) {
                 // Light/dark comes from AppCompat's night mode (set from Settings), so isSystemInDarkTheme() is right.
                 GariTheme(style = if (style == "MATERIAL") UiStyle.MATERIAL else UiStyle.SOFT, accent = Accent.of(accent)) {
-                    NotificationPermission(vm); AppNav(vm, startVehicle)
+                    val chosen by vm.prefs.langChosen.collectAsStateWithLifecycle()
+                    if (!chosen) LanguageOnboarding(vm) else { NotificationPermission(vm); AppNav(vm, startVehicle) }
                 }
             }
         }

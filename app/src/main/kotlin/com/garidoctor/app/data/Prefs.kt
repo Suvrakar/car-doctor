@@ -9,9 +9,13 @@ import kotlinx.coroutines.flow.StateFlow
 class Prefs(context: Context) {
     private val sp = context.getSharedPreferences("garidoctor", Context.MODE_PRIVATE)
 
-    private val _lang = MutableStateFlow(if (sp.getString("lang", null) == "en") Lang.EN else Lang.BN)
+    private val _lang = MutableStateFlow(Lang.of(sp.getString("lang", null)) ?: Lang.BN)
     val lang: StateFlow<Lang> = _lang
-    fun setLang(l: Lang) { sp.edit().putString("lang", l.name.lowercase()).apply(); _lang.value = l }
+    fun setLang(l: Lang) { sp.edit().putString("lang", l.code).putBoolean("lang_chosen", true).apply(); _lang.value = l; _langChosen.value = true }
+
+    /** False until the user picks a language (first-launch picker). Existing installs count as chosen. */
+    private val _langChosen = MutableStateFlow(sp.getBoolean("lang_chosen", sp.contains("lang")))
+    val langChosen: StateFlow<Boolean> = _langChosen
 
     private val _pro = MutableStateFlow(sp.getBoolean("pro", false))
     val pro: StateFlow<Boolean> = _pro

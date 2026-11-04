@@ -44,8 +44,8 @@ class ReminderWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(c
             val soon = c.parts.filter { it.state == DueState.DUE_SOON }
             if (overdue.isNotEmpty() || soon.isNotEmpty()) {
                 val names = (overdue + soon).take(3).joinToString { it.part.name.get(lang) }
-                val title = if (lang == Lang.BN) "${ve.nickname}: সার্ভিসের সময় হয়েছে" else "${ve.nickname}: service due"
-                val body = if (lang == Lang.BN) "$names · হেলথ স্কোর ${c.health.score}/100" else "$names · health score ${c.health.score}/100"
+                val title = lang.pick("${ve.nickname}: service due", "${ve.nickname}: সার্ভিসের সময় হয়েছে")
+                val body = lang.pick("$names · health score ${c.health.score}/100", "$names · হেলথ স্কোর ${c.health.score}/100")
                 notify(GariDoctorApp.CH_SERVICE, nid++, title, body, ve.id)
             }
             rec.documents.filter { DocumentExpiry.shouldRemind(it, day) }.forEach { d ->
@@ -53,9 +53,9 @@ class ReminderWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(c
                 val name = d.type.label.get(lang)
                 val title = "${ve.nickname}: $name"
                 val body = when {
-                    st.daysLeft < 0 -> if (lang == Lang.BN) "মেয়াদ ${-st.daysLeft} দিন আগে শেষ। জরিমানা এড়াতে নবায়ন করুন।" else "Expired ${-st.daysLeft} days ago. Renew to avoid fines."
-                    st.daysLeft == 0L -> if (lang == Lang.BN) "আজ মেয়াদ শেষ!" else "Expires today!"
-                    else -> if (lang == Lang.BN) "${st.daysLeft} দিনে মেয়াদ শেষ হবে।" else "Expires in ${st.daysLeft} days."
+                    st.daysLeft < 0 -> lang.pick("Expired ${-st.daysLeft} days ago. Renew to avoid fines.", "মেয়াদ ${-st.daysLeft} দিন আগে শেষ। জরিমানা এড়াতে নবায়ন করুন।")
+                    st.daysLeft == 0L -> lang.pick("Expires today!", "আজ মেয়াদ শেষ!")
+                    else -> lang.pick("Expires in ${st.daysLeft} days.", "${st.daysLeft} দিনে মেয়াদ শেষ হবে।")
                 }
                 notify(GariDoctorApp.CH_PAPERS, nid++, title, body, ve.id)
             }

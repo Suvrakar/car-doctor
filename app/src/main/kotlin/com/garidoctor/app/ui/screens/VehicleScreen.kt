@@ -270,7 +270,7 @@ private fun PartsGroup(parts: List<PartStatus>, sponsor: (String) -> Pair<String
     }
 }
 
-private fun t2(lang: com.garidoctor.core.model.Lang, en: String, bn: String) = if (lang == com.garidoctor.core.model.Lang.BN) bn else en
+private fun t2(lang: com.garidoctor.core.model.Lang, en: String, bn: String) = lang.pick(en, bn)
 
 @Composable
 private fun EditVehicleDialog(vm: MainViewModel, v: com.garidoctor.app.data.VehicleEntity, onDismiss: () -> Unit) {

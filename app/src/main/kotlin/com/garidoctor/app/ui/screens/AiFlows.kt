@@ -293,7 +293,7 @@ fun VoiceLogFlow(vm: MainViewModel, vehicle: VehicleEntity, tpl: VehicleTemplate
     val listen: () -> Unit = {
         val i = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
             .putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-            .putExtra(RecognizerIntent.EXTRA_LANGUAGE, if (lang == Lang.BN) "bn-BD" else "en-US")
+            .putExtra(RecognizerIntent.EXTRA_LANGUAGE, lang.speechTag)
             .putExtra(RecognizerIntent.EXTRA_PREFER_OFFLINE, true)
             .putExtra(RecognizerIntent.EXTRA_PROMPT, prompt)
         try { speech.launch(i) } catch (_: ActivityNotFoundException) { noSpeech = true; transcript = "" }

@@ -129,4 +129,4 @@ fun ObdScreen(vm: MainViewModel, id: Long, onBack: () -> Unit) {
     if (showPro) ProDialog(vm, t("Live OBD graphs are a Pro feature.", "লাইভ OBD গ্রাফ প্রো ফিচার।")) { showPro = false }
 }
 
-private fun t2(vm: MainViewModel, en: String, bn: String) = if (vm.lang.value == com.garidoctor.core.model.Lang.BN) bn else en
+private fun t2(vm: MainViewModel, en: String, bn: String) = vm.lang.value.pick(en, bn)

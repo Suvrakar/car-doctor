@@ -29,7 +29,7 @@ object PassportPdf {
         val h2 = Paint().apply { textSize = 13f; typeface = Typeface.DEFAULT_BOLD; isAntiAlias = true }
         val body = Paint().apply { textSize = 10.5f; isAntiAlias = true }
         val muted = Paint().apply { textSize = 9f; color = Color.GRAY; isAntiAlias = true }
-        fun t(en: String, bn: String) = if (lang == Lang.BN) bn else en
+        fun t(en: String, bn: String) = lang.pick(en, bn)
         var y = M + 10
 
         c.drawText(t("GariDoctor Vehicle Passport", "গাড়িডাক্তার ভেহিকল পাসপোর্ট"), M, y, title); y += 26

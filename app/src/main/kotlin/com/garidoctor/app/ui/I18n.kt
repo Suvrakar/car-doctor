@@ -11,7 +11,7 @@ import com.garidoctor.core.model.Lang
 val LocalLang = staticCompositionLocalOf { Lang.BN }
 
 @Composable @ReadOnlyComposable
-fun t(en: String, bn: String): String = if (LocalLang.current == Lang.BN) bn else en
+fun t(en: String, bn: String): String = LocalLang.current.pick(en, bn)
 
 @Composable @ReadOnlyComposable
 fun L10n.tr(): String = get(LocalLang.current)

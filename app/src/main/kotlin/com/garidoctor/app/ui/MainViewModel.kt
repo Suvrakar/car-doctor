@@ -58,7 +58,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun sponsorTip(category: String): Pair<String, String>? = g.remote.string("sponsor_$category")?.let {
         runCatching {
             val o = Json.parseToJsonElement(it).jsonObject
-            val text = o["text"]!!.jsonObject[if (lang.value == Lang.BN) "bn" else "en"]!!.jsonPrimitive.content
+            val texts = o["text"]!!.jsonObject
+            val text = (texts[lang.value.code] ?: texts[if (lang.value == Lang.BN) "bn" else "en"])!!.jsonPrimitive.content
             o["brand"]!!.jsonPrimitive.content to text
         }.getOrNull()
     }

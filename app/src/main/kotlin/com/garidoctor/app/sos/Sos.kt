@@ -21,18 +21,12 @@ object Sos {
 
     fun message(lang: Lang, vehicle: String, reg: String?, diagnosis: String?, loc: Location?): String {
         val map = loc?.let { "https://maps.google.com/?q=${"%.6f".format(it.latitude)},${"%.6f".format(it.longitude)}" }
-        return if (lang == Lang.BN) buildString {
-            append("🆘 জরুরি সাহায্য দরকার।\nগাড়ি: $vehicle")
+        return buildString {
+            append("🆘 " + lang.pick("I need help.", "জরুরি সাহায্য দরকার।") + "\n" + lang.pick("Vehicle:", "গাড়ি:") + " $vehicle")
             reg?.let { append(" ($it)") }
-            diagnosis?.let { append("\nসমস্যা: $it") }
-            append("\nলোকেশন: ${map ?: "পাওয়া যায়নি"}")
-            append("\n— গাড়িডাক্তার")
-        } else buildString {
-            append("🆘 I need help.\nVehicle: $vehicle")
-            reg?.let { append(" ($it)") }
-            diagnosis?.let { append("\nProblem: $it") }
-            append("\nLocation: ${map ?: "unavailable"}")
-            append("\n— GariDoctor")
+            diagnosis?.let { append("\n" + lang.pick("Problem:", "সমস্যা:") + " $it") }
+            append("\n" + lang.pick("Location:", "লোকেশন:") + " " + (map ?: lang.pick("unavailable", "পাওয়া যায়নি")))
+            append("\n— " + lang.pick("GariDoctor", "গাড়িডাক্তার"))
         }
     }
 

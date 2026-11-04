@@ -35,13 +35,18 @@ fun SettingsScreen(vm: MainViewModel, onBack: (() -> Unit)?, bottomBar: @Composa
     val pro by vm.pro.collectAsStateWithLifecycle()
     val contacts by vm.sos.collectAsStateWithLifecycle()
     var showPro by remember { mutableStateOf(false) }
+    var showLang by remember { mutableStateOf(false) }
+    if (showLang) LanguageSheet(vm) { showLang = false }
     Screen(t("Settings", "সেটিংস"), onBack, large = true, bottomBar = bottomBar) { pad ->
         Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             AppearanceSection(vm)
             SectionCard(t("Language", "ভাষা")) {
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    FilterChip(lang == Lang.BN, { vm.setLang(Lang.BN); AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("bn")) }, { Text("বাংলা") })
-                    FilterChip(lang == Lang.EN, { vm.setLang(Lang.EN); AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("en")) }, { Text("English") })
+                Row(Modifier.fillMaxWidth().clickableItem { showLang = true }.padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f)) {
+                        Text(lang.nativeName, style = MaterialTheme.typography.bodyLarge)
+                        Text(t("${Lang.entries.size} languages", "${n(Lang.entries.size)}টি ভাষা"), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                    TextButton(onClick = { showLang = true }) { Text(t("Change", "বদলান")) }
                 }
             }
             SectionCard(t("GariDoctor Pro", "গাড়িডাক্তার প্রো")) {
