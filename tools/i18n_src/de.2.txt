@@ -1,0 +1,495 @@
+500|Live-OBD-Diagramme sind eine Pro-Funktion.
+501|Live-Daten
+502|Standort:
+503|Per Sprache eintragen
+504|Jede Ladung im Ladeprotokoll eintragen. „Voll geladen“ speichert die mit der vorigen Ladung gefahrenen km als Reichweitenwert.
+505|Wartung eintragen
+506|Wartungen eintragen
+507|Zwei volle Tankfüllungen eintragen, um den Verbrauch zu sehen
+508|Einträge, Papiere und Einstellungen als kleine Textdatei. Fotos bleiben auf diesem Handy.
+509|Langer Leerlauf im Stau
+510|Säurestand im Vergleich zu den Platten ansehen.
+511|Mit der Handylampe durch den Spalt des Bremssattels schauen.
+512|Lockere Klemme
+513|Lockerer Tankdeckel
+514|Lockere Hochstrompole können Funken schlagen und Kabel verschmoren. Anhalten und festziehen/reparieren.
+515|Hauptpol locker
+516|Motorbefestigung locker
+517|Schutzblech/Schrauben locker
+518|Lockere oder korrodierte Pole
+519|Lenkkopflager locker
+520|Lockere/korrodierte Pole
+521|Bremseinstellung lockern; Lager schmieren/tauschen.
+522|Keine Kommunikation mit dem Motorsteuergerät
+523|Batteriewasser niedrig (Blei-Säure)
+524|Kühlmittel niedrig / Leck
+525|Zu wenig Elektrolyt (Wasser) in Blei-Säure-Batterien
+526|Motoröl niedrig
+527|Kraftstoff knapp
+528|Kraftstoffdruck niedrig
+529|Hoher Verbrauch
+530|Motoröl niedrig oder alt
+531|Wenig Leistung / hoher Verbrauch auf Gas
+532|Niedriger Druck in einem Reifen
+533|Zu wenig Kältemittel (Leck)
+534|Reifendruck niedrig
+535|Reifendruck niedrig / Überladung
+536|Wassermangel legt Platten frei
+537|Unterspannungsabschaltung am Berg (schwache Batterie)
+538|Luftmassenmesser: Bereich/Leistung
+539|Hauptsicherung / Schutzschalter ausgelöst
+540|Macht deinen ersten Wert genau
+541|Karte
+542|Luftmassenmesser-Stromkreis (MAF)
+543|Hauptbremszylinder defekt
+544|Material
+545|Kann das Anspringen verhindern. Sensor prüfen.
+546|Gesamte Auf-und-ab-Bewegung messen.
+547|Metall auf Metall / Schleifen
+548|Kleinbus
+549|Verbrauch um {0}% gestiegen
+550|Verbrauch diesen Monat um {0}% gestiegen
+551|Modulspannung
+552|Mehr
+553|Vor über 3 Monaten / weiß nicht
+554|Mehr als 40 mm / hängt durch
+555|Motor & Controller prüfen
+556|Hall-Sensor des Motors / Controller
+557|Motorgeräusch / Ruckeln
+558|Motorrad
+559|Mehrere Fahrzeuge, PDF-Pass, Live-OBD-Diagramme, Flottenmodus, keine Werbung.
+560|Name
+561|Muss eingestellt werden
+562|Achtung nötig
+563|Spitzname
+564|Nein
+565|Keine Korrosion, Klemmen sitzen fest.
+566|Keine Fehlercodes gespeichert ✓
+567|Kein Profil, Risse in der Flanke oder Beule: unsicher.
+568|Keine überfällige Wartung, keine Probleme, keine ablaufenden Papiere.
+569|Keine gekoppelten Geräte. Zuerst den Adapter koppeln.
+570|Auf dieser Rechnung wurden keine Teile gefunden.
+571|Keine Leistung / schaltet ab
+572|Noch keine Wartungen eingetragen.
+573|Normale Alterung
+574|Normales Kondenswasser
+575|An kühlen Morgen normal.
+576|Normaler Rest an der Düse
+577|Normal. Bleibt er nach dem Warmlaufen dicht, prüfen lassen.
+578|Nicht hinzugefügt · tippen, um Ablauf festzulegen
+579|Nicht jetzt
+580|Notiz / Werkstatt (optional)
+581|Nichts / kein Licht
+582|Nummer (optional)
+583|Lambdasonde oder Luftmassenmesser
+584|Lambdasonde-Stromkreis (Bank 1 Sensor 1)
+585|Heizung Lambdasonde (B1S1)
+586|Heizung Lambdasonde (B1S2)
+587|Lambdasonde ohne Aktivität (B1S1)
+588|Lambdasonde reagiert langsam (B1S1)
+589|OBD-Scan
+590|OK
+591|In Ordnung.
+592|Super
+593|Kilometerzähler
+594|Kilometerstand (km)
+595|Kilometerstand (km) — aktuell {0}
+596|Kilometerstand: 
+597|Oft durch lange Zündaussetzer oder die Lambdasonde.
+598|Oft zu wenig oder verschmutztes Öl. Öl wechseln, dann neu auslesen.
+599|Öl alle {0} km
+600|Öl an der Bremstrommel
+601|Zu viel Öl eingefüllt
+602|Öldruck (Ölkanne)
+603|Öldruck zu niedrig. Motor sofort abstellen, damit er nicht festgeht.
+604|Altes Motoröl zu dick
+605|Bremsflüssigkeit alt/niedrig oder Leck
+606|Eine defekte/schwache Batterie zieht den ganzen Satz herunter
+607|Ein oder mehrere Reifen mit zu wenig Luft. Prüfen und aufpumpen.
+608|Nur leicht (10–30%)
+609|Nur beladen / bergauf?
+610|Offene Probleme
+611|Oder wähle das Symbol, das du im Armaturenbrett siehst:
+612|Oder tippe auf ein Teil, um es als gewartet zu markieren
+613|Orange
+614|Andere / nicht aufgeführt
+615|Zu hoher Luftdruck
+616|Überladung (Ladegerät defekt)
+617|Überfällig
+618|Überhitzung
+619|Überladung
+620|Überladung / niedriger Reifendruck
+621|Eigene Werkstatt? Hol dir einen hervorgehobenen Eintrag — monatlich per bKash/Nagad.
+622|Beläge fast abgefahren
+623|Beläge bis zum Verschleißanzeiger abgefahren
+624|Bezahlt ৳ (optional)
+625|Dokument
+626|Papiere
+627|Papiere & Ablauf
+628|Papiere, Rechnungen und Sprache werden zuerst auf deinem Handy gelesen, kostenlos und offline. Cloud-KI (Google Gemini) wird nur genutzt, wenn du „Mit KI lesen“ tippst.
+629|Auf ebenem Boden abstellen und die Reifenmitte ansehen.
+630|Teile ohne eingetragene Wartung zählen ab heute. Frühere Wartungen kannst du im nächsten Bildschirm eintragen.
+631|Pass
+632|Passwort (mind. 6 Zeichen)
+633|Pedal weich / geht bis zum Boden
+634|Benzin
+635|Benzin + CNG
+636|Benzin/Super
+637|Telefon (01XXXXXXXXX)
+638|Beleg fotografieren
+639|Tacho fotografieren
+640|Leuchte fotografieren und mit KI erkennen
+641|Pick-up / Kleinlaster
+642|Platten ca. 5–10 mm bedeckt
+643|Platten sichtbar
+644|Noch reichlich Belag.
+645|ELM327-Bluetooth-Adapter in den OBD-II-Anschluss (unter dem Lenkrad) stecken, Zündung EIN, und in den Bluetooth-Einstellungen des Handys koppeln (PIN meist 1234 oder 0000).
+646|Zündkerzen, Spulen, Einspritzdüsen oder CNG-Abstimmung. Nicht hart fahren.
+647|Schlecht
+648|Schwacher Durchzug / Aussetzer / Ruckeln
+649|Mögliche Ursachen
+650|Servolenkung
+651|Datenschutz
+652|Pro bietet {0} Erkennungen pro Tag. Ein kurzer Werbespot bringt eine weitere (bis zu 3 pro Tag).
+653|Pro ist aktiv ✓
+654|Problem:
+655|Probleme mit CNG (Ruckeln, startet nicht mit Gas)
+656|Messstab ziehen (oder ins Schauglas sehen), abwischen, wieder einstecken, prüfen.
+657|Zieht zu einer Seite
+658|Zieht immer zu einer Seite
+659|Lila
+660|Die Kette in der Mitte des unteren Trums auf und ab drücken.
+661|Motorrad auf den Hauptständer, Leerlauf einlegen.
+662|Kühler verstopft
+663|Kühlerlüfter / Lüfterrelais defekt
+664|Kühlerlüfter läuft nicht
+665|Kühlerlamellen verstopft
+666|Zufällige/mehrfache Zündaussetzer
+667|Reichweite gesunken (weniger km pro Ladung)
+668|Reichweite lässt nach. Nicht unter 20% fahren und nicht die ganze Nacht überladen.
+669|Reichweite niedriger als für das Batteriealter zu erwarten: Ladegerät, Pole und Reifendruck prüfen.
+670|Reichweite mit voller Ladung im Neuzustand (km)
+671|Reichweite pro voller Ladung im Neuzustand (km)
+672|Nennreichweite pro Ladung (km)
+673|Klappern / Kettengeräusch
+674|Lesen
+675|Von der KI gelesen. Vor dem Speichern prüfen.
+676|Fehlercodes lesen
+677|Vom Tacho ablesen
+678|Mit der KI auf dem Gerät gelesen.
+679|Auf diesem Handy gelesen. Vor dem Speichern prüfen.
+680|Codes des Getriebesteuergeräts auslesen; ATF prüfen.
+681|Mit KI lesen
+682|Der Wert ist niedriger als der aktuelle Kilometerstand.
+683|Rechnung wird gelesen…
+684|Dokument wird gelesen…
+685|Wird gelesen…
+686|Heizung der hinteren Lambdasonde defekt.
+687|Hinterradbremse
+688|Hintere Bremsbacken
+689|Hintere Bremsbacken/-beläge
+690|Hinterreifen
+691|Hinterrad nach Kettenspannen nicht ausgerichtet
+692|Beleg
+693|Beleg gespeichert ✓
+694|Zuletzt erreichte Reichweite: {0} von {1} km
+695|Kürzlich
+696|Einlösen
+697|Langsamer fahren und bald anhalten. Codes mit einem OBD-Adapter auslesen.
+698|Bald tanken. Leerfahren kann die Kraftstoffpumpe beschädigen.
+699|Zulassung
+700|Zulassung (Blaues Buch / Smartcard)
+701|Kennzeichen
+702|Kennzeichen — optional
+703|Druckregler/Mischer muss eingestellt werden
+704|Entfernen
+705|Luftfilter tauschen; zulässige Last einhalten.
+706|Zuerst den Innenraumfilter tauschen.
+707|Daten auf diesem Handy ersetzen?
+708|Hybridbatterie tauschen
+709|Beläge bald tauschen, um die Scheibe zu schonen.
+710|Beläge diese Woche tauschen.
+711|Erst Zündkerze tauschen und Luftfilter reinigen — die günstigsten Lösungen.
+712|Zündkerze tauschen; Batterie prüfen.
+713|Bei falschen Werten Sensor tauschen; Anzeige beobachten.
+714|Diese Batterie tauschen; Ladegerät auf Überladung prüfen.
+715|Berichtsdatum
+716|Auf Standard zurücksetzen
+717|Wiederherstellen
+718|Aus Datei wiederherstellen
+719|Wiederhergestellte Fahrzeuge: 
+720|Fettes Gemisch / Einspritzdüse undicht
+721|Fettes Gemisch: Vergaser einstellen
+722|Fahrstil / Verkehr / Kraftstoffqualität
+723|Raddrehzahlsensor vorn rechts
+724|Linienkonzession
+725|Ersten Check starten
+726|Rostig oder ölig
+727|SOS-Kontakte
+728|SOS — Standort & Problem senden
+729|Fahrbereit — im Auge behalten
+730|Speichern
+731|Speichern & erinnern
+732|Batteriespannung in der Gesundheitsakte speichern
+733|Messwert speichern
+734|Gespeichert ✓
+735|Gespeichert: sieht gut aus ✓
+736|Gespeichert: Das senkt deinen Gesundheitswert bis zur Wartung.
+737|Sag, was du gemacht hast, z. B. „Öl gewechselt für 400 Taka bei 24500 km“
+738|Werkstattrechnung scannen
+739|Dokument scannen
+740|Rechnung scannen
+741|Dokument scannen
+742|Zum Prüfen scannen
+743|Codes mit einem OBD-Adapter auslesen.
+744|Mit Kamera scannen (auf dem Gerät)
+745|Roller
+746|Marke oder Modell suchen
+747|Sicherheitsgurt
+748|Vom Besitzer in GariDoctor selbst angegeben. Keine Werkstattprüfung, sofern nicht als geprüft markiert.
+749|Sendet nur das Foto oder den Satz, den du auswählst.
+750|Wartungshistorie
+751|Anlage und Luftfilter warten.
+752|Wartungsprotokoll
+753|Wartung: 
+754|Ablaufdatum festlegen
+755|Der Satz ist fast am Ende. Vor dem Neukauf einen Kapazitätstest machen.
+756|Einstellungen
+757|Starke Zündaussetzer (Gefahr für den Katalysator)
+758|Fahrzeugpass teilen
+759|Kurzgeschlossene Zelle
+760|Anzeigen
+761|Alle {0} anzeigen
+762|Weniger anzeigen
+763|Anmelden
+764|Abmelden
+765|Scheiben abdrehen oder tauschen; Beläge gleich mit tauschen.
+766|Gasgeruch
+767|Rauch aus dem Auspuff
+768|Soft
+769|Soft zeigt erhabene, greifbare Flächen. Material nutzt flache Karten.
+770|Zündkerze
+771|Zündkerze verschlissen (CNG braucht häufigen Wechsel)
+772|Zündkerzen
+773|Sprechen
+774|Erneut sprechen
+775|Spracheingabe ist auf diesem Handy nicht verfügbar. Bitte eintippen.
+776|Geschwindigkeit
+777|Tacho und Schaltvorgänge können betroffen sein.
+778|Eine schwammige Scheibenbremse ist gefährlich: vor der Fahrt entlüften und Flüssigkeit auffüllen.
+779|Gesponsert
+780|Nur Quietschen
+781|Fahrt starten
+782|Anlasser
+783|Gesundheitszustand
+784|Lenkhilfe defekt; die Lenkung wird schwer.
+785|Lenkrad zittert beim Bremsen
+786|Schritt {0} von 3
+787|Bremssattel klemmt
+788|Stein oder Schmutz im Bremssattel
+789|Stoppen & addieren
+790|Anhalten und abkühlen lassen; Leck beheben.
+791|Anhalten und abkühlen lassen. Den Deckel nicht heiß öffnen.
+792|Nicht weiterfahren: Gefahr schwerer Motorschäden. In die Werkstatt schleppen.
+793|Live stoppen
+794|Sofort anhalten — nicht fahren
+795|Sofort anhalten. Abkühlen lassen, auffüllen und das Leck beheben lassen.
+796|Nicht weiterfahren: Die Scheibe wird beschädigt.
+797|Nicht weiterfahren: Die Scheibe wird beschädigt und die Bremse ist unzuverlässig.
+798|Anhalten, Motor aus, Flaschenventil schließen, nicht rauchen, keine Funken. Dichtheit prüfen lassen.
+799|Stil
+800|Spule/Kerze zum Testen mit einem anderen Zylinder tauschen.
+801|Symptom-Doktor
+802|System
+803|Gemisch zu mager (Bank 1)
+804|Gemisch zu mager (Bank 2)
+805|Gemisch zu fett (Bank 1)
+806|Bordspannung zu hoch
+807|Bordspannung zu niedrig
+808|Fotografiere die Rechnung. Die App findet Teile, Kosten, Datum und Kilometerstand und trägt sie für dich ein.
+809|Fotografiere Zulassung, Steuermarke, Prüfbescheinigung, Versicherung oder Führerschein. Die App liest das Ablaufdatum und setzt Erinnerungen.
+810|Foto aufnehmen
+811|Ablassventil des Behälters undicht
+812|Tippe auf den richtigen Wert:
+813|Steuermarke
+814|Petrol
+815|Temperaturanzeige hoch
+816|Pole reinigen & festziehen
+817|Spannung jeder Batterie unter Last prüfen; nur die schwache tauschen, um Geld zu sparen.
+818|Mit einem anderen Ladegerät testen; Buchse prüfen.
+819|Die Werbung ist noch nicht bereit. Bitte gleich noch einmal versuchen.
+820|Die kostenlose Version unterstützt ein Fahrzeug. Mit Pro: mehrere Fahrzeuge, PDF-Pass, Live-OBD-Diagramme und Flottenmodus.
+821|Das Foto (oder was du gesagt hast) wird zum Lesen an Googles Gemini-KI gesendet. Deine Einträge und anderen Fotos bleiben auf diesem Handy. Du kannst das in den Einstellungen abschalten.
+822|Design
+823|Thermostat
+824|Thermostat klemmt
+825|Thermostat klemmt geschlossen
+826|Thermostat klemmt offen — tauschen.
+827|Das sind mögliche Ursachen, keine endgültige Diagnose. Bitte von einem Mechaniker bestätigen lassen.
+828|Drosselklappe
+829|Drosselklappensensor-Stromkreis
+830|Gasgriffkabel locker
+831|Straffe, rostige oder geknickte Glieder
+832|Tankdeckel festziehen; OBD-Adapter anschließen, um den genauen Code zu lesen.
+833|Tankdeckel festziehen oder tauschen.
+834|Festziehen; lockere Pole verlangsamen den Start.
+835|Tipp: Einen getesteten Adapter kaufen. Billige Klone (v2.1) versagen oft bei neueren Autos.
+836|Heute: noch {0} von {1} KI-Erkennungen
+837|Zu locker: jetzt einstellen. Kann vom Ritzel springen.
+838|Auffüllen und auf Lecks prüfen.
+839|Destilliertes Wasser in jede Zelle nachfüllen (kein Leitungswasser)
+840|Destilliertes Wasser nachfüllen, Reifen aufpumpen, nicht überladen.
+841|Heute auffüllen; auf Lecks prüfen.
+842|Nur DESTILLIERTES Wasser nachfüllen, nach dem Laden.
+843|Wandlerkupplung bleibt offen
+844|Gesamt: ৳{0}
+845|Getriebeöl
+846|Getriebesteuerung gestört
+847|Getriebeöl (ATF/CVT)
+848|Getriebeöl verbrennt (Unterdruckmodulator)
+849|Eingangsdrehzahlsensor Getriebe
+850|Profil bündig mit dem Anzeiger: bald tauschen.
+851|Lkw / Kastenwagen
+852|Fremdstart versuchen; Batterie testen (12,4 V+ im Ruhezustand).
+853|Kickstart versuchen; Pole prüfen; Batteriespannung messen (sollte 12,6 V+ sein).
+854|Jede Kabelklemme mit der Hand bewegen.
+855|Turboproblem
+856|Klimaanlage aus, sicher anhalten; prüfen, ob der Lüfter läuft.
+857|Eintippen
+858|Reifendruck (RDKS)
+859|Reifen tauschen & Achsvermessung
+860|Profiltiefe prüfen
+861|Reifen
+862|Reifen (inkl. Ersatzrad)
+863|Mit KI verstehen
+864|Ungleichmäßiger Belagverschleiß oder klemmender Bremskolben
+865|Ungleicher Reifendruck
+866|Ungleichmäßiger Reifenverschleiß
+867|Unbekannter Fehler ({0}) — von einem Mechaniker auslesen lassen
+868|Freischalten
+869|Freischalten / Code einlösen
+870|Pro freischalten: mehrere Fahrzeuge, unbegrenzt Pässe, Live-OBD-Diagramme, Flottenmodus, keine Werbung.
+871|Alles auf einmal freischalten.
+872|Sofort abziehen. Im Freien laden. Brand- und Säuregefahr.
+873|Mit KI lesen lassen?
+874|Bei Vergasermotorrädern Choke nutzen; Kerze reinigen/tauschen; Vergaser einstellen.
+875|Übliche Intervalle; später anpassbar
+876|VTEC-System gestört (Honda)
+877|Falschluft, verschmutzter Luftmassenmesser, schwache Kraftstoffpumpe. Häufig nach CNG-Umrüstung.
+878|Gültig bis {0}
+879|Ventilspiel muss eingestellt werden
+880|Ventilschaftdichtungen undicht
+881|Fahrzeugpass
+882|Geschwindigkeitssensor
+883|Fahrzeug:
+884|Vibration bei Tempo / zieht zur Seite
+885|Eine Vertragswerkstatt mit Diagnosegerät deiner Marke aufsuchen.
+886|Sichtprüfungen
+887|Volt
+888|Warten, bis sie erlischt, dann starten. Blinkt sie während der Fahrt: Motorstörung.
+889|Warnleuchten
+890|Verzogene Bremsscheiben
+891|Werbung ansehen · 1 gratis
+892|Werbung ansehen für 1 weitere Erkennung
+893|Wasser im Diesel
+894|Wasser oder schlechter Kraftstoff
+895|Wasserpumpe defekt
+896|Wasser/Öl in den Behältern
+897|Schwach / klickt / tot
+898|Schwacher Luftstrom
+899|Schwache Batterie
+900|Schwache Batterie oder Lichtmaschine.
+901|Schwache oder alte Batterie
+902|Schwache/leere Batterie
+903|Welche Farbe hat der Rauch?
+904|Was fährst du?
+905|Was fällt dir auf?
+906|Was passiert, wenn du das Ladegerät anschließt?
+907|Was ist mit der Bremse?
+908|Was du gesagt hast
+909|Was den Wert senkt
+910|Was ist mit {0} los?
+911|Achsvermessung
+912|Achsvermessung / Achsschenkelbolzen verschlissen
+913|Spur verstellt
+914|Auswuchten nötig
+915|Radlager & Abschmieren
+916|Radlager & Nabenfett
+917|Wann wurde die CNG-Anlage zuletzt eingestellt?
+918|Was passiert beim Drehen des Schlüssels?
+919|Woher kommt das Geräusch?
+920|Wo ist der Verschleiß?
+921|Welches Modell?
+922|Welchem sieht deins ähnlich?
+923|Was zuerst eintritt. Standard: 
+924|Weißer Rauch aus dem Auspuff
+925|Weiß, nur beim Kaltstart, verschwindet
+926|Weißes/grünes Pulver
+927|Wischerblätter
+928|Mit Fahrgästen sind schwache Bremsen gefährlich. Vor der nächsten Fahrt reparieren.
+929|Springt nicht an / Anlasser dreht langsam
+930|Ausgeführte Arbeiten
+931|Verschlissene Lager
+932|Verschlissene Beläge
+933|Verschlissene Kolbenringe / Zylinder
+934|Verschlissene Kerze
+935|Verschlissene Zündkerze
+936|Verschlissene Zündkerze / Zündproblem
+937|Verschlissene Zündkerze / schwache Zündung
+938|Verschlissene Ritzelzähne
+939|Lenkkopflager verschlissen
+940|Fahrwerksbuchsen verschlissen
+941|Ja
+942|Du kannst sie später in den Einstellungen ändern.
+943|Du wirst 30, 15, 7, 3 und 1 Tag vor Ablauf erinnert — vermeide Bußgelder.
+944|Du hast heute alle KI-Erkennungen genutzt. Sieh dir für eine weitere kurz Werbung an oder hol dir Pro.
+945|Deine Einträge und Fotos bleiben auf diesem Handy. Nichts wird hochgeladen, solange die Sicherung aus ist.
+946|Dein {0} steht bei {1}/100.
+947|Ø Wert
+948|fällig in {0} Tagen
+949|fällig in {0} km
+950|bald fällig
+951|z. B. Meine Pulsar
+952|alle {0} km
+953|abgelaufen
+954|vor {0} Tagen abgelaufen
+955|läuft in {0} Tagen ab
+956|km
+957|km · aktualisieren
+958|km/l
+959|km/Ladung
+960|km/m³
+961|zuletzt bei {0} km
+962|Monate
+963|brauchen Achtung
+964|von 100
+965|oder {0} Monate
+966|überfällig
+967|Papiere
+968|teilweise
+969|nicht verfügbar
+970|gültig
+971|Heute noch {0} KI-Erkennungen
+972|{0} T.
+973|{0} Tage
+974|noch {0} Tage
+975|{0} Tage drüber
+976|{0} Tage überfällig
+977|{0} fällig in {1} Tagen
+978|{0} fällig in {1} km
+979|{0} vor {1} Tagen abgelaufen
+980|{0} läuft in {1} Tagen ab
+981|{0} hat die Sichtprüfung nicht bestanden
+982|{0} ist {1} Tage überfällig
+983|{0} ist {1} km überfällig
+984|noch {0} km
+985|{0} km drüber
+986|{0} km überfällig
+987|{0} Sprachen
+988|{0} überfällig
+989|{0} Papiere
+990|{0} Punkte brauchen deine Aufmerksamkeit
+991|{0} · Gesundheitswert {1}/100
+992|{0}: Wartung fällig
+993|{0}: Symptom gemeldet
+994|≈ noch {0} Zyklen

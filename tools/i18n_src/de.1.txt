@@ -1,0 +1,500 @@
+0|20–30 mm Spiel
+1|3 mm oder mehr
+2|60–100 km/h, Lenkung zittert
+3|Ein PDF mit Gesundheitswert, vollständiger Wartungshistorie und QR-Code. Beim Verkauf teilen und einen besseren Preis erzielen.
+4|Ein paar Angaben
+5|Ein Gesundheitsarzt für jedes Fahrzeug
+6|ABS
+7|ABS ist möglicherweise deaktiviert.
+8|ABS ist möglicherweise deaktiviert. Sensor und Verkabelung prüfen.
+9|Innenraumfilter
+10|Klimagas & Wartung
+11|Klimaanlage kühlt nicht
+12|Die KI konnte es nicht lesen. Internet prüfen und erneut versuchen oder von Hand ausfüllen.
+13|KI-Erkennung
+14|KI-Erkennung ist gerade pausiert. Bitte von Hand ausfüllen.
+15|Für KI-Erkennung muss in diesem Build Firebase eingerichtet sein.
+16|Akzentfarbe
+17|Werbung noch nicht bereit, bitte gleich noch einmal versuchen
+18|Hinzufügen
+19|Kontakt hinzufügen (Mechaniker / Familie)
+20|Ladung hinzufügen
+21|Kontakte im SOS-Bildschirm hinzufügen.
+22|Tankfüllung hinzufügen
+23|Zur Gesundheitsakte hinzufügen
+24|Fahrzeug hinzufügen
+25|Füge Motorrad, Auto, CNG, E-Rikscha, Kleinbus, Pick-up oder Lkw hinzu. Erhalte einen Gesundheitswert von 0–100, Wartungserinnerungen und Hinweise zum Ablauf von Papieren. Alles bleibt auf deinem Handy.
+26|Erstes Fahrzeug hinzufügen
+27|Zur Gesundheitsakte hinzugefügt
+28|Einstellen und schmieren; bei hakenförmigen Zähnen Kettensatz tauschen.
+29|Bremse einstellen und Trommel reinigen.
+30|Bremse einstellen.
+31|Bremsmutter nachziehen; Backen tauschen, wenn der Anzeiger über der Grenze steht.
+32|Rat
+33|Alternde Lambdasonde; erhöht den Verbrauch.
+34|Gealterte oder sulfatierte Batteriezellen
+35|Druckluftbremse: Druck niedrig
+36|Druckluftbehälter entwässern & prüfen
+37|Luftfilter
+38|Luftfilter / Drosselklappe verschmutzt
+39|Luftfilter verstopft
+40|Luft in der Bremsleitung
+41|Luft in den Leitungen
+42|Luftleck in Leitungen, Ventilen oder Kammern
+43|Airbag / SRS
+44|Airbag löst eventuell nicht aus. In der Werkstatt prüfen.
+45|Airbags lösen bei einem Unfall eventuell nicht aus.
+46|Alle
+47|Alle Einträge und Papiere dieses Fahrzeugs werden gelöscht. Das lässt sich nicht rückgängig machen.
+48|Alle Fahrzeuge und Einträge auf diesem Handy werden durch die Sicherung ersetzt.
+49|Alle Fahrzeuge sind in gutem Zustand.
+50|Erlauben
+51|Erlaube zuerst die KI-Erkennung.
+52|Bluetooth erlauben
+53|Cloud-KI erlauben
+54|Lichtmaschinenregler defekt.
+55|Beantworte ein paar kurze Fragen. Funktioniert offline.
+56|Antiblockiersystem deaktiviert. Normale Bremsen funktionieren; auf nasser Straße sanft bremsen.
+57|Darstellung
+58|Ungefähre Reparaturkosten
+59|Bei welchem Tempo vibriert es?
+60|Durchschnittsverbrauch
+61|Bis zur Prüfung starkes Bremsen vermeiden.
+62|Zurück
+63|Jetzt sichern
+64|Sicherung
+65|Sicherung gespeichert ✓
+66|Abgefahren / rissig / Beule
+67|Batterien
+68|Batterien sehr heiß / Geruch
+69|Batterie
+70|Batterie / Laden
+71|Batteriezustand
+72|Akkupack (Kapazität)
+73|Batteriesatz (Kapazität)
+74|Kapazität des Batteriesatzes erschöpft (Sulfatierung)
+75|Der Batteriesatz ist fast am Ende. Jede Batterie einzeln prüfen; der Tausch einer schwachen Batterie kann den Satz retten.
+76|Batteriepole
+77|Batteriespannung (Multimeter)
+78|Batteriespannung niedrig ({0} V)
+79|Batteriewasserstand (Blei-Säure)
+80|Batteriewasser nachfüllen
+81|Unter LOW / leer
+82|Unter MIN
+83|Verbogene Achse
+84|Verzogene Scheibe
+85|Verbogener Lenker oder Gabelrohr
+86|Verbogene Felge / Reifenbeule
+87|Zwischen LOW und FULL
+88|Zwischen MIN und MAX, bernstein/braun
+89|Motorradmechaniker
+90|Schwarz und dick oder milchig
+91|Schwarzer Rauch
+92|Schwarz, riecht nach Kraftstoff
+93|Gebläsemotor schwach
+94|Blau
+95|Blau / grau, riecht nach Öl
+96|Bremszug/-gestänge muss eingestellt werden
+97|Bremse schwach / schwammig / laut
+98|Bremsflüssigkeit
+99|Bremsflüssigkeit (Scheibe)
+100|Bremsflüssigkeit tritt aus
+101|Problem mit Bremsflüssigkeit/-zug
+102|Bremsbeläge & Einstellung
+103|Bremsgeräusch / Vibration / weiches Pedal
+104|Bremsbelagstärke
+105|Bremsbeläge bis aufs Metall abgefahren
+106|Bremsbacken
+107|Bremsbacken & Zug
+108|Bremsbacken verschlissen
+109|Bremsbacken verschlissen / Zug gedehnt
+110|Bremssystem (!)
+111|Bremsen schwach
+112|Gehäuse gewölbt / Säureaustritt
+113|Pro kaufen · {0} (einmalig)
+114|CNG
+115|CNG (m³)
+116|CNG-Autorikscha
+117|CNG-Autos brauchen öfter neue Zündkerzen — tauschen und Abstand richtig einstellen.
+118|Wiederholungsprüfung CNG-Flasche
+119|CNG-Tankfüllung
+120|CNG-Filter
+121|CNG-Anlage
+122|CNG-Anlage warten & Dichtheit prüfen
+123|CNG-Anlage einstellen & Dichtheit prüfen
+124|CNG-Anlage einstellen / Druckregler warten
+125|CNG m³
+126|CVT-Riemen & Rollen
+127|Anrufen
+128|Steuerkettenspanner
+129|Die Kamera meint
+130|Nockenwellenversteller-Stromkreis
+131|Nockenwellensensor-Stromkreis
+132|Nockenwelle zu weit verstellt (früh)
+133|Darf nicht größer als der Kilometerstand sein
+134|Abbrechen
+135|Auto
+136|Das Auto kann ausgehen oder nicht anspringen. Sensor tauschen.
+137|Autowerkstatt
+138|Vergaser-/Einspritzabstimmung falsch
+139|Katalysatorwirkung niedrig (Bank 1)
+140|Mitte
+141|Bei der Kette, rhythmisches Schlagen
+142|Kette reinigen & spannen
+143|Kettendurchhang prüfen
+144|Kette zu locker
+145|Kette zu straff
+146|Kette zu straff/trocken
+147|Kettensatz
+148|Ändern
+149|ATF wechseln; Diagnose in der Werkstatt.
+150|Öl wechseln. Milchiges Öl kann auf Kühlmittelverlust hindeuten.
+151|Laden
+152|Ladung (1 = voll, 0,5 = halb)
+153|Ladezyklen: {0} von ~{1}
+154|Ladeprotokoll
+155|Voll geladen
+156|Ladegerät schaltet zu früh ab
+157|Sicherung des Ladegeräts oder Ladegerät defekt
+158|Ausgang des Ladegeräts prüfen
+159|Ladegerät abziehen. Jeden Zellenstopfen jeder Batterie öffnen.
+160|Ladefehler (Regler)
+161|Ladeproblem
+162|Ladebuchse locker
+163|Ladesystem defekt (Lichtmaschine/Regler). Bis die Batterie leer ist, bleibt evtl. wenig Zeit.
+164|Fahrgestell abschmieren
+165|Lambdasonde und Verkabelung prüfen.
+166|Verkabelung des VVT-Magnetventils und Ölstand prüfen.
+167|Anderes Problem prüfen
+168|Batterie, Masse und CAN-Verkabelung prüfen.
+169|Schrauben prüfen; Gabel warten.
+170|Ausgangsspannung des Ladegeräts prüfen und alle Pole reinigen.
+171|Kupplungsspiel und Reifendruck prüfen.
+172|Differenzialöl und Lager prüfen.
+173|Motorkontrollleuchte / MIL
+174|Auf Falschluft prüfen.
+175|Tankdeckel und EVAP-Schläuche prüfen.
+176|Sicherung und Heizwiderstand prüfen.
+177|Ölstand und VTEC-Magnetventil prüfen.
+178|Jetzt Ölstand prüfen; Öl wechseln, wenn überfällig.
+179|Jetzt Ölstand prüfen; Ventilspiel einstellen lassen.
+180|Ölstand oft prüfen; Überholung des Zylinderkopfs einplanen.
+181|Zündfunken prüfen; Schwimmerkammer entleeren; an einer zuverlässigen Tankstelle tanken.
+182|Zündkerze, Spule und Einspritzdüse von Zylinder 2 prüfen.
+183|Zündkerze, Spule und Einspritzdüse von Zylinder 3 prüfen.
+184|Zündkerze, Spule und Einspritzdüse von Zylinder 4 prüfen.
+185|Sensorstecker prüfen.
+186|Sensorverkabelung prüfen.
+187|Rechnung prüfen
+188|Zuerst den Keilriemen prüfen.
+189|Angaben zum Dokument prüfen
+190|Füllstandsmarken am Ausgleichsbehälter prüfen.
+191|Gasgriffstecker prüfen; Controller abkühlen lassen.
+192|Zuerst Reifendruck prüfen; dann die Markierungen am Hinterrad angleichen.
+193|Auf Kurzschluss in der Verkabelung prüfen.
+194|Motorfehlercodes aktiv: {0}
+195|Motorkontrollleuchte an
+196|Prüfungen
+197|Choke klemmt
+198|Choke/Leerlauf (Vergaser) oder Kaltstartsensor (Einspritzer)
+199|Sprache wählen
+200|AGR-Ventil und Kanäle reinigen.
+201|Luftmassenmesser reinigen; Stecker prüfen.
+202|Sauber und fest
+203|Bremse reinigen; Belagstärke mit der geführten Prüfung kontrollieren.
+204|Drosselklappe / Leerlaufsteller reinigen.
+205|Drosselklappe reinigen; Drosselklappensensor prüfen.
+206|Kettensatz reinigen, schmieren oder tauschen.
+207|Luftfilter reinigen/tauschen und Vergaser einstellen lassen.
+208|Codes löschen (nach der Reparatur)
+209|Klicken oder nichts, Licht wird dunkel
+210|CNG-Filter verstopft
+211|Luftfilter verstopft
+212|Innenraumfilter verstopft
+213|Kühler verstopft
+214|Schließen
+215|Cloud-KI ist in diesem Build nicht verfügbar oder pausiert.
+216|Cloud-Sicherung (kostenlos)
+217|Kupplungs- & Gaszug schmieren
+218|Kupplungsscheibe & Zug
+219|Kupplungsscheibe prüfen
+220|Kupplung rutscht
+221|Demnächst
+222|Häufige Ursachen: 
+223|Kompressorkupplung greift nicht
+224|Kompressor verschlissen / Regler defekt
+225|Kondenswasser bei Kurzstrecken
+226|Kondensatorlüfter / verschmutzter Kondensator
+227|Verbinden
+228|Verbunden mit {0}
+229|Stecker & Verkabelung prüfen
+230|Weiter
+231|Controller defekt oder überhitzt
+232|Kühlmittel
+233|Kühlmittel unter Thermostattemperatur
+234|Kühlmittelverlust (Schlauch, Kühler, Wasserpumpe)
+235|Kühlmittel gelangt in den Ansaugtrakt
+236|Kühlmittelstand
+237|Kühlmitteltemp.
+238|Kühlmitteltemperatursensor-Stromkreis
+239|Kühlmitteltemperatursensor: Signal zu niedrig
+240|Kühlmitteltemperatur (Thermometer)
+241|Durchhang richtig, Kette geschmiert.
+242|Korrodierte Pole
+243|Korrosion: mit Natronwasser reinigen.
+244|Kosten pro km: ৳{0}
+245|Kosten ৳
+246|Kosten ৳ (optional)
+247|Verbindung fehlgeschlagen: {0}
+248|Nicht alles lesbar. Rest ausfüllen oder KI versuchen.
+249|Gerissener Zylinderkopf
+250|Dreht normal, springt aber nicht an
+251|Kurbelwellensensor-Stromkreis
+252|Konto erstellen
+253|Kritisch
+254|Aktueller Kilometerstand (km)
+255|Aktuell: {0} km
+256|Zündaussetzer Zylinder 1
+257|Zündaussetzer Zylinder 2
+258|Zündaussetzer Zylinder 3
+259|Zündaussetzer Zylinder 4
+260|Flaschenventil undicht
+261|Dunkel
+262|Datum
+263|Schmutz / Rost
+264|Tiefe Rillen
+265|Löschen
+266|Fahrzeug löschen
+267|{0} löschen?
+268|Diagnosen sind nur mögliche Ursachen. Immer von einem Mechaniker bestätigen lassen.
+269|Diesel
+270|Dieselfilter / Wasserabscheider
+271|Differenzial-/Getriebeöl
+272|Differenzial-/Getriebeöl niedrig
+273|Das Verzeichnis ist im Test: Die Einträge unten sind Beispiele. Geprüfte Werkstätten werden Gebiet für Gebiet ergänzt.
+274|Luftfilter verschmutzt
+275|Luftfilter / Zündkerze verschmutzt
+276|Luftfilter oder Luftmassenmesser verschmutzt; Ansaugtrakt auf Undichtigkeit prüfen.
+277|Vergaser / Luftfilter verschmutzt
+278|Vergaser / Kraftstofffilter verschmutzt
+279|Verwerfen
+280|Inspektion: Luftfilter, Zündkerze, Vergaser reinigen.
+281|Nicht fahren, bis der Druck hält. Gefahr des Bremsversagens.
+282|Nicht fahren. Die Bremsen können versagen.
+283|Bei hoher Temperatur nicht weiterfahren.
+284|Doktor
+285|Überhitzt es vor allem im Stau?
+286|Zieht es nur beim Bremsen?
+287|Fällt der Druck bei abgestelltem Motor?
+288|Bläst die Klimaanlage, aber nicht kalt?
+289|Lässt sich der Bremshebel ganz durchziehen?
+290|Läuft das Auto mit Benzin normal?
+291|Wird die Anzeige des Ladegeräts viel schneller grün (voll) als früher?
+292|Funktionieren Anzeige/Hupe noch, wenn es ausgeht?
+293|Geht Pedal/Hebel zu weit durch?
+294|Funktionieren Anlasser/Hupe normal?
+295|Dreht sich das Rad angehoben frei (ohne Schleifen)?
+296|Bleibt der weiße Rauch, auch wenn der Motor ganz warm ist?
+297|Schleifende Bremse
+298|Schleifende Bremsen
+299|Schleifende Bremsen / Lager
+300|Schleifende Bremsen / niedriger Reifendruck
+301|Behälter täglich entwässern; Kompressor warten.
+302|Wasserabscheider entleeren; Einspritzdüsen prüfen lassen.
+303|Fahrerairbag-Stromkreis
+304|Name des Fahrers
+305|Name des Fahrers — optional
+306|Telefon des Fahrers
+307|Fahrer: {0}
+308|Führerschein
+309|Trommelbremsbacken verschlissen
+310|Trockene Kette
+311|Radlager trocken/schwergängig
+312|Jetzt fällig
+313|Bald fällig
+314|Staub/Verglasung auf den Belägen
+315|AGR-Durchfluss zu gering
+316|E-Fahrzeug-Batterie / READY-Fehler
+317|EVAP großes Leck
+318|EVAP kleines Leck
+319|EVAP-System gestört
+320|ABGELAUFEN
+321|E-Rikscha-Batterie
+322|Intervall bearbeiten
+323|Fahrzeug bearbeiten
+324|Verbrauch
+325|Elektrisch (Blei-Säure)
+326|Elektrisch (Lithium)
+327|Elektro-Rikscha
+328|E-Roller / E-Bike
+329|E-Mail
+330|Motor KALT. Den Kühlerdeckel nie bei heißem Motor öffnen.
+331|Motordrehzahl
+332|Kompression zu niedrig
+333|Motorlast
+334|Motor 5 Minuten aus, Fahrzeug aufrecht auf ebenem Boden.
+335|Motor aus, 1 Stunde Ruhe. 12-V-Batterie: ab 12,6 V gesund.
+336|Motor aus. Beide Batteriepole ansehen.
+337|Motoröl
+338|Motoröl & Filter
+339|Motoröl & Ölfilter
+340|Motorölstand
+341|Motor- oder Abgasfehler gespeichert. Wenn sie blinkt: starke Zündaussetzer, langsamer fahren und bald anhalten.
+342|Motor überhitzt
+343|Motor überhitzt. Anhalten, abkühlen lassen, nie einen heißen Kühlerdeckel öffnen.
+344|Motor tickert, steigt mit der Drehzahl
+345|Nennreichweite eingeben, um den Batteriezustand zu schätzen.
+346|Reifendruck angleichen; Achsvermessung machen lassen.
+347|Alle … km
+348|Alle … Monate
+349|Alles in Ordnung
+350|Alles in Ordnung!
+351|Ausgezeichnet
+352|Abgelaufen
+353|Vor {0} Tagen abgelaufen
+354|Vor {0} Tagen abgelaufen. Verlängern, um Bußgelder zu vermeiden.
+355|Läuft ab
+356|Läuft in {0} Tagen ab.
+357|Läuft heute ab!
+358|Ablaufdatum
+359|Als Datei exportieren
+360|FI / Motor (Motorräder)
+361|Einspritzsensor defekt (TPS, O2, MAP)
+362|Fehlgeschlagen: 
+363|Schwach, nur nach dem Tanken
+364|Keilriemen locker/gerissen
+365|Sicherheitsgurte anlegen.
+366|Defektes Ladegerät lädt nicht voll
+367|Defektes Ladegerät lädt nicht voll
+368|Empfohlen
+369|Auf empfohlenen Druck aufpumpen (meist 25/33 psi vorn/hinten) und Kette schmieren.
+370|Vollgetankt
+371|O-Ring des Füllventils verschlissen
+372|Mechaniker finden / SOS
+373|Den Belag zwischen Metallplatte und Scheibe suchen.
+374|Den kleinen Steg (Verschleißanzeiger) in den Rillen suchen.
+375|Fingerabdruck
+376|Prüfbescheinigung (TÜV)
+377|Vor dem Transport von Fahrgästen reparieren.
+378|Diese Woche reparieren
+379|Behoben
+380|Flotte
+381|Der Flottenmodus ist für Besitzer vieler Fahrzeuge (CNG, E-Rikschas, Lieferdienste, Transport). Er ist Teil von Pro / Flotten-Abo.
+382|Flottenmodus: Zustand jedes Fahrzeugs, überfällige Wartung und ablaufende Papiere auf einem Bildschirm.
+383|Kühlsystem spülen; Öl im Kühlmittel kann auf die Kopfdichtung hindeuten.
+384|Trommelbremsen: Pfeil des Verschleißanzeigers an der Nabe prüfen.
+385|Gabel nach Sturz verzogen
+386|Gabelöl niedrig / Buchsen verschlissen
+387|Verrußte Zündkerze
+388|Vorderradbremse
+389|Vordere Bremsbeläge
+390|Vordere Bremsbeläge/-backen
+391|Gabelöl vorn
+392|Vorderreifen
+393|Vorne, über Unebenheiten
+394|Kraftstoff
+395|Kraftstoff- & CNG-Protokoll
+396|Kraftstoff / Ladung
+397|Kraftstoff / Energie
+398|Tankdeckel fehlt/locker oder Schlauch gerissen.
+399|Kraftstofffilter
+400|Kraftstoffpumpe / Relais
+401|Kraftstoffqualität oder Leck; bei CNG Abstimmung oder Leck der Anlage
+402|Einspritzfehler am Motorrad. Markenwerkstatt mit Diagnosegerät aufsuchen.
+403|GPS-Fahrt (Schätzung)
+404|Werkstatt
+405|GariDoctor
+406|GariDoctor Pro
+407|GariDoctor Fahrzeugpass
+408|Gasleck an Verschraubungen, Leitung oder Regler
+409|Gasleck — riecht es nach Gas?
+410|Getriebeöl
+411|Getriebe- & Differenzialöl
+412|Pro holen
+413|Fehlerauslese und Kompressionstest machen lassen.
+414|Achsvermessung und Achsschenkelbolzen prüfen lassen.
+415|Füllventil bald prüfen lassen.
+416|Gabelausrichtung prüfen lassen; nicht schnell fahren.
+417|Anlage einstellen und Filter tauschen lassen.
+418|Räder auswuchten und Reifen auf Beulen prüfen.
+419|Verglaste Backen
+420|Glühkerze (Diesel-Spirale)
+421|Gut
+422|Schleifen / metallisches Kratzen
+423|Schleifen / Quietschen
+424|Rillen deutlich tiefer als der Verschleißanzeiger (>2 mm).
+425|Handbremse angezogen, Bremsflüssigkeit niedrig oder Bremsdefekt. Ist die Handbremse gelöst, nicht fahren.
+426|Springt schlecht an
+427|Springt schlecht / gar nicht an
+428|Harte Schaltvorgänge möglich. Sensor und ATF prüfen.
+429|Ist die Reichweite auf etwa die Hälfte oder weniger gefallen?
+430|Code von einer Facebook-Gruppe, Werkstatt oder einem Adapter-Paket?
+431|Motor und Controller prüfen lassen.
+432|Reifendruck in den letzten 2 Wochen geprüft?
+433|Zylinderkopfdichtung
+434|Zylinderkopfdichtung undicht
+435|Gesundheitswert
+436|Gesundheitswert {0} von 100
+437|In Ordnung ({0})
+438|Heizkreis oder Sensor defekt.
+439|Hilfe & SOS
+440|Ausblenden
+441|Hochvolt- oder Antriebsbatterie defekt. Sicher parken und eine Batteriewerkstatt kontaktieren.
+442|Verlauf
+443|Handy nah heranhalten, sodass die Ziffern das Bild füllen. Die Erkennung läuft offline auf dem Handy.
+444|Schlauch/Kühler undicht
+445|Nabenmotorlager prüfen
+446|Hybridbatterie schwach. Vor dem Tausch des ganzen Pakets die Module einzeln testen.
+447|Ich weiß nicht, was ich eintragen soll. Text anpassen und „Lesen“ tippen oder KI versuchen.
+448|Ich brauche Hilfe.
+449|Leerlaufregelung
+450|Riecht es nach Gas: anhalten, Flaschenventil schließen und lüften. Sonst Anlage warten lassen.
+451|Zündung / EVAP-Fehler
+452|Zündspule / Zündkerzen
+453|Zündung: Kerzen und Spulen (verschleißen mit CNG schneller)
+454|Wegfahrsperre / Sensor (Kurbelwellensensor)
+455|Auf den für die Beladung empfohlenen Druck aufpumpen.
+456|Einspritzdüse verstopft
+457|Düsen der Einspritzdüsen verschlissen
+458|Einspritz-/Pumpenzeitpunkt
+459|Innen- oder Außenkante
+460|Den Rand einer 1-Taka-Münze in die Rille stecken und vergleichen.
+461|Versicherung
+462|Ansauglufttemp.
+463|Ansauglufttemperatursensor: Signal zu hoch
+464|Ungültiger Code
+465|Ist es eine Scheibenbremse (mit Flüssigkeitsbehälter)?
+466|Schlimmer am Morgen / bei Kälte?
+467|Schlimmer am Morgen?
+468|Ist eine Batterie nach der Fahrt heißer oder dicker als die anderen?
+469|Ist das Motorrad flüssigkeitsgekühlt (hat einen Kühler)?
+470|Leuchtet die Motorkontroll-/FI-Leuchte?
+471|Sinkt das Kühlmittel ohne sichtbares Leck?
+472|Ist der Kühlmittelstand niedrig?
+473|Ist der Ausgleichsbehälter niedrig (Motor kalt)?
+474|Steht der Lenker bei Geradeausfahrt schief?
+475|Blinkt die Leuchte?
+476|Riecht es nahe Flasche oder Motor stark?
+477|Schleift es an der Hinterachse?
+478|Diesen Bildschirm während der Fahrt geöffnet lassen; beim Anhalten werden die km zum Kilometerstand addiert.
+479|Zündschloss defekt
+480|Anlagenabstimmung verstellt
+481|Klopfsensor-Stromkreis
+482|Sprache
+483|Letzte 30 Tage: {0}, sonst {1}
+484|Letzter Ölwechsel bei (km) — optional
+485|Zuletzt: OK
+486|Zuletzt: Achtung nötig
+487|Später
+488|Vor dem Nachfüllen Dichtheit prüfen, sonst leckt es wieder.
+489|Undichte Einspritzdüse, verschmutzter Luftfilter, defekte Lambdasonde.
+490|Mageres Gemisch (Vergaser einstellen)
+491|Raddrehzahlsensor vorn links
+492|Weniger als 2 mm
+493|Stand und Farbe in Ordnung.
+494|Bündig mit dem Verschleißanzeiger
+495|Hebel/Pedal geht zu weit, fühlt sich weich an
+496|Hell
+497|Leuchten
+498|Liter
+499|Liter (oder 1 = volle Ladung)
