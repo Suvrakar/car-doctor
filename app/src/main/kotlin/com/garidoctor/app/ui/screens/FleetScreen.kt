@@ -25,7 +25,7 @@ import com.garidoctor.core.schedule.DueState
 
 /** One screen for CNG owners, easy-bike garages and delivery fleets. */
 @Composable
-fun FleetScreen(vm: MainViewModel, onBack: () -> Unit, onOpen: (Long) -> Unit) {
+fun FleetScreen(vm: MainViewModel, onBack: (() -> Unit)?, onOpen: (Long) -> Unit, bottomBar: @Composable () -> Unit = {}) {
     val st by vm.state.collectAsStateWithLifecycle()
     val pro by vm.pro.collectAsStateWithLifecycle()
     var showPro by remember { mutableStateOf(!vm.allowed(ProFeature.FLEET_MODE)) }
@@ -37,7 +37,7 @@ fun FleetScreen(vm: MainViewModel, onBack: () -> Unit, onOpen: (Long) -> Unit) {
     }
     val sum = Fleet.summarize(rows)
 
-    Screen(t("Fleet", "ফ্লিট"), onBack) { pad ->
+    Screen(t("Fleet", "ফ্লিট"), onBack, large = true, bottomBar = bottomBar) { pad ->
         if (!pro) {
             Column(Modifier.padding(pad).padding(16.dp)) {
                 Text(t("Fleet mode is for owners with many vehicles (CNG, easy-bike, delivery, transport). It's part of Pro / Fleet subscription.",

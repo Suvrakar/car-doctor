@@ -1,15 +1,23 @@
 # Main screens
 
+## Design system
+- **Material 3**, full tonal palette from the brand seed `#0E7C66` (light + dark), edge-to-edge drawing.
+- **Semantic status colours** (`Status.colors`): good / warning / bad, each with a container colour, tuned for contrast in both themes. Urgency always uses the same three colours.
+- **Shapes**: 6 / 10 / 16 / 24 / 32 dp. **Spacing**: 4 dp grid, 16 dp gutter. Headings semi-bold; body line-height raised for Bangla script.
+- **Navigation**: bottom bar with four tabs (Garage, Fleet, Help & SOS, Settings), each keeping its own state; large collapsing app bars on top-level screens; pushed screens slide and fade in.
+- **Components** (`ui/Components.kt`): animated `ScoreRing` (sweeps in, TalkBack reads "Health score 72 of 100"), `StatusPill`, `IconBadge`, `PointsPill`, `ActionRow` (badge + two lines + chevron), `UsageBar` (how much of a service interval is used), `SectionHeader`, `GroupCard`, `StatusBanner`, `EmptyState`.
+- **UX rules**: every problem shown is tappable and opens the screen that fixes it; Home leads with a cross-vehicle "Needs attention" list; long forms are split into short steps; touch targets ≥ 48 dp; Bangla digits when Bangla is selected.
+
 | Route | Screen | Purpose |
 |---|---|---|
-| `home` | **Garage (home)** | All vehicles as cards with score rings, overdue/paper counts, top issue. FAB: add vehicle (free = 1). Top bar: garages & SOS, fleet, settings. |
-| `add` | **Add vehicle** | Pick type → model preset (sets intervals) → energy → nickname, reg no., odometer, last oil change, EV rated range, driver. |
-| `vehicle/{id}` | **Checkup** | Big score ring + band, one-line summary, every deduction with points, action grid, mileage alert, open problems, all parts with km/days left, cost and sponsored tip. |
+| `home` | **Garage (home, tab)** | Large collapsing title, one-line status ("3 things need your attention"), vehicle cards (animated ring, band pill, top issue, odometer chip → update), then a **Needs attention** list across all vehicles (overdue services, papers, open problems) sorted by severity; each row opens its fix. FAB shrinks on scroll. |
+| `add` | **Add vehicle** | 3 steps with progress bar and animated transitions: (1) vehicle-type cards, (2) searchable model list showing oil interval, or "Other", (3) details with inline validation. System back goes to the previous step. |
+| `vehicle/{id}` | **Checkup** | Hero card (148 dp animated ring, band, model, odometer chip), horizontally scrolling quick actions, **What's lowering the score** (each reason tappable → its fix, with −points pill) or an "Everything looks good" banner, mileage-drop banner, open problems with "Fixed", parts grouped **Due now / Coming up / Healthy** with interval-usage bars and costs. Edit / Passport / Delete in the overflow menu. |
 | `service/{id}` | **Service log** | Tap a part → log km, date, cost, note, receipt photo. History with delete. |
 | `odometer/{id}` | **Odometer** | Photo → OCR candidates → tap correct; manual entry; GPS trip with jump/jitter filter. |
 | `fuel/{id}` | **Fuel / CNG / charge log** | Efficiency, 30-day trend, cost/km, sparkline, anomaly causes; add fill-up (full/partial, CNG vs petrol for dual-fuel). |
 | `docs/{id}` | **Papers** | Every paper the vehicle type needs, colour-coded by expiry; set date + number. |
-| `symptoms/{id}` | **Symptom doctor** | Entry symptoms → questions → causes with %, urgency chip, cost, advice, disclaimer, "add to health record", find mechanic. |
+| `symptoms/{id}` | **Symptom doctor** | Progress bar, one question per page with large tappable answer cards and directional slide animations (back goes back a question). Result: urgency banner (safe / this week / stop now) with advice, likelihood bars per cause, cost range, disclaimer, add to health record, find a mechanic. |
 | `checks/{id}` | **Visual checks** | Step-by-step guide, compare with reference states, tap "looks like this"; battery voltage entry. |
 | `lights/{id}` | **Warning lights** | Camera classifier (if model bundled) or symbol list → meaning + urgency. |
 | `obd/{id}` | **OBD scan** | Paired dongles → connect → read/clear codes (Bangla) → live data (Pro) → save voltage. |

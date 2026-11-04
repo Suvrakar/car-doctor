@@ -14,9 +14,8 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
-import com.garidoctor.app.ui.theme.Bad
-import com.garidoctor.app.ui.theme.Good
-import com.garidoctor.app.ui.theme.Warn
+import com.garidoctor.app.ui.theme.Status
+import com.garidoctor.app.ui.theme.StatusColors
 
 /**
  * Simple drawn reference pictures for guided checks, keyed by `CheckReference.image`
@@ -28,15 +27,16 @@ fun ReferenceArt(image: String?, modifier: Modifier = Modifier.size(88.dp)) {
     if (image == null) return
     val ink = MaterialTheme.colorScheme.onSurface
     val soft = MaterialTheme.colorScheme.surfaceVariant
+    val sc = Status.colors
     Canvas(modifier) {
         when {
-            image.startsWith("tyre") -> tyre(image, ink, soft)
-            image.startsWith("chain") -> chain(image, ink)
-            image.startsWith("pad") -> pad(image, ink, soft)
-            image.startsWith("oil") -> dipstick(image, ink)
-            image.startsWith("batt") -> terminal(image, ink, soft)
-            image.startsWith("coolant") -> reservoir(image, ink, if (image == "coolant_dirty") Color(0xFF8D5A2B) else Color(0xFF2E9BD6))
-            image.startsWith("water") -> cell(image, ink)
+            image.startsWith("tyre") -> tyre(sc, image, ink, soft)
+            image.startsWith("chain") -> chain(sc, image, ink)
+            image.startsWith("pad") -> pad(sc, image, ink, soft)
+            image.startsWith("oil") -> dipstick(sc, image, ink)
+            image.startsWith("batt") -> terminal(sc, image, ink, soft)
+            image.startsWith("coolant") -> reservoir(sc, image, ink, if (image == "coolant_dirty") Color(0xFF8D5A2B) else Color(0xFF2E9BD6))
+            image.startsWith("water") -> cell(sc, image, ink)
         }
     }
 }
@@ -44,26 +44,26 @@ fun ReferenceArt(image: String?, modifier: Modifier = Modifier.size(88.dp)) {
 private fun DrawScope.stroke(w: Float = 3f) = Stroke(width = w * density, cap = StrokeCap.Round)
 
 /** Tyre cross-section: groove depth vs the wear bar. */
-private fun DrawScope.tyre(id: String, ink: Color, soft: Color) {
+private fun DrawScope.tyre(sc: StatusColors, id: String, ink: Color, soft: Color) {
     val w = size.width; val h = size.height
     drawRoundRect(soft, Offset(0f, h * 0.2f), Size(w, h * 0.6f), CornerRadius(12f, 12f))
     val depth = when (id) { "tyre_good" -> 0.45f; "tyre_worn" -> 0.15f; else -> 0.02f }
-    val c = when (id) { "tyre_good" -> Good; "tyre_worn" -> Warn; else -> Bad }
+    val c = when (id) { "tyre_good" -> sc.good; "tyre_worn" -> sc.warn; else -> sc.bad }
     for (i in 1..3) {
         val x = w * i / 4f
         drawRect(Color.Black.copy(alpha = 0.55f), Offset(x - w * 0.05f, h * 0.2f), Size(w * 0.1f, h * 0.6f * depth))
     }
     // wear bar at 1.6 mm
     drawLine(c, Offset(w * 0.1f, h * 0.2f + h * 0.6f * 0.15f), Offset(w * 0.9f, h * 0.2f + h * 0.6f * 0.15f), strokeWidth = 2 * density)
-    if (id == "tyre_bald") drawLine(Bad, Offset(w * 0.3f, h * 0.55f), Offset(w * 0.45f, h * 0.75f), strokeWidth = 2 * density)
+    if (id == "tyre_bald") drawLine(sc.bad, Offset(w * 0.3f, h * 0.55f), Offset(w * 0.45f, h * 0.75f), strokeWidth = 2 * density)
     drawRoundRect(ink, Offset(0f, h * 0.2f), Size(w, h * 0.6f), CornerRadius(12f, 12f), style = stroke(2f))
 }
 
 /** Lower chain run between sprockets, sag shown with a bracket. */
-private fun DrawScope.chain(id: String, ink: Color) {
+private fun DrawScope.chain(sc: StatusColors, id: String, ink: Color) {
     val w = size.width; val h = size.height
     val sag = when (id) { "chain_good" -> 0.12f; "chain_loose" -> 0.35f; else -> 0.04f }
-    val c = when (id) { "chain_good" -> Good; "chain_loose" -> Bad; else -> Warn }
+    val c = when (id) { "chain_good" -> sc.good; "chain_loose" -> sc.bad; else -> sc.warn }
     drawCircle(ink, w * 0.14f, Offset(w * 0.16f, h * 0.4f), style = stroke())
     drawCircle(ink, w * 0.2f, Offset(w * 0.78f, h * 0.4f), style = stroke())
     val p = Path().apply {
@@ -75,11 +75,11 @@ private fun DrawScope.chain(id: String, ink: Color) {
 }
 
 /** Brake caliper: pad material thickness against the disc. */
-private fun DrawScope.pad(id: String, ink: Color, soft: Color) {
+private fun DrawScope.pad(sc: StatusColors, id: String, ink: Color, soft: Color) {
     val w = size.width; val h = size.height
     drawRect(soft, Offset(w * 0.45f, h * 0.05f), Size(w * 0.1f, h * 0.9f)) // disc
     val t = when (id) { "pad_good" -> 0.16f; "pad_thin" -> 0.05f; else -> 0.0f }
-    val c = when (id) { "pad_good" -> Good; "pad_thin" -> Warn; else -> Bad }
+    val c = when (id) { "pad_good" -> sc.good; "pad_thin" -> sc.warn; else -> sc.bad }
     listOf(-1f, 1f).forEach { side ->
         val plateX = if (side < 0) w * 0.15f else w * 0.75f
         drawRect(ink, Offset(plateX, h * 0.25f), Size(w * 0.1f, h * 0.5f)) // backing plate
@@ -88,11 +88,11 @@ private fun DrawScope.pad(id: String, ink: Color, soft: Color) {
             drawRect(c, Offset(padX, h * 0.25f), Size(w * t, h * 0.5f))
         }
     }
-    if (id == "pad_gone") for (i in 0..2) drawLine(Bad, Offset(w * 0.4f, h * (0.3f + i * 0.2f)), Offset(w * 0.6f, h * (0.35f + i * 0.2f)), strokeWidth = 2 * density)
+    if (id == "pad_gone") for (i in 0..2) drawLine(sc.bad, Offset(w * 0.4f, h * (0.3f + i * 0.2f)), Offset(w * 0.6f, h * (0.35f + i * 0.2f)), strokeWidth = 2 * density)
 }
 
 /** Dipstick with MIN/MAX marks. */
-private fun DrawScope.dipstick(id: String, ink: Color) {
+private fun DrawScope.dipstick(sc: StatusColors, id: String, ink: Color) {
     val w = size.width; val h = size.height
     val x = w * 0.5f
     drawLine(ink, Offset(x, h * 0.05f), Offset(x, h * 0.95f), strokeWidth = 4 * density)
@@ -105,7 +105,7 @@ private fun DrawScope.dipstick(id: String, ink: Color) {
 }
 
 /** Battery terminal clamp. */
-private fun DrawScope.terminal(id: String, ink: Color, soft: Color) {
+private fun DrawScope.terminal(sc: StatusColors, id: String, ink: Color, soft: Color) {
     val w = size.width; val h = size.height
     drawRoundRect(soft, Offset(w * 0.05f, h * 0.4f), Size(w * 0.9f, h * 0.55f), CornerRadius(8f, 8f))
     drawRoundRect(ink, Offset(w * 0.05f, h * 0.4f), Size(w * 0.9f, h * 0.55f), CornerRadius(8f, 8f), style = stroke(2f))
@@ -117,18 +117,18 @@ private fun DrawScope.terminal(id: String, ink: Color, soft: Color) {
 }
 
 /** Coolant reservoir with LOW / FULL lines. */
-private fun DrawScope.reservoir(id: String, ink: Color, fluid: Color) {
+private fun DrawScope.reservoir(sc: StatusColors, id: String, ink: Color, fluid: Color) {
     val w = size.width; val h = size.height
     val top = h * 0.1f; val bottom = h * 0.92f
     val level = when (id) { "coolant_good" -> h * 0.45f; "coolant_low" -> h * 0.85f; else -> h * 0.5f }
     drawRect(fluid.copy(alpha = 0.7f), Offset(w * 0.25f, level), Size(w * 0.5f, bottom - level))
     drawRect(ink, Offset(w * 0.25f, top), Size(w * 0.5f, bottom - top), style = stroke(2f))
-    drawLine(Good, Offset(w * 0.2f, h * 0.35f), Offset(w * 0.32f, h * 0.35f), strokeWidth = 2 * density) // FULL
-    drawLine(Warn, Offset(w * 0.2f, h * 0.7f), Offset(w * 0.32f, h * 0.7f), strokeWidth = 2 * density) // LOW
+    drawLine(sc.good, Offset(w * 0.2f, h * 0.35f), Offset(w * 0.32f, h * 0.35f), strokeWidth = 2 * density) // FULL
+    drawLine(sc.warn, Offset(w * 0.2f, h * 0.7f), Offset(w * 0.32f, h * 0.7f), strokeWidth = 2 * density) // LOW
 }
 
 /** Lead-acid cell viewed through the filler hole: plates vs electrolyte. */
-private fun DrawScope.cell(id: String, ink: Color) {
+private fun DrawScope.cell(sc: StatusColors, id: String, ink: Color) {
     val w = size.width; val h = size.height
     val bulge = if (id == "water_bulge") w * 0.06f else 0f
     val level = when (id) { "water_good" -> h * 0.25f; else -> h * 0.5f }
@@ -139,5 +139,5 @@ private fun DrawScope.cell(id: String, ink: Color) {
         quadraticBezierTo(w * 0.85f + bulge * 2, h * 0.5f, w * 0.85f, h * 0.9f); lineTo(w * 0.15f, h * 0.9f)
         quadraticBezierTo(w * 0.15f - bulge * 2, h * 0.5f, w * 0.15f, h * 0.1f)
     }
-    drawPath(p, if (id == "water_bulge") Bad else ink, style = stroke(2f))
+    drawPath(p, if (id == "water_bulge") sc.bad else ink, style = stroke(2f))
 }

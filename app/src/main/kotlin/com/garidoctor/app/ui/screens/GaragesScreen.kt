@@ -27,7 +27,7 @@ import com.garidoctor.app.ui.*
 import com.garidoctor.app.ui.theme.Bad
 
 @Composable
-fun GaragesScreen(vm: MainViewModel, onBack: () -> Unit) {
+fun GaragesScreen(vm: MainViewModel, onBack: (() -> Unit)?, bottomBar: @Composable () -> Unit = {}) {
     val ctx = LocalContext.current
     val st by vm.state.collectAsStateWithLifecycle()
     val lang by vm.lang.collectAsStateWithLifecycle()
@@ -42,7 +42,7 @@ fun GaragesScreen(vm: MainViewModel, onBack: () -> Unit) {
     val list = vm.garages.filter { type == null || it.type == type }
         .sortedWith(compareByDescending<com.garidoctor.app.data.Garage> { it.featured }.thenBy { g -> here?.let { Garages.distanceKm(it.latitude, it.longitude, g.lat, g.lng) } ?: 0.0 })
 
-    Screen(t("Garages & SOS", "গ্যারেজ ও SOS"), onBack) { pad ->
+    Screen(t("Help & SOS", "সাহায্য ও SOS"), onBack, large = onBack == null, bottomBar = bottomBar) { pad ->
         LazyColumn(Modifier.padding(pad), contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             item {
                 Button(onClick = { if (!hasLoc) perm.launch(Manifest.permission.ACCESS_FINE_LOCATION); sosOpen = true },

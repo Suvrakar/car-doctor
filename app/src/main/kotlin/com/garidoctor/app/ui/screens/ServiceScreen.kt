@@ -84,7 +84,6 @@ fun ServiceScreen(vm: MainViewModel, id: Long, onBack: () -> Unit) {
     }
 }
 
-fun Modifier.clickableItem(onClick: () -> Unit): Modifier = this.clickable(onClick = onClick)
 
 @Composable
 private fun LogServiceDialog(vm: MainViewModel, vehicleId: Long, partId: String, partName: String, currentKm: Int, onDismiss: () -> Unit) {

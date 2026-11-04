@@ -22,12 +22,12 @@ import com.garidoctor.app.ui.*
 import com.garidoctor.core.model.Lang
 
 @Composable
-fun SettingsScreen(vm: MainViewModel, onBack: () -> Unit) {
+fun SettingsScreen(vm: MainViewModel, onBack: (() -> Unit)?, bottomBar: @Composable () -> Unit = {}) {
     val lang by vm.lang.collectAsStateWithLifecycle()
     val pro by vm.pro.collectAsStateWithLifecycle()
     val contacts by vm.sos.collectAsStateWithLifecycle()
     var showPro by remember { mutableStateOf(false) }
-    Screen(t("Settings", "সেটিংস"), onBack) { pad ->
+    Screen(t("Settings", "সেটিংস"), onBack, large = true, bottomBar = bottomBar) { pad ->
         Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             SectionCard(t("Language", "ভাষা")) {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
