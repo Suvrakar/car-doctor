@@ -8,7 +8,7 @@ import kotlin.test.*
 class I18nTests {
     private val fake = mapOf(
         "i18n/hi.json" to """{"Engine oil":"इंजन ऑयल","Expires in {0} days":"{0} दिनों में समाप्त","{0} of {1} left":"{1} में से {0} बाकी","Your {0} is at {1}/100.":"आपकी {0} का स्कोर {1}/100 है।"}""",
-        "i18n/ar.json" to """{"{0} km over":"تجاوز {0} كم"}""",
+        "i18n/ar.json" to """{"{0} overdue":"متأخر {0}","{0} is {1} km overdue":"{0} متأخر {1} كم","{0} km over":"تجاوز {0} كم"}""",
     )
 
     @BeforeTest fun setUp() { Translations.reset(); Translations.loader = { fake[it] } }
@@ -28,6 +28,8 @@ class I18nTests {
         assertEquals("9 दिनों में समाप्त", Translations.tr(Lang.HI, "Expires in 9 days"))
         assertEquals("5 में से 2 बाकी", Translations.tr(Lang.HI, "2 of 5 left"))
         assertEquals("تجاوز 1,250 كم", Translations.tr(Lang.AR, "1,250 km over"))
+        // The more specific pattern wins over "{0} overdue", whatever the file order.
+        assertEquals("Engine oil متأخر 400 كم", Translations.tr(Lang.AR, "Engine oil is 400 km overdue"))
         assertEquals("आपकी Pulsar का स्कोर 72/100 है।", Translations.format(Lang.HI, "Your {0} is at {1}/100.", "Pulsar", 72))
     }
 

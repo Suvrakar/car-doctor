@@ -74,7 +74,7 @@ object Translations {
                 append(Regex.escape(k.substring(last))); append('$')
             }
             Regex(rx, RegexOption.DOT_MATCHES_ALL) to v
-        }
+        }.sortedByDescending { (rx, _) -> rx.pattern.replace("(.+?)", "").length } // most specific first
         Catalog(map, patterns)
     }
 

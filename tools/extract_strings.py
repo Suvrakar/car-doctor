@@ -42,5 +42,11 @@ def walk(o):
         for v in o: walk(v)
 for f in glob.glob('core/src/main/resources/templates/*.json') + glob.glob('core/src/main/resources/symptoms/*.json') + glob.glob('core/src/main/resources/obd/*.json'):
     walk(json.load(open(f, encoding='utf-8')))
+# Phrases whose English formats numbers inside ${"..."} (nested quotes the regex above can't follow).
+keys.update([
+    "every {0} km", "last at {0} km", "Oil every {0} km", "Last 30 days: {0} vs usual {1}", "Cost per km: ৳{0}",
+    "{0} km left", "{0} km over", "Current: {0} km", "Battery voltage low ({0} V)",
+])
+keys.discard('Battery voltage low ({0}')
 keys.discard('')
 json.dump(sorted(keys), sys.stdout, ensure_ascii=False, indent=0)
