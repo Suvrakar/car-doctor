@@ -1,0 +1,495 @@
+500|I grafici OBD in tempo reale sono una funzione Pro.
+501|Dati in tempo reale
+502|Posizione:
+503|Registra a voce
+504|Registra ogni ricarica nel registro. Spuntando “Caricata completamente” i km fatti con la carica precedente vengono salvati come campione di autonomia.
+505|Registra intervento
+506|Registra interventi
+507|Registra due pieni per vedere i consumi
+508|Registri, documenti e impostazioni in un piccolo file di testo. Le foto restano su questo telefono.
+509|Lungo minimo nel traffico
+510|Guarda il livello dell’elettrolito rispetto alle piastre.
+511|Guarda nella fessura della pinza con la torcia del telefono.
+512|Morsetto allentato
+513|Tappo carburante allentato
+514|I poli ad alta corrente allentati possono fare scintille e bruciare i cavi. Fermati e stringi/ripara.
+515|Polo principale allentato
+516|Supporto motore allentato
+517|Parafango/bulloni allentati
+518|Poli allentati o ossidati
+519|Cuscinetto di sterzo allentato
+520|Poli allentati/ossidati
+521|Allenta la regolazione del freno; ingrassa/sostituisci il cuscinetto.
+522|Comunicazione persa con la centralina motore
+523|Acqua batteria bassa (piombo-acido)
+524|Refrigerante basso / perdita
+525|Elettrolito (acqua) basso nelle batterie al piombo
+526|Olio motore basso
+527|Carburante in riserva
+528|Pressione carburante bassa
+529|Consumi alti
+530|Olio motore basso o vecchio
+531|Poca potenza / consumi alti a gas
+532|Pressione bassa in uno pneumatico
+533|Refrigerante clima basso (perdita)
+534|Pressione pneumatici bassa
+535|Pressione bassa / sovraccarico
+536|Acqua bassa, piastre scoperte
+537|Taglio per bassa tensione in salita (batteria debole)
+538|Debimetro: intervallo/prestazioni
+539|Fusibile principale / interruttore scattato
+540|Rende accurato il tuo primo punteggio
+541|Mappa
+542|Circuito del debimetro (MAF)
+543|Pompa freni in avaria
+544|Material
+545|Può impedire l’avviamento. Controlla il sensore.
+546|Misura il movimento totale su e giù.
+547|Metallo su metallo / sfregamento
+548|Minibus
+549|Consumi peggiorati del {0}%
+550|Consumi peggiorati del {0}% questo mese
+551|Tensione del modulo
+552|Altro
+553|Più di 3 mesi fa / non so
+554|Più di 40 mm / pende
+555|Controllo motore e centralina
+556|Sensore Hall del motore / centralina
+557|Rumore del motore / strappi
+558|Moto
+559|Più veicoli, passaporto PDF, grafici OBD in tempo reale, modalità flotta, senza pubblicità.
+560|Nome
+561|Da regolare
+562|Da controllare
+563|Soprannome
+564|No
+565|Nessuna ossidazione, i morsetti non si muovono.
+566|Nessun codice di errore ✓
+567|Senza battistrada, crepe sul fianco o bozzo: pericoloso.
+568|Nessun intervento scaduto, problema o documento in scadenza.
+569|Nessun dispositivo associato. Associa prima l’adattatore.
+570|Nessun ricambio trovato in questa fattura.
+571|Niente potenza / si spegne
+572|Ancora nessun intervento registrato.
+573|Invecchiamento normale
+574|Condensa normale
+575|Normale nelle mattine fresche.
+576|Residuo normale all’ugello
+577|Normale. Se resta denso a motore caldo, fai controllare.
+578|Non aggiunto · tocca per impostare la scadenza
+579|Non ora
+580|Nota / officina (facoltativo)
+581|Niente / nessuna luce
+582|Numero (facoltativo)
+583|Sonda lambda o debimetro
+584|Circuito sonda lambda (bancata 1 sensore 1)
+585|Circuito riscaldatore sonda lambda (B1S1)
+586|Circuito riscaldatore sonda lambda (B1S2)
+587|Sonda lambda inattiva (B1S1)
+588|Risposta lenta della sonda lambda (B1S1)
+589|Scansione OBD
+590|OK
+591|OK.
+592|Benzina premium
+593|Contachilometri
+594|Chilometraggio (km)
+595|Chilometraggio (km) — attuale {0}
+596|Chilometraggio: 
+597|Spesso dovuto a mancate accensioni prolungate o alla sonda lambda.
+598|Spesso olio basso o sporco. Cambia l’olio, poi rifai la scansione.
+599|Olio ogni {0} km
+600|Olio sul tamburo del freno
+601|Troppo olio
+602|Pressione olio (oliatore)
+603|Pressione olio troppo bassa. Spegni subito il motore per evitare il grippaggio.
+604|Olio motore vecchio troppo denso
+605|Liquido freni vecchio/basso o perdita
+606|Una batteria guasta/debole penalizza tutto il set
+607|Uno o più pneumatici sgonfi. Controlla e gonfia.
+608|Solo un po’ (10–30%)
+609|Solo a pieno carico / in salita?
+610|Problemi aperti
+611|Oppure scegli il simbolo che vedi sul cruscotto:
+612|Oppure tocca un componente per segnarlo come revisionato
+613|Arancione
+614|Altro / non in elenco
+615|Pressione eccessiva
+616|Sovraccarica (caricabatterie guasto)
+617|Scaduto
+618|Surriscaldamento
+619|Sovraccarico
+620|Sovraccarico / pressione pneumatici bassa
+621|Hai un’officina? Ottieni un annuncio in evidenza — pagamento mensile con bKash/Nagad.
+622|Pastiglie quasi finite
+623|Pastiglie consumate fino all’indicatore
+624|Pagato ৳ (facoltativo)
+625|Documento
+626|Documenti
+627|Documenti e scadenze
+628|Documenti, fatture e voce vengono letti prima sul telefono, gratis e offline. L’IA cloud (Google Gemini) si usa solo quando tocchi “Leggi con IA”.
+629|Parcheggia in piano e guarda il centro dello pneumatico.
+630|I componenti senza interventi registrati vengono contati da oggi. Puoi registrare gli interventi passati nella schermata successiva.
+631|Passaporto
+632|Password (almeno 6 caratteri)
+633|Pedale morbido / va a fondo
+634|Benzina
+635|Benzina + CNG
+636|Benzina/premium
+637|Telefono (01XXXXXXXXX)
+638|Foto della ricevuta
+639|Fotografa il contachilometri
+640|Fotografa la spia e identificala con l’IA
+641|Pick-up / camioncino
+642|Piastre coperte di ~5–10 mm
+643|Piastre visibili
+644|Pastiglia ancora abbondante.
+645|Collega un adattatore Bluetooth ELM327 alla presa OBD-II (sotto il volante), accendi il quadro e associalo nelle impostazioni Bluetooth del telefono (PIN di solito 1234 o 0000).
+646|Candele, bobine, iniettori o taratura CNG. Non guidare in modo brusco.
+647|Scarso
+648|Poca ripresa / mancate accensioni / strappi
+649|Cause possibili
+650|Servosterzo
+651|Privacy
+652|Pro offre {0} letture al giorno. Guardando un breve annuncio ne ottieni una in più (fino a 3 al giorno).
+653|Pro attivo ✓
+654|Problema:
+655|Problemi a CNG (strappi, non parte a gas)
+656|Estrai l’astina (o guarda nell’oblò), pulisci, reinserisci, controlla.
+657|Tira da un lato
+658|Tira sempre da un lato
+659|Viola
+660|Spingi la catena su e giù a metà del tratto inferiore.
+661|Metti la moto sul cavalletto centrale, in folle.
+662|Radiatore intasato
+663|Ventola radiatore / relè ventola guasto
+664|La ventola del radiatore non funziona
+665|Alette del radiatore intasate
+666|Mancate accensioni casuali/multiple
+667|Autonomia ridotta (meno km per carica)
+668|L’autonomia sta calando. Non scendere sotto il 20% ed evita di caricare tutta la notte.
+669|Autonomia più bassa di quanto l’età della batteria giustifichi: controlla caricabatterie, poli e pressione pneumatici.
+670|Autonomia con carica completa da nuova (km)
+671|Autonomia per carica completa da nuova (km)
+672|Autonomia nominale per carica (km)
+673|Sferragliamento / rumore catena
+674|Leggi
+675|Letto dall’IA. Controlla prima di salvare.
+676|Leggi codici di errore
+677|Leggilo dal contachilometri
+678|Letto con l’IA del telefono.
+679|Letto su questo telefono. Controlla prima di salvare.
+680|Leggi i codici della centralina del cambio; controlla l’ATF.
+681|Leggi con IA
+682|La lettura è inferiore al chilometraggio attuale.
+683|Lettura della fattura…
+684|Lettura del documento…
+685|Lettura…
+686|Riscaldatore sonda lambda posteriore guasto.
+687|Freno posteriore
+688|Ganasce posteriori
+689|Ganasce/pastiglie posteriori
+690|Pneumatico posteriore
+691|Ruota posteriore non allineata dopo la regolazione catena
+692|Ricevuta
+693|Ricevuta salvata ✓
+694|Autonomia recente: {0} su {1} km
+695|Di recente
+696|Riscatta
+697|Rallenta e fermati presto. Leggi i codici con un adattatore OBD.
+698|Fai rifornimento presto. Restare a secco può danneggiare la pompa.
+699|Libretto
+700|Libretto (blue book / smart card)
+701|Targa
+702|Targa — facoltativa
+703|Riduttore/miscelatore da tarare
+704|Rimuovi
+705|Sostituisci il filtro aria; rispetta il carico previsto.
+706|Sostituisci prima il filtro abitacolo.
+707|Sostituire i dati su questo telefono?
+708|Sostituisci il pacco batteria ibrida
+709|Sostituisci presto le pastiglie per non rovinare il disco.
+710|Sostituisci le pastiglie questa settimana.
+711|Prima sostituisci la candela e pulisci il filtro aria — le soluzioni più economiche.
+712|Sostituisci la candela; controlla la batteria.
+713|Sostituisci il sensore se le letture sono sbagliate; tieni d’occhio l’indicatore.
+714|Sostituisci quella batteria; verifica che il caricabatterie non sovraccarichi.
+715|Data del report
+716|Ripristina predefinito
+717|Ripristina
+718|Ripristina da file
+719|Veicoli ripristinati: 
+720|Miscela grassa / iniettore che perde
+721|Miscela grassa: carburatore da regolare
+722|Stile di guida / traffico / qualità del carburante
+723|Sensore velocità ruota anteriore destra
+724|Permesso di linea
+725|Fai il primo controllo
+726|Arrugginito o oleoso
+727|Contatti SOS
+728|SOS — invia posizione e problema
+729|Si può guidare — tienilo d’occhio
+730|Salva
+731|Salva e ricordamelo
+732|Salva la tensione della batteria nella cartella salute
+733|Salva lettura
+734|Salvato ✓
+735|Salvato: va bene ✓
+736|Salvato: abbassa il punteggio finché non viene fatto l’intervento.
+737|Di’ cosa hai fatto, es. “cambiato l’olio per 400 taka a 24500 km”
+738|Scansiona una fattura dell’officina
+739|Scansiona un documento
+740|Scansiona fattura
+741|Scansiona documento
+742|Scansiona per verificare
+743|Leggi i codici con un adattatore OBD.
+744|Scansiona con la fotocamera (sul dispositivo)
+745|Scooter
+746|Cerca marca o modello
+747|Cintura di sicurezza
+748|Dichiarato dal proprietario in GariDoctor. Non è un’ispezione d’officina se non è indicato come verificato.
+749|Invia solo la foto o la frase che scegli.
+750|Storico interventi
+751|Revisiona impianto e filtro aria.
+752|Registro interventi
+753|Intervento: 
+754|Imposta scadenza
+755|Il set è quasi a fine vita. Fai un test di capacità prima di comprarne uno nuovo.
+756|Impostazioni
+757|Mancata accensione grave (rischio di danni al catalizzatore)
+758|Condividi passaporto veicolo
+759|Cella in corto
+760|Mostra
+761|Mostra tutti ({0})
+762|Mostra meno
+763|Accedi
+764|Esci
+765|Rettifica o sostituisci i dischi; cambia anche le pastiglie.
+766|Odore di gas
+767|Fumo dallo scarico
+768|Morbido
+769|Morbido offre superfici in rilievo e tattili. Material usa schede piatte.
+770|Candela
+771|Candela usurata (con il CNG va cambiata spesso)
+772|Candele
+773|Parla
+774|Parla di nuovo
+775|L’input vocale non è disponibile su questo telefono. Scrivilo.
+776|Velocità
+777|Possono risentirne tachimetro e cambi marcia.
+778|Un freno a disco spugnoso è pericoloso: spurga il freno e rabbocca il liquido prima di guidare.
+779|Sponsorizzato
+780|Solo un fischio
+781|Avvia viaggio
+782|Motorino di avviamento
+783|Stato di salute
+784|Servosterzo guasto; lo sterzo sarà pesante.
+785|Lo sterzo vibra in frenata
+786|Passo {0} di 3
+787|Pinza del freno bloccata
+788|Sasso o detriti nella pinza
+789|Ferma e aggiungi
+790|Fermati e lascia raffreddare; ripara la perdita.
+791|Fermati e lascia raffreddare. Non aprire il tappo a caldo.
+792|Smetti di guidare: rischio di gravi danni al motore. Fallo trainare in officina.
+793|Ferma diretta
+794|Fermati ora — non guidare
+795|Fermati ora. Lascia raffreddare, rabbocca e fai riparare la perdita.
+796|Smetti di guidare: il disco si sta danneggiando.
+797|Smetti di guidare: il disco si sta danneggiando e la frenata non è affidabile.
+798|Fermati, spegni il motore, chiudi la valvola della bombola, niente fumo né scintille. Fai una prova perdite.
+799|Stile
+800|Scambia bobina/candela con un altro cilindro per verificare.
+801|Medico dei sintomi
+802|Sistema
+803|Miscela troppo magra (bancata 1)
+804|Miscela troppo magra (bancata 2)
+805|Miscela troppo grassa (bancata 1)
+806|Tensione dell’impianto alta
+807|Tensione dell’impianto bassa
+808|Fotografa la fattura. L’app trova ricambi, costi, data e chilometraggio e li registra per te.
+809|Fotografa libretto, bollo, revisione, assicurazione o patente. L’app legge la scadenza e imposta i promemoria.
+810|Scatta foto
+811|Valvola di spurgo del serbatoio che perde
+812|Tocca la lettura corretta:
+813|Bollo
+814|Verde acqua
+815|Temperatura alta sull’indicatore
+816|Pulizia e serraggio dei poli
+817|Testa la tensione di ogni batteria sotto carico; sostituisci solo quella debole per risparmiare.
+818|Prova con un altro caricabatterie; controlla la presa.
+819|L’annuncio non è ancora pronto. Riprova tra poco.
+820|La versione gratuita supporta un veicolo. Sblocca Pro per più veicoli, passaporto PDF, grafici OBD in tempo reale e modalità flotta.
+821|La foto (o ciò che hai detto) viene inviata all’IA Gemini di Google per leggerla. I tuoi registri e le altre foto restano su questo telefono. Puoi disattivarlo nelle Impostazioni.
+822|Tema
+823|Termostato
+824|Termostato bloccato
+825|Termostato bloccato chiuso
+826|Termostato bloccato aperto — sostituiscilo.
+827|Queste sono cause possibili, non una diagnosi definitiva. Chiedi conferma a un meccanico.
+828|Acceleratore
+829|Circuito sensore posizione farfalla
+830|Cablaggio acceleratore allentato
+831|Maglie rigide, arrugginite o piegate
+832|Stringi il tappo carburante; collega l’adattatore OBD per leggere il codice esatto.
+833|Stringi o sostituisci il tappo carburante.
+834|Stringi; i poli allentati rallentano l’avviamento.
+835|Consiglio: compra un adattatore testato. I cloni economici (v2.1) spesso non funzionano con le auto più recenti.
+836|Oggi: {0} di {1} letture IA rimaste
+837|Troppo lenta: regolala ora. Può saltare dalla corona.
+838|Rabbocca e controlla le perdite.
+839|Rabbocca acqua distillata in ogni cella (non del rubinetto)
+840|Rabbocca acqua distillata, gonfia gli pneumatici, evita il sovraccarico.
+841|Rabbocca oggi; controlla le perdite.
+842|Rabbocca solo acqua DISTILLATA, dopo la ricarica.
+843|Frizione del convertitore di coppia bloccata disinnestata
+844|Totale: ৳{0}
+845|Olio del cambio
+846|Guasto al controllo del cambio
+847|Olio cambio automatico (ATF/CVT)
+848|Olio del cambio che brucia (modulatore a depressione)
+849|Sensore velocità ingresso cambio
+850|Battistrada a filo con l’indicatore: sostituisci presto.
+851|Camion / furgone
+852|Prova l’avviamento con cavi; testa la batteria (12,4V+ a riposo).
+853|Prova con la pedalina; controlla i poli; misura la tensione (deve essere 12,6V+).
+854|Muovi a mano ogni morsetto dei cavi.
+855|Problema al turbo
+856|Spegni il clima, accosta in sicurezza; controlla che la ventola giri.
+857|Scrivilo
+858|Pressione pneumatici (TPMS)
+859|Rotazione pneumatici e assetto
+860|Controllo battistrada
+861|Pneumatici
+862|Pneumatici (compresa la ruota di scorta)
+863|Interpreta con IA
+864|Usura irregolare delle pastiglie o pistoncino della pinza bloccato
+865|Pressione pneumatici non uniforme
+866|Usura irregolare degli pneumatici
+867|Guasto sconosciuto ({0}) — fai fare una scansione a un meccanico
+868|Sblocca
+869|Sblocca / riscatta codice
+870|Sblocca Pro: più veicoli, passaporti illimitati, grafici OBD in tempo reale, modalità flotta, senza pubblicità.
+871|Sblocca tutto una volta sola.
+872|Scollega subito. Ricarica all’aperto. Rischio di incendio e acido.
+873|Usare l’IA per leggerlo?
+874|Sulle moto a carburatore usa lo starter; pulisci/sostituisci la candela; regola il carburatore.
+875|Usa intervalli tipici; puoi modificarli in seguito
+876|Guasto al sistema VTEC (Honda)
+877|Perdita di depressione, debimetro sporco, pompa debole. Comune dopo la conversione a CNG.
+878|Valido fino al {0}
+879|Gioco valvole (punterie) da regolare
+880|Paraolio valvole che perdono
+881|Passaporto veicolo
+882|Sensore velocità veicolo
+883|Veicolo:
+884|Vibrazioni in velocità / tira da un lato
+885|Rivolgiti a un centro assistenza autorizzato con lo strumento diagnostico della tua marca.
+886|Controlli visivi
+887|Volt
+888|Aspetta che si spenga prima di avviare. Se lampeggia in marcia, guasto al motore.
+889|Spie di avviso
+890|Dischi freno deformati
+891|Guarda annuncio · 1 gratis
+892|Guarda un annuncio per 1 lettura in più
+893|Acqua nel gasolio
+894|Acqua o carburante scadente
+895|Pompa dell’acqua in avaria
+896|Acqua/olio nei serbatoi
+897|Debole / clic / niente
+898|Flusso d’aria debole
+899|Batteria debole
+900|Batteria o alternatore debole.
+901|Batteria debole o vecchia
+902|Batteria debole/scarica
+903|Di che colore è il fumo?
+904|Cosa guidi?
+905|Cosa noti?
+906|Cosa succede quando colleghi il caricabatterie?
+907|Qual è il sintomo del freno?
+908|Cosa hai detto
+909|Cosa abbassa il punteggio
+910|Che problema ha {0}?
+911|Assetto ruote
+912|Assetto / perni fuso usurati
+913|Assetto sbagliato
+914|Serve l’equilibratura
+915|Cuscinetti ruota e ingrassaggio
+916|Cuscinetti ruota e grasso mozzo
+917|Quando è stato tarato l’ultima volta l’impianto CNG?
+918|Cosa succede quando giri la chiave?
+919|Da dove viene il rumore?
+920|Dov’è l’usura?
+921|Quale modello?
+922|A quale somiglia il tuo?
+923|Quello che arriva prima. Predefinito: 
+924|Fumo bianco dallo scarico
+925|Bianco, solo all’avviamento a freddo, poi sparisce
+926|Polvere bianca/verde
+927|Spazzole tergicristallo
+928|Con passeggeri, freni deboli sono pericolosi. Ripara prima del prossimo viaggio.
+929|Non parte / gira lentamente
+930|Lavori eseguiti
+931|Cuscinetti usurati
+932|Pastiglie usurate
+933|Fasce elastiche / cilindro usurati
+934|Candela consumata
+935|Candela usurata
+936|Candela usurata / problema di accensione
+937|Candela usurata / accensione debole
+938|Denti della corona usurati
+939|Cuscinetto di sterzo usurato
+940|Boccole sospensioni usurate
+941|Sì
+942|Puoi cambiarla in seguito nelle Impostazioni.
+943|Riceverai promemoria 30, 15, 7, 3 e 1 giorno prima della scadenza — evita le multe.
+944|Hai usato le letture IA di oggi. Guarda un breve annuncio per un’altra, o passa a Pro.
+945|I tuoi registri e le tue foto restano su questo telefono. Nulla viene caricato se non attivi il backup.
+946|Il tuo {0} è a {1}/100.
+947|punteggio medio
+948|tra {0} giorni
+949|tra {0} km
+950|in scadenza
+951|es. La mia Pulsar
+952|ogni {0} km
+953|scaduto
+954|scaduto da {0} giorni
+955|scade tra {0} giorni
+956|km
+957|km · aggiorna
+958|km/l
+959|km/carica
+960|km/m³
+961|ultimo a {0} km
+962|mesi
+963|da controllare
+964|su 100
+965|o {0} mesi
+966|scaduto
+967|documenti
+968|parziale
+969|non disponibile
+970|valido
+971|{0} letture IA rimaste oggi
+972|{0} g
+973|{0} giorni
+974|{0} giorni rimasti
+975|{0} giorni oltre
+976|{0} giorni di ritardo
+977|{0} da fare tra {1} giorni
+978|{0} da fare tra {1} km
+979|{0} scaduto da {1} giorni
+980|{0} scade tra {1} giorni
+981|{0} non ha superato il controllo visivo
+982|{0} in ritardo di {1} giorni
+983|{0} in ritardo di {1} km
+984|{0} km rimasti
+985|{0} km oltre
+986|{0} km di ritardo
+987|{0} lingue
+988|{0} scaduti
+989|{0} documenti
+990|{0} cose richiedono attenzione
+991|{0} · punteggio di salute {1}/100
+992|{0}: è ora del tagliando
+993|{0}: sintomo segnalato
+994|≈ {0} cicli rimasti

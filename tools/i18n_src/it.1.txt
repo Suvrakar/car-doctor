@@ -1,0 +1,500 @@
+0|Gioco di 20–30 mm
+1|3 mm o più
+2|60–100 km/h, lo sterzo vibra
+3|Un PDF con punteggio di salute, storico completo dei tagliandi e codice QR. Condividilo quando vendi per ottenere un prezzo migliore.
+4|Qualche dettaglio
+5|Un medico della salute per ogni veicolo
+6|ABS
+7|L’ABS potrebbe essere disattivato.
+8|L’ABS potrebbe essere disattivato. Controlla sensore e cablaggio.
+9|Filtro abitacolo
+10|Ricarica gas clima e manutenzione
+11|Il clima non raffredda
+12|L’IA non è riuscita a leggerlo. Controlla la connessione e riprova, oppure compila a mano.
+13|Lettura con IA
+14|La lettura con IA è sospesa. Compila a mano.
+15|In questa build la lettura con IA richiede la configurazione di Firebase.
+16|Colore di accento
+17|Annuncio non ancora pronto, riprova tra poco
+18|Aggiungi
+19|Aggiungi contatto (meccanico / famiglia)
+20|Aggiungi ricarica
+21|Aggiungi i contatti dalla schermata SOS.
+22|Aggiungi rifornimento
+23|Aggiungi alla cartella salute
+24|Aggiungi veicolo
+25|Aggiungi moto, auto, CNG, risciò elettrico, minibus, pick-up o camion. Ottieni un punteggio di salute da 0 a 100, promemoria dei tagliandi e avvisi di scadenza dei documenti. Tutto resta sul tuo telefono.
+26|Aggiungi il primo veicolo
+27|Aggiunto alla cartella salute
+28|Regola e lubrifica; se i denti sono uncinati, sostituisci il kit catena.
+29|Regola il freno e pulisci il tamburo.
+30|Regola il freno.
+31|Stringi il dado del freno; sostituisci le ganasce se l’indicatore supera il limite.
+32|Consiglio
+33|Sonda lambda invecchiata; peggiora i consumi.
+34|Celle della batteria vecchie o solfatate
+35|Pressione dei freni ad aria bassa
+36|Spurgo e controllo del serbatoio dei freni ad aria
+37|Filtro aria
+38|Filtro aria / corpo farfallato sporco
+39|Filtro aria intasato
+40|Aria nel circuito freni
+41|Aria nei circuiti
+42|Perdita d’aria da tubi, valvole o camere
+43|Airbag / SRS
+44|L’airbag potrebbe non aprirsi. Fai controllare in officina.
+45|In caso di incidente gli airbag potrebbero non aprirsi.
+46|Tutti
+47|Tutti i registri e i documenti di questo veicolo verranno eliminati. L’operazione è irreversibile.
+48|Tutti i veicoli e i registri su questo telefono verranno sostituiti dal backup.
+49|Tutti i veicoli sono in buone condizioni.
+50|Consenti
+51|Consenti prima la lettura con IA.
+52|Consenti Bluetooth
+53|Consenti IA cloud
+54|Regolatore dell’alternatore guasto.
+55|Rispondi a qualche domanda veloce. Funziona offline.
+56|Antibloccaggio disattivato. I freni normali funzionano; frena dolcemente sul bagnato.
+57|Aspetto
+58|Costo di riparazione stimato
+59|A che velocità vibra?
+60|Consumo medio
+61|Evita frenate brusche finché non viene controllato.
+62|Indietro
+63|Esegui backup ora
+64|Backup
+65|Backup salvato ✓
+66|Liscio / crepato / bozzo
+67|Batterie
+68|Batterie molto calde / odore
+69|Batteria
+70|Batteria / ricarica
+71|Salute della batteria
+72|Pacco batteria (capacità)
+73|Set di batterie (capacità)
+74|Capacità del set esaurita (solfatazione)
+75|Il set di batterie è quasi a fine vita. Testa ogni batteria singolarmente: sostituirne una debole può salvare l’intero set.
+76|Poli della batteria
+77|Tensione della batteria (multimetro)
+78|Tensione batteria bassa ({0} V)
+79|Livello acqua batteria (piombo-acido)
+80|Rabbocco acqua batteria
+81|Sotto LOW / vuoto
+82|Sotto MIN
+83|Assale piegato
+84|Disco deformato
+85|Manubrio o stelo forcella piegato
+86|Cerchio piegato / bozzo sullo pneumatico
+87|Tra LOW e FULL
+88|Tra MIN e MAX, ambrato/marrone
+89|Meccanico moto
+90|Nero e denso o lattiginoso
+91|Fumo nero
+92|Nero, odore di carburante
+93|Motorino della ventola debole
+94|Blu
+95|Blu / grigio, odore d’olio
+96|Cavo/tirante del freno da regolare
+97|Freno debole / spugnoso / rumoroso
+98|Liquido freni
+99|Liquido freni (a disco)
+100|Perdita di liquido freni
+101|Problema al liquido/cavo dei freni
+102|Ganasce/pastiglie e regolazione
+103|Freni rumorosi / vibrazioni / pedale morbido
+104|Spessore pastiglie
+105|Pastiglie consumate fino al metallo
+106|Ganasce del freno
+107|Ganasce e cavo del freno
+108|Ganasce consumate
+109|Ganasce consumate / cavo allungato
+110|Impianto frenante (!)
+111|Freni deboli
+112|Involucro gonfio / perdita di acido
+113|Acquista Pro · {0} (una tantum)
+114|CNG
+115|CNG (m³)
+116|Risciò a CNG
+117|Le auto a CNG richiedono candele più spesso — sostituiscile e regola la distanza.
+118|Ricollaudo bombola CNG
+119|Rifornimento CNG
+120|Filtro CNG
+121|Impianto CNG
+122|Manutenzione impianto CNG e prova perdite
+123|Taratura impianto CNG e prova perdite
+124|Impianto CNG da tarare / riduttore da revisionare
+125|CNG m³
+126|Cinghia CVT e rulli
+127|Chiama
+128|Tendicatena distribuzione
+129|Per la fotocamera è
+130|Circuito attuatore posizione albero a camme
+131|Circuito sensore posizione albero a camme
+132|Fasatura albero a camme troppo anticipata
+133|Non può superare il contachilometri
+134|Annulla
+135|Auto
+136|L’auto può spegnersi o non partire. Sostituisci il sensore.
+137|Officina auto
+138|Carburazione/iniezione non regolata
+139|Efficienza catalizzatore bassa (bancata 1)
+140|Centro
+141|Zona catena, colpi ritmici
+142|Pulizia e regolazione catena
+143|Controllo gioco catena
+144|Catena troppo lenta
+145|Catena troppo tesa
+146|Catena troppo tesa/secca
+147|Kit catena-pignone-corona
+148|Cambia
+149|Sostituisci l’ATF; diagnosi in officina.
+150|Cambia l’olio. Olio lattiginoso può indicare una perdita di refrigerante.
+151|Ricarica
+152|Carica (1 = piena, 0,5 = metà)
+153|Cicli di carica: {0} su ~{1}
+154|Registro ricariche
+155|Caricata completamente
+156|Il caricabatterie si spegne troppo presto
+157|Fusibile del caricabatterie o caricabatterie guasto
+158|Controllo uscita caricabatterie
+159|Scollega il caricabatterie. Apri il tappo di ogni cella di ogni batteria.
+160|Guasto di ricarica (regolatore)
+161|Problema di ricarica
+162|Presa di ricarica allentata
+163|Guasto all’impianto di ricarica (alternatore/regolatore). Potresti avere poco tempo prima che la batteria si scarichi.
+164|Ingrassaggio telaio
+165|Controlla sonda lambda e cablaggio.
+166|Controlla cablaggio dell’elettrovalvola VVT e livello olio.
+167|Verifica un altro problema
+168|Controlla batteria, massa e cablaggio CAN.
+169|Controlla i bulloni; fai revisionare la forcella.
+170|Controlla la tensione in uscita del caricabatterie e pulisci tutti i poli.
+171|Controlla gioco frizione e pressione pneumatici.
+172|Controlla olio del differenziale e cuscinetti.
+173|Spia motore / MIL
+174|Controlla perdite di depressione.
+175|Controlla tappo carburante e tubi EVAP.
+176|Controlla fusibile e resistenza del riscaldatore.
+177|Controlla livello olio ed elettrovalvola VTEC.
+178|Controlla subito il livello olio; cambialo se è scaduto.
+179|Controlla subito il livello olio; fai registrare le punterie.
+180|Controlla spesso il livello olio; pianifica la revisione della testata.
+181|Controlla la scintilla; svuota la vaschetta del carburatore; fai rifornimento in un distributore affidabile.
+182|Controlla candela, bobina e iniettore del cilindro 2.
+183|Controlla candela, bobina e iniettore del cilindro 3.
+184|Controlla candela, bobina e iniettore del cilindro 4.
+185|Controlla il connettore del sensore.
+186|Controlla il cablaggio del sensore.
+187|Controlla la fattura
+188|Controlla prima la cinghia della ventola.
+189|Controlla i dati del documento
+190|Controlla le tacche di livello del serbatoio di espansione.
+191|Controlla il connettore dell’acceleratore; lascia raffreddare la centralina.
+192|Prima la pressione pneumatici; poi allinea le tacche della ruota posteriore.
+193|Controlla cortocircuiti nel cablaggio.
+194|Codici spia motore attivi: {0}
+195|Spia motore accesa
+196|Controlli
+197|Starter bloccato
+198|Starter/minimo (carburatore) o sensore avviamento a freddo (iniezione)
+199|Scegli la lingua
+200|Pulisci valvola EGR e condotti.
+201|Pulisci il debimetro; controlla il connettore.
+202|Puliti e serrati
+203|Pulisci il freno; controlla lo spessore pastiglie con il controllo guidato.
+204|Pulisci corpo farfallato / valvola IAC.
+205|Pulisci il corpo farfallato; controlla il TPS.
+206|Pulisci, lubrifica o sostituisci il kit catena.
+207|Pulisci/sostituisci il filtro aria e fai regolare il carburatore.
+208|Cancella codici (dopo la riparazione)
+209|Clic o niente, luci fioche
+210|Filtro CNG intasato
+211|Filtro aria intasato
+212|Filtro abitacolo intasato
+213|Radiatore intasato
+214|Chiudi
+215|L’IA cloud non è disponibile in questa build o è sospesa.
+216|Backup cloud (gratis)
+217|Lubrificazione cavi frizione e acceleratore
+218|Dischi e cavo frizione
+219|Controllo dischi frizione
+220|La frizione slitta
+221|In arrivo
+222|Cause comuni: 
+223|La frizione del compressore non innesta
+224|Compressore usurato / regolatore guasto
+225|Condensa nei tragitti brevi
+226|Ventola condensatore / condensatore sporco
+227|Connetti
+228|Connesso a {0}
+229|Controllo connettori e cablaggio
+230|Continua
+231|Centralina guasta o surriscaldata
+232|Refrigerante
+233|Refrigerante sotto la temperatura del termostato
+234|Perdita di refrigerante (manicotto, radiatore, pompa acqua)
+235|Perdita di refrigerante nell’aspirazione
+236|Livello refrigerante
+237|Temp. refrigerante
+238|Circuito sensore temperatura refrigerante
+239|Sensore temperatura refrigerante: segnale basso
+240|Temperatura refrigerante (termometro)
+241|Gioco corretto, catena lubrificata.
+242|Poli ossidati
+243|Ossidazione: pulisci con acqua e bicarbonato.
+244|Costo per km: ৳{0}
+245|Costo ৳
+246|Costo ৳ (facoltativo)
+247|Impossibile connettersi: {0}
+248|Non è stato possibile leggere tutto. Completa il resto o prova l’IA.
+249|Testata crepata
+250|Gira normalmente ma non parte
+251|Circuito sensore posizione albero motore
+252|Crea account
+253|Critico
+254|Chilometraggio attuale (km)
+255|Attuale: {0} km
+256|Mancata accensione cilindro 1
+257|Mancata accensione cilindro 2
+258|Mancata accensione cilindro 3
+259|Mancata accensione cilindro 4
+260|Perdita dalla valvola della bombola
+261|Scuro
+262|Data
+263|Detriti / ruggine
+264|Scanalature profonde
+265|Elimina
+266|Elimina veicolo
+267|Eliminare {0}?
+268|Le diagnosi sono solo cause possibili. Chiedi sempre conferma a un meccanico.
+269|Diesel
+270|Filtro gasolio / separatore d’acqua
+271|Olio differenziale/cambio
+272|Olio differenziale/cambio basso
+273|Elenco in fase pilota: quelli sotto sono esempi. Le officine verificate vengono aggiunte zona per zona.
+274|Filtro aria sporco
+275|Filtro aria / candela sporchi
+276|Filtro aria o debimetro sporco; controlla perdite in aspirazione.
+277|Carburatore / filtro aria sporco
+278|Carburatore / filtro carburante sporco
+279|Scarta
+280|Fai una messa a punto: filtro aria, candela, pulizia carburatore.
+281|Non guidare finché la pressione non tiene. Rischio di cedimento dei freni.
+282|Non guidare. I freni potrebbero cedere.
+283|Non continuare a guidare con temperatura alta.
+284|Medico
+285|Si surriscalda soprattutto nel traffico?
+286|Tira solo in frenata?
+287|La pressione cala a motore spento?
+288|Il clima soffia ma non è freddo?
+289|La leva del freno arriva fino in fondo?
+290|L’auto va bene a benzina?
+291|La spia del caricabatterie diventa verde (piena) molto prima di prima?
+292|Quando si spegne, display/clacson funzionano ancora?
+293|Il pedale/la leva va troppo a fondo?
+294|Motorino/clacson funzionano normalmente?
+295|Sollevata, la ruota gira libera (senza attrito)?
+296|Il fumo bianco continua a motore ben caldo?
+297|Freno che trascina
+298|Freni che trascinano
+299|Freni / cuscinetti che trascinano
+300|Freni che trascinano / pressione pneumatici bassa
+301|Spurga i serbatoi ogni giorno; revisiona il compressore.
+302|Spurga il separatore d’acqua; fai testare gli iniettori.
+303|Circuito airbag conducente
+304|Nome dell’autista
+305|Nome dell’autista — facoltativo
+306|Telefono dell’autista
+307|Autista: {0}
+308|Patente di guida
+309|Ganasce del freno a tamburo consumate
+310|Catena secca
+311|Cuscinetto ruota secco/duro
+312|Da fare ora
+313|In scadenza
+314|Polvere/vetrificazione sulle pastiglie
+315|Flusso EGR insufficiente
+316|Guasto batteria EV / READY
+317|Grande perdita EVAP
+318|Piccola perdita EVAP
+319|Guasto impianto EVAP
+320|SCADUTO
+321|Batteria del risciò elettrico
+322|Modifica intervallo
+323|Modifica veicolo
+324|Consumi
+325|Elettrico (piombo-acido)
+326|Elettrico (litio)
+327|Risciò elettrico
+328|Scooter elettrico / e-bike
+329|Email
+330|Motore FREDDO. Non aprire mai il tappo del radiatore a caldo.
+331|Giri motore
+332|Compressione bassa
+333|Carico motore
+334|Motore spento da 5 minuti, veicolo dritto su terreno piano.
+335|Motore spento e a riposo da 1 ora. Batteria 12V: da 12,6V è in salute.
+336|Motore spento. Guarda entrambi i poli della batteria.
+337|Olio motore
+338|Olio motore e filtro
+339|Olio motore e filtro olio
+340|Livello olio motore
+341|Guasto motore o emissioni memorizzato. Se lampeggia: forte mancata accensione, rallenta e fermati presto.
+342|Surriscaldamento motore
+343|Motore surriscaldato. Fermati, lascia raffreddare, non aprire mai il tappo del radiatore caldo.
+344|Ticchettio dal motore, aumenta con i giri
+345|Inserisci l’autonomia nominale per stimare la salute della batteria.
+346|Pareggia la pressione pneumatici; fai l’assetto.
+347|Ogni … km
+348|Ogni … mesi
+349|Tutto a posto
+350|Tutto a posto!
+351|Ottimo
+352|Scaduto
+353|Scaduto da {0} giorni
+354|Scaduto da {0} giorni. Rinnova per evitare multe.
+355|Scade
+356|Scade tra {0} giorni.
+357|Scade oggi!
+358|Data di scadenza
+359|Esporta file
+360|FI / motore (moto)
+361|Guasto sensore iniezione (TPS, O2, MAP)
+362|Non riuscito: 
+363|Leggero, solo dopo il rifornimento
+364|Cinghia ventola allentata/rotta
+365|Allaccia le cinture.
+366|Caricabatterie guasto, non carica del tutto
+367|Caricabatterie guasto, non carica completamente
+368|In evidenza
+369|Gonfia alla pressione consigliata (di solito 25/33 psi ant./post.) e lubrifica la catena.
+370|Pieno fatto
+371|O-ring della valvola di rifornimento usurato
+372|Trova un meccanico / SOS
+373|Individua il materiale d’attrito tra la piastra metallica e il disco.
+374|Trova la piccola barretta in rilievo (indicatore di usura) nelle scanalature.
+375|Impronta
+376|Certificato di revisione
+377|Ripara prima di trasportare passeggeri.
+378|Da riparare questa settimana
+379|Risolto
+380|Flotta
+381|La modalità flotta è per chi ha molti veicoli (CNG, risciò elettrici, consegne, trasporti). È inclusa in Pro / abbonamento flotta.
+382|Modalità flotta: salute di ogni veicolo, tagliandi scaduti e documenti in scadenza in un’unica schermata.
+383|Fai il lavaggio del circuito; olio nel refrigerante può indicare la guarnizione della testata.
+384|Freni a tamburo: controlla la freccia dell’indicatore di usura sul mozzo.
+385|Forcella disallineata dopo una caduta
+386|Olio forcella basso / boccole usurate
+387|Candela incrostata
+388|Freno anteriore
+389|Pastiglie anteriori
+390|Pastiglie/ganasce anteriori
+391|Olio forcella anteriore
+392|Pneumatico anteriore
+393|Davanti, sulle buche
+394|Carburante
+395|Registro carburante e CNG
+396|Carburante / ricarica
+397|Carburante / energia
+398|Tappo carburante mancante/allentato o tubo crepato.
+399|Filtro carburante
+400|Pompa carburante / relè
+401|Qualità del carburante o perdita; per il CNG taratura o perdita dell’impianto
+402|Guasto all’iniezione della moto. Rivolgiti a un centro assistenza della marca con strumento diagnostico.
+403|Viaggio GPS (stima)
+404|Officina
+405|GariDoctor
+406|GariDoctor Pro
+407|Passaporto veicolo GariDoctor
+408|Perdita di gas da raccordi, tubi o riduttore
+409|Perdita di gas — senti odore di gas?
+410|Olio cambio
+411|Olio cambio e differenziale
+412|Passa a Pro
+413|Fai una diagnosi e una prova di compressione.
+414|Fai controllare assetto e perni fuso.
+415|Fai controllare presto la valvola di rifornimento.
+416|Fai controllare l’allineamento della forcella; non andare veloce.
+417|Fai tarare l’impianto e sostituire il filtro.
+418|Fai l’equilibratura e controlla eventuali bozzi sugli pneumatici.
+419|Ganasce vetrificate
+420|Candelette (spirale diesel)
+421|Buono
+422|Stridio / sfregamento metallico
+423|Stridio / fischio
+424|Scanalature chiaramente più profonde dell’indicatore (>2 mm).
+425|Freno a mano tirato, liquido freni basso o guasto ai freni. Se il freno a mano è rilasciato, non guidare.
+426|Parte a fatica
+427|Parte a fatica / non parte
+428|Possibili cambi marcia bruschi. Controlla sensore e ATF.
+429|L’autonomia è scesa a circa metà o meno?
+430|Hai un codice da un gruppo Facebook, un’officina o un kit adattatore?
+431|Fai controllare motore e centralina.
+432|Hai controllato la pressione pneumatici nelle ultime 2 settimane?
+433|Guarnizione della testata
+434|Guarnizione della testata bruciata
+435|Punteggio di salute
+436|Punteggio di salute {0} su 100
+437|In salute ({0})
+438|Circuito riscaldatore o sensore guasto.
+439|Aiuto e SOS
+440|Nascondi
+441|Guasto all’alta tensione o alla batteria di trazione. Parcheggia in sicurezza e contatta un negozio di batterie.
+442|Storico
+443|Avvicina il telefono finché le cifre riempiono l’inquadratura. La lettura avviene sul telefono, offline.
+444|Perdita da manicotto/radiatore
+445|Controllo cuscinetti motore nel mozzo
+446|Batteria ibrida debole. Fai un test dei moduli prima di sostituire l’intero pacco.
+447|Non ho capito cosa registrare. Modifica il testo e tocca “Leggi”, oppure prova l’IA.
+448|Ho bisogno di aiuto.
+449|Sistema di controllo del minimo
+450|Se senti odore di gas fermati, chiudi la valvola della bombola e arieggia. Altrimenti fai revisionare l’impianto.
+451|Guasto accensione / EVAP
+452|Bobina / candele
+453|Accensione: candele e bobine (con il CNG si consumano prima)
+454|Immobilizer / sensore (albero motore)
+455|Gonfia alla pressione consigliata per il carico.
+456|Iniettore intasato
+457|Ugelli iniettori usurati
+458|Fasatura iniettore/pompa
+459|Bordo interno o esterno
+460|Inserisci il bordo di una moneta da 1 taka nella scanalatura e confronta.
+461|Assicurazione
+462|Temp. aria aspirata
+463|Sensore temperatura aria aspirata: segnale alto
+464|Codice non valido
+465|È un freno a disco (con serbatoio del liquido)?
+466|Peggiora al mattino / con il freddo?
+467|Peggiora al mattino?
+468|Dopo la guida, una batteria è più calda o gonfia delle altre?
+469|La moto è raffreddata a liquido (ha un radiatore)?
+470|La spia motore / FI è accesa?
+471|Il refrigerante cala senza perdite visibili?
+472|Il refrigerante è basso?
+473|Il serbatoio di espansione è basso (motore freddo)?
+474|Il manubrio è storto andando dritti?
+475|La spia lampeggia?
+476|L’odore è forte vicino alla bombola o al motore?
+477|C’è uno sfregamento dall’assale posteriore?
+478|Tieni aperta questa schermata mentre guidi; fermandoti, i km vengono aggiunti al contachilometri.
+479|Blocchetto di accensione guasto
+480|Taratura dell’impianto starata
+481|Circuito sensore di battito
+482|Lingua
+483|Ultimi 30 giorni: {0}, di solito {1}
+484|Ultimo cambio olio a (km) — facoltativo
+485|Ultimo: OK
+486|Ultimo: da controllare
+487|Più tardi
+488|Fai la prova perdite prima di ricaricare il gas, o perderà di nuovo.
+489|Iniettore che perde, filtro aria sporco, sonda lambda guasta.
+490|Miscela magra (taratura carburatore)
+491|Sensore velocità ruota anteriore sinistra
+492|Meno di 2 mm
+493|Livello e colore OK.
+494|A filo con l’indicatore di usura
+495|Leva/pedale va troppo a fondo, morbido
+496|Chiaro
+497|Spie
+498|Litri
+499|Litri (o 1 = carica completa)

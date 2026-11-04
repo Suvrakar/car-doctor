@@ -1,6 +1,6 @@
 # GariDoctor (গাড়িডাক্তার)
 
-**A health doctor for every vehicle.** One Android app that tracks, checks and explains the health of any vehicle — car, motorcycle, scooter, CNG auto-rickshaw, microbus, pickup, truck, or electric easy-bike — in **Bangla and English**, running almost entirely on the phone.
+**A health doctor for every vehicle.** One Android app that tracks, checks and explains the health of any vehicle — car, motorcycle, scooter, CNG auto-rickshaw, microbus, pickup, truck, or electric easy-bike — in **Bangla and English**, running almost entirely on the phone. Available in **11 languages**: English, বাংলা, हिन्दी, اردو, नेपाली, العربية, 中文, 日本語, Русский, Deutsch, Italiano (right-to-left layouts for Urdu and Arabic).
 
 [![Build](https://github.com/limon27121/GariDoctor/actions/workflows/build.yml/badge.svg)](https://github.com/limon27121/GariDoctor/actions/workflows/build.yml)
 
@@ -34,6 +34,7 @@
 - **Garage finder + SOS**: filter by bike mechanic / car workshop / battery shop / CNG kit; SOS sends location + vehicle + latest diagnosis by SMS or WhatsApp.
 - **Fleet mode**: every vehicle's score, overdue services and expiring papers on one screen, with driver names.
 - **AI scanning without a server** ([details](docs/AI.md)): photograph a **paper** (registration, tax token, fitness, insurance, licence) and the app reads the expiry date and sets reminders; photograph a **garage bill** and it logs each part with cost, date and odometer; **say** "আজ ৪০০ টাকায় তেল বদলালাম" and it logs it; photograph a **warning light** to identify it. Reading happens on the phone first (ML Kit + Bangla/English rules, optional Gemini Nano); cloud Gemini via Firebase AI Logic only on request, with consent, App Check, and per-user daily limits enforced by Firestore rules.
+- **11 languages**: a first-launch language picker (native names first) and Settings → Language. English and Bangla are written at each call site; the other nine come from JSON catalogs keyed by the English text (`core/src/main/resources/i18n/<code>.json`), with `{0}` placeholders for numbers and names and English as the fallback. Urdu and Arabic mirror the layout automatically. Voice input uses the matching speech language. See [docs/I18N.md](docs/I18N.md).
 - **Editable schedules**: every part's km/month interval can be changed per vehicle (template default → model preset → user override).
 - **Backup**: export/restore a small JSON file (works offline), plus optional free cloud backup (Firebase Auth email + one Firestore document per user, see `firestore.rules`). Photos never leave the phone.
 - **Money hooks**: one-time **Pro unlock via Google Play Billing** (product id `garidoctor_pro`), offline promo codes for Facebook-group admins and dongle bundles, **AdMob** in the free tier (home banner + rewarded ad for one free passport), featured garage listings, sponsored maintenance tips at the exact moment a part is due (Remote Config `sponsor_<CATEGORY>`).
