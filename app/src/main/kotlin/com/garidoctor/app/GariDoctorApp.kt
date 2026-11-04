@@ -33,6 +33,7 @@ class GariDoctorApp : Application() {
         super.onCreate()
         instance = this
         prefs = Prefs(this)
+        applyThemeMode(prefs.themeMode.value)
         val dtc = javaClass.classLoader?.getResourceAsStream("obd/dtc.json")?.bufferedReader()?.use { ObdDecoder.loadDictionary(it.readText()) } ?: emptyMap()
         val db = AppDatabase.get(this)
         repository = Repository(db.dao(), { _registry.value }, dtc)
@@ -55,6 +56,14 @@ class GariDoctorApp : Application() {
     }
 
     companion object {
+        /** Light / Dark / System via AppCompat night mode, which also fixes status-bar icon colours. */
+        fun applyThemeMode(mode: String) {
+            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(when (mode) {
+                "LIGHT" -> androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+                "DARK" -> androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
+                else -> androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            })
+        }
         const val CH_SERVICE = "service"
         const val CH_PAPERS = "papers"
         const val CH_ALERTS = "alerts"

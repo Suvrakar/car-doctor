@@ -47,7 +47,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.garidoctor.app.ui.theme.AppSurface
+import com.garidoctor.app.ui.theme.LocalNeu
 import com.garidoctor.app.ui.theme.Spacing
+import com.garidoctor.app.ui.theme.isSoft
+import com.garidoctor.app.ui.theme.neuRaised
+import com.garidoctor.app.ui.theme.softWell
 import com.garidoctor.app.ui.theme.Tone
 import com.garidoctor.app.ui.theme.color
 import com.garidoctor.app.ui.theme.container
@@ -67,12 +72,19 @@ import java.time.LocalDate
 fun ScoreRing(score: Int, size: Dp = 96.dp, stroke: Dp = 10.dp, showLabel: Boolean = size >= 80.dp) {
     val tone = HealthBand.of(score).tone()
     val color = tone.color()
-    val track = MaterialTheme.colorScheme.surfaceContainerHighest
+    val track = if (isSoft) MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0f) else MaterialTheme.colorScheme.surfaceContainerHighest
     val sweep = remember { Animatable(0f) }
     LaunchedEffect(score) { sweep.animateTo(score / 100f, tween(durationMillis = 900, easing = FastOutSlowInEasing)) }
     val a11y = t("Health score $score of 100", "হেলথ স্কোর ১০০ এর মধ্যে ${n(score)}")
-    Box(contentAlignment = Alignment.Center, modifier = Modifier.size(size).semantics { contentDescription = a11y }) {
-        Canvas(Modifier.matchParentSize()) {
+    val soft = isSoft
+    val neu = LocalNeu.current
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.size(size).semantics { contentDescription = a11y }
+            .then(if (soft) Modifier.neuRaised(size / 2, (size.value / 16f).coerceIn(4f, 10f).dp, neu.base, neu.highlight, neu.shadow) else Modifier),
+    ) {
+        if (soft) Box(Modifier.matchParentSize().padding(stroke * 0.35f).softWell(size / 2, (stroke.value / 3f).dp))
+        Canvas(Modifier.matchParentSize().padding(if (soft) stroke * 0.6f else 0.dp)) {
             val st = Stroke(width = stroke.toPx(), cap = StrokeCap.Round)
             val inset = stroke.toPx() / 2
             val arc = Size(this.size.width - 2 * inset, this.size.height - 2 * inset)
@@ -112,8 +124,11 @@ fun Dot(color: androidx.compose.ui.graphics.Color) = Box(Modifier.size(10.dp).ba
 fun IconBadge(icon: ImageVector, tone: Tone = Tone.NEUTRAL, size: Dp = 40.dp) {
     val bg = if (tone == Tone.NEUTRAL) MaterialTheme.colorScheme.secondaryContainer else tone.container()
     val fg = if (tone == Tone.NEUTRAL) MaterialTheme.colorScheme.onSecondaryContainer else tone.onContainer()
-    Box(Modifier.size(size).background(bg, CircleShape), contentAlignment = Alignment.Center) {
-        Icon(icon, contentDescription = null, tint = fg, modifier = Modifier.size(size * 0.55f))
+    val neu = LocalNeu.current
+    val base = if (isSoft && tone == Tone.NEUTRAL) Modifier.neuRaised(size / 2, 3.dp, neu.base, neu.highlight, neu.shadow) else Modifier.background(bg, CircleShape)
+    val fgSoft = if (isSoft && tone == Tone.NEUTRAL) MaterialTheme.colorScheme.primary else fg
+    Box(Modifier.size(size).then(base), contentAlignment = Alignment.Center) {
+        Icon(icon, contentDescription = null, tint = fgSoft, modifier = Modifier.size(size * 0.55f))
     }
 }
 
@@ -137,11 +152,7 @@ fun SectionHeader(title: String, modifier: Modifier = Modifier, action: (@Compos
 /** Grouped surface for related rows, Google-settings style. */
 @Composable
 fun SectionCard(title: String? = null, modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) {
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.large,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-    ) {
+    AppSurface(modifier = modifier.fillMaxWidth()) {
         Column(Modifier.padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
             if (title != null) Text(title, style = MaterialTheme.typography.titleMedium)
             content()
@@ -175,8 +186,8 @@ fun ActionRow(
 fun UsageBar(fraction: Float, tone: Tone, modifier: Modifier = Modifier.fillMaxWidth()) {
     val animated by animateFloatAsState(fraction.coerceIn(0f, 1f), tween(700), label = "usage")
     LinearProgressIndicator(
-        progress = { animated }, modifier = modifier.height(6.dp),
-        color = tone.color(), trackColor = MaterialTheme.colorScheme.surfaceContainerHighest, strokeCap = StrokeCap.Round,
+        progress = { animated }, modifier = modifier.height(if (isSoft) 8.dp else 6.dp).softWell(4.dp, 2.dp),
+        color = tone.color(), trackColor = if (isSoft) androidx.compose.ui.graphics.Color.Transparent else MaterialTheme.colorScheme.surfaceContainerHighest, strokeCap = StrokeCap.Round,
         drawStopIndicator = {},
     )
 }
@@ -197,7 +208,7 @@ enum class Tab(val route: String) { GARAGE("home"), FLEET("fleet"), HELP("help")
 
 @Composable
 fun MainNavBar(current: Tab, onSelect: (Tab) -> Unit) {
-    NavigationBar {
+    NavigationBar(containerColor = MaterialTheme.colorScheme.surface, tonalElevation = if (isSoft) 0.dp else 3.dp) {
         listOf(
             Triple(Tab.GARAGE, t("Garage", "গ্যারেজ"), Icons.Filled.DirectionsCar to Icons.Outlined.DirectionsCar),
             Triple(Tab.FLEET, t("Fleet", "ফ্লিট"), Icons.Filled.Dashboard to Icons.Outlined.Dashboard),

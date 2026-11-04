@@ -23,7 +23,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.garidoctor.app.passport.PassportPdf
 import com.garidoctor.app.ui.*
+import com.garidoctor.app.ui.theme.AppSurface
 import com.garidoctor.app.ui.theme.Spacing
+import com.garidoctor.app.ui.theme.isSoft
 import com.garidoctor.app.ui.theme.Tone
 import com.garidoctor.app.ui.theme.tone
 import com.garidoctor.app.data.today
@@ -90,8 +92,8 @@ fun VehicleScreen(vm: MainViewModel, id: Long, onBack: () -> Unit, nav: (String)
         LazyColumn(Modifier.padding(pad), contentPadding = PaddingValues(Spacing.gutter, Spacing.s, Spacing.gutter, Spacing.xxl), verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
             // ── Hero ──
             item {
-                Card(shape = MaterialTheme.shapes.extraLarge, colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)) {
-                    Column(Modifier.padding(Spacing.xl), horizontalAlignment = Alignment.CenterHorizontally) {
+                AppSurface(Modifier.fillMaxWidth(), radius = 32.dp, elevation = 9.dp) {
+                    Column(Modifier.fillMaxWidth().padding(Spacing.xl), horizontalAlignment = Alignment.CenterHorizontally) {
                         ScoreRing(c.health.score, 148.dp, 14.dp)
                         Gap(Spacing.m)
                         StatusPill(c.health.band.label.tr(), c.health.band.tone())
@@ -106,7 +108,8 @@ fun VehicleScreen(vm: MainViewModel, id: Long, onBack: () -> Unit, nav: (String)
             }
             // ── Quick actions ──
             item {
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(Spacing.s), contentPadding = PaddingValues(vertical = Spacing.xs)) {
+                // Vertical padding leaves room for the soft shadows, which a LazyRow would otherwise clip.
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(Spacing.m), contentPadding = PaddingValues(vertical = Spacing.l, horizontal = 2.dp)) {
                     items(actions, key = { it.label }) { a -> ActionTile(a) }
                 }
             }
@@ -193,10 +196,10 @@ fun VehicleScreen(vm: MainViewModel, id: Long, onBack: () -> Unit, nav: (String)
 
 @Composable
 private fun ActionTile(a: QuickAction) {
-    Surface(onClick = a.onClick, shape = MaterialTheme.shapes.large, color = MaterialTheme.colorScheme.secondaryContainer,
-        contentColor = MaterialTheme.colorScheme.onSecondaryContainer, modifier = Modifier.width(84.dp).height(84.dp)) {
-        Column(Modifier.padding(Spacing.s), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-            Icon(a.icon, contentDescription = null)
+    AppSurface(Modifier.width(84.dp).height(84.dp), radius = 22.dp, elevation = 5.dp, onClick = a.onClick, contentDescription = a.label,
+        tint = if (isSoft) null else MaterialTheme.colorScheme.secondaryContainer) {
+        Column(Modifier.fillMaxSize().padding(Spacing.s), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+            Icon(a.icon, contentDescription = null, tint = if (isSoft) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSecondaryContainer)
             Gap(6.dp)
             Text(a.label, style = MaterialTheme.typography.labelMedium, maxLines = 1, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Center)
         }
@@ -205,8 +208,8 @@ private fun ActionTile(a: QuickAction) {
 
 @Composable
 fun GroupCard(content: @Composable ColumnScope.() -> Unit) {
-    Card(shape = MaterialTheme.shapes.large, colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow), modifier = Modifier.fillMaxWidth()) {
-        Column(Modifier.padding(vertical = Spacing.xs), content = content)
+    AppSurface(Modifier.fillMaxWidth()) {
+        Column(Modifier.fillMaxWidth().padding(vertical = Spacing.xs), content = content)
     }
 }
 
@@ -228,8 +231,7 @@ fun StatusBanner(icon: ImageVector, tone: Tone, title: String, body: String, onC
             }
         }
     }
-    if (onClick != null) Surface(onClick = onClick, shape = MaterialTheme.shapes.large, color = container, modifier = Modifier.fillMaxWidth()) { inner() }
-    else Surface(shape = MaterialTheme.shapes.large, color = container, modifier = Modifier.fillMaxWidth()) { inner() }
+    AppSurface(Modifier.fillMaxWidth(), tint = container, elevation = 5.dp, onClick = onClick) { inner() }
 }
 
 @Composable

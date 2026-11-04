@@ -26,6 +26,22 @@ class Prefs(context: Context) {
         sp.edit().putString("sos", list.joinToString("\n") { "${it.name.replace("|", " ")}|${it.phone}" }).apply(); _sos.value = list
     }
 
+    // ---- Appearance ----
+    private val _style = MutableStateFlow(sp.getString("ui_style", "SOFT")!!)
+    /** "SOFT" (neumorphic) or "MATERIAL". */
+    val uiStyle: StateFlow<String> = _style
+    fun setUiStyle(v: String) { sp.edit().putString("ui_style", v).apply(); _style.value = v }
+
+    private val _themeMode = MutableStateFlow(sp.getString("theme_mode", "SYSTEM")!!)
+    /** "SYSTEM", "LIGHT" or "DARK". */
+    val themeMode: StateFlow<String> = _themeMode
+    fun setThemeMode(v: String) { sp.edit().putString("theme_mode", v).apply(); _themeMode.value = v }
+
+    private val _accent = MutableStateFlow(sp.getString("accent", "TEAL")!!)
+    /** "TEAL", "BLUE", "ORANGE" or "PURPLE". */
+    val accent: StateFlow<String> = _accent
+    fun setAccent(v: String) { sp.edit().putString("accent", v).apply(); _accent.value = v }
+
     var lastNotifiedDay: Long
         get() = sp.getLong("last_notified_day", 0)
         set(v) { sp.edit().putLong("last_notified_day", v).apply() }

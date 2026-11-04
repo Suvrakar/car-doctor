@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.garidoctor.app.data.today
 import com.garidoctor.app.ui.*
+import com.garidoctor.app.ui.theme.AppSurface
 import com.garidoctor.app.ui.theme.Bad
 import com.garidoctor.app.ui.theme.Warn
 import com.garidoctor.core.docs.DocumentExpiry
@@ -44,7 +45,7 @@ fun FleetScreen(vm: MainViewModel, onBack: (() -> Unit)?, onOpen: (Long) -> Unit
                     "ফ্লিট মোড অনেক গাড়ির মালিকদের জন্য (সিএনজি, ইজি বাইক, ডেলিভারি, পরিবহন)। এটি প্রো / ফ্লিট সাবস্ক্রিপশনের অংশ।"))
                 Gap(); Button(onClick = { showPro = true }) { Text(t("Unlock", "আনলক")) }
             }
-        } else LazyColumn(Modifier.padding(pad), contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        } else LazyColumn(Modifier.padding(pad), contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
             item {
                 SectionCard {
                     Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
@@ -56,7 +57,7 @@ fun FleetScreen(vm: MainViewModel, onBack: (() -> Unit)?, onOpen: (Long) -> Unit
                 }
             }
             items(sum.rows, key = { it.vehicle.id }) { r ->
-                Card(onClick = { onOpen(r.vehicle.id) }, modifier = Modifier.fillMaxWidth()) {
+                AppSurface(Modifier.fillMaxWidth(), radius = 22.dp, elevation = 5.dp, onClick = { onOpen(r.vehicle.id) }, contentDescription = r.vehicle.nickname) {
                     Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
                         ScoreRing(r.health.score, 56.dp, 6.dp)
                         Spacer(Modifier.width(12.dp))

@@ -107,10 +107,62 @@ object Spacing {
     val gutter = 16.dp
 }
 
+/** Visual style: soft neumorphic surfaces, or flat Material cards. */
+enum class UiStyle { SOFT, MATERIAL }
+
+/** Accent palettes (M3 primary roles) for light and dark. */
+enum class Accent(val swatch: Color) {
+    TEAL(Color(0xFF006B58)), BLUE(Color(0xFF0B57D0)), ORANGE(Color(0xFF8B5000)), PURPLE(Color(0xFF6750A4));
+
+    fun apply(c: ColorScheme, dark: Boolean): ColorScheme = when (this) {
+        TEAL -> c
+        BLUE -> if (dark) c.copy(primary = Color(0xFFA8C7FA), onPrimary = Color(0xFF062E6F), primaryContainer = Color(0xFF0842A0), onPrimaryContainer = Color(0xFFD3E3FD), inversePrimary = Color(0xFF0B57D0))
+                else c.copy(primary = Color(0xFF0B57D0), onPrimary = Color.White, primaryContainer = Color(0xFFD3E3FD), onPrimaryContainer = Color(0xFF041E49), inversePrimary = Color(0xFFA8C7FA))
+        ORANGE -> if (dark) c.copy(primary = Color(0xFFFFB870), onPrimary = Color(0xFF4A2800), primaryContainer = Color(0xFF693C00), onPrimaryContainer = Color(0xFFFFDCBE), inversePrimary = Color(0xFF8B5000))
+                else c.copy(primary = Color(0xFF8B5000), onPrimary = Color.White, primaryContainer = Color(0xFFFFDCBE), onPrimaryContainer = Color(0xFF2C1600), inversePrimary = Color(0xFFFFB870))
+        PURPLE -> if (dark) c.copy(primary = Color(0xFFD0BCFF), onPrimary = Color(0xFF381E72), primaryContainer = Color(0xFF4F378B), onPrimaryContainer = Color(0xFFEADDFF), inversePrimary = Color(0xFF6750A4))
+                else c.copy(primary = Color(0xFF6750A4), onPrimary = Color.White, primaryContainer = Color(0xFFEADDFF), onPrimaryContainer = Color(0xFF21005D), inversePrimary = Color(0xFFD0BCFF))
+    }
+
+    companion object { fun of(name: String) = entries.firstOrNull { it.name == name } ?: TEAL }
+}
+
+/**
+ * Neumorphic ("soft UI") palette: one base colour shared by background and surfaces, and the
+ * light/dark shadow pair that makes surfaces look extruded from it. Text keeps full contrast
+ * (plain neumorphism's usual accessibility failure); state is still carried by colour pills.
+ */
+@Immutable
+data class NeuColors(val base: Color, val highlight: Color, val shadow: Color, val well: Color)
+
+private val NeuLight = NeuColors(base = Color(0xFFE6ECE9), highlight = Color(0xFFFFFFFF), shadow = Color(0xFFA9B8B1), well = Color(0xFFDCE3DF))
+private val NeuDark = NeuColors(base = Color(0xFF1F2522), highlight = Color(0xFF2B332F), shadow = Color(0xFF0D100F), well = Color(0xFF191E1C))
+
+val LocalUiStyle = staticCompositionLocalOf { UiStyle.SOFT }
+val LocalNeu = staticCompositionLocalOf { NeuLight }
+
+private fun ColorScheme.soft(n: NeuColors): ColorScheme = copy(
+    background = n.base, surface = n.base,
+    surfaceContainerLowest = n.base, surfaceContainerLow = n.base, surfaceContainer = n.base,
+    surfaceContainerHigh = n.well, surfaceContainerHighest = n.well,
+)
+
 @Composable
-fun GariTheme(dark: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
-    CompositionLocalProvider(LocalStatusColors provides if (dark) DarkStatus else LightStatus) {
-        MaterialTheme(colorScheme = if (dark) DarkColors else LightColors, typography = AppTypography, shapes = AppShapes, content = content)
+fun GariTheme(
+    dark: Boolean = isSystemInDarkTheme(),
+    style: UiStyle = UiStyle.SOFT,
+    accent: Accent = Accent.TEAL,
+    content: @Composable () -> Unit,
+) {
+    val neu = if (dark) NeuDark else NeuLight
+    var scheme = accent.apply(if (dark) DarkColors else LightColors, dark)
+    if (style == UiStyle.SOFT) scheme = scheme.soft(neu)
+    CompositionLocalProvider(
+        LocalStatusColors provides if (dark) DarkStatus else LightStatus,
+        LocalUiStyle provides style,
+        LocalNeu provides neu,
+    ) {
+        MaterialTheme(colorScheme = scheme, typography = AppTypography, shapes = AppShapes, content = content)
     }
 }
 

@@ -26,7 +26,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.garidoctor.app.ui.screens.*
+import com.garidoctor.app.ui.theme.Accent
 import com.garidoctor.app.ui.theme.GariTheme
+import com.garidoctor.app.ui.theme.UiStyle
 
 class MainActivity : AppCompatActivity() {
     private val vm: MainViewModel by viewModels()
@@ -37,8 +39,13 @@ class MainActivity : AppCompatActivity() {
         val startVehicle = intent.getLongExtra(EXTRA_VEHICLE, -1L)
         setContent {
             val lang by vm.lang.collectAsStateWithLifecycle()
+            val style by vm.prefs.uiStyle.collectAsStateWithLifecycle()
+            val accent by vm.prefs.accent.collectAsStateWithLifecycle()
             CompositionLocalProvider(LocalLang provides lang) {
-                GariTheme { NotificationPermission(vm); AppNav(vm, startVehicle) }
+                // Light/dark comes from AppCompat's night mode (set from Settings), so isSystemInDarkTheme() is right.
+                GariTheme(style = if (style == "MATERIAL") UiStyle.MATERIAL else UiStyle.SOFT, accent = Accent.of(accent)) {
+                    NotificationPermission(vm); AppNav(vm, startVehicle)
+                }
             }
         }
     }

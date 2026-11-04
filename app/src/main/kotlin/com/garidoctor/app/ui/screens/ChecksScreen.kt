@@ -14,6 +14,7 @@ import com.garidoctor.app.data.CheckEntity
 import com.garidoctor.app.data.VoltageEntity
 import com.garidoctor.app.data.today
 import com.garidoctor.app.ui.*
+import com.garidoctor.app.ui.theme.AppSurface
 import com.garidoctor.app.ui.theme.Bad
 import com.garidoctor.app.ui.theme.Good
 import com.garidoctor.core.model.EnergyType
@@ -30,13 +31,13 @@ fun ChecksScreen(vm: MainViewModel, id: Long, onBack: () -> Unit) {
     var volts by remember { mutableStateOf("") }
 
     Screen(active?.title?.tr() ?: t("Visual checks", "চোখে দেখে চেক"), onBack = { if (active != null) { active = null; result = null } else onBack() }) { pad ->
-        Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
             val chk = active
             if (chk == null) {
                 tpl.checks.forEach { c ->
                     val parts = tpl.parts.filter { it.checkId == c.id }
                     val last = st.snapshot.checks.filter { it.vehicleId == id && it.checkId == c.id }.maxByOrNull { it.epochDay }
-                    OutlinedCard(onClick = { active = c; result = null }, modifier = Modifier.fillMaxWidth()) {
+                    AppSurface(Modifier.fillMaxWidth(), radius = 20.dp, elevation = 5.dp, onClick = { active = c; result = null }) {
                         Column(Modifier.padding(16.dp)) {
                             Text(c.title.tr(), style = MaterialTheme.typography.titleMedium)
                             Text(parts.joinToString { it.name.tr() }, style = MaterialTheme.typography.bodySmall)
@@ -60,12 +61,12 @@ fun ChecksScreen(vm: MainViewModel, id: Long, onBack: () -> Unit) {
                 Gap()
                 Text(t("Which one does yours look like?", "আপনারটা কোনটার মতো দেখায়?"), style = MaterialTheme.typography.titleMedium)
                 chk.references.forEach { r ->
-                    OutlinedCard(onClick = {
+                    AppSurface(Modifier.fillMaxWidth(), radius = 20.dp, elevation = 5.dp, onClick = {
                         tpl.parts.filter { it.checkId == chk.id }.forEach { p ->
                             vm.addCheck(CheckEntity(vehicleId = id, partId = p.id, checkId = chk.id, passed = r.passes, epochDay = today()))
                         }
                         result = r.passes
-                    }, modifier = Modifier.fillMaxWidth()) {
+                    }) {
                         Row(Modifier.padding(12.dp), verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
                             ReferenceArt(r.image)
                             Spacer(Modifier.width(12.dp))

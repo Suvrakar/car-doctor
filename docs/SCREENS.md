@@ -1,7 +1,12 @@
 # Main screens
 
 ## Design system
-- **Material 3**, full tonal palette from the brand seed `#0E7C66` (light + dark), edge-to-edge drawing.
+- **Two visual styles**, switchable in Settings → Appearance:
+  - **Soft (default)**: neumorphic. Background and surfaces share one base colour; every surface casts a light shadow up-left and a dark shadow down-right (`neuRaised`), sinks when pressed, and tracks/rings sit in recessed wells (`neuInset`). Text keeps full contrast and status stays in colour pills, which avoids neumorphism's usual accessibility problem. On Android 8 and older (no blur in hardware rendering) surfaces render flat with a hairline edge.
+  - **Material**: flat M3 cards with tonal surfaces.
+  - Every screen draws surfaces through one primitive, `AppSurface`, so the setting restyles the whole app at once.
+- **Theme**: System / Light / Dark (AppCompat night mode, so status-bar icons follow). **Accent**: Teal, Blue, Orange, Purple (M3 primary roles for both themes).
+- **Material 3** base palette from the brand seed `#0E7C66` (light + dark), edge-to-edge drawing.
 - **Semantic status colours** (`Status.colors`): good / warning / bad, each with a container colour, tuned for contrast in both themes. Urgency always uses the same three colours.
 - **Shapes**: 6 / 10 / 16 / 24 / 32 dp. **Spacing**: 4 dp grid, 16 dp gutter. Headings semi-bold; body line-height raised for Bangla script.
 - **Navigation**: bottom bar with four tabs (Garage, Fleet, Help & SOS, Settings), each keeping its own state; large collapsing app bars on top-level screens; pushed screens slide and fade in.
@@ -24,6 +29,6 @@
 | `battery/{id}` | **Battery health** | Easy-bike/e-scooter state of health %, range vs rated, cycles left, advice. |
 | `garages` | **Garages & SOS** | Big red SOS (vehicle, latest problem, location → SMS/WhatsApp to saved contacts); garage list filtered by type, featured first, distance. |
 | `fleet` | **Fleet** | Avg score, attention count, overdue services, papers; vehicles sorted worst-first with driver and top issue. |
-| `settings` | **Settings** | বাংলা/English, Pro & code redeem, SOS contacts, privacy note. |
+| `settings` | **Settings** | Appearance (style, theme, accent), বাংলা/English, Pro & code redeem, backup, SOS contacts, privacy note. |
 
 Design notes: Bangla is the default language; numbers render in Bangla digits when Bangla is selected; urgency always uses the same three colours (green / amber / red); every diagnosis repeats "possible causes, confirm with a mechanic".

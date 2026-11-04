@@ -21,6 +21,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.garidoctor.app.data.VehicleEntity
 import com.garidoctor.app.data.today
 import com.garidoctor.app.ui.*
+import com.garidoctor.app.ui.theme.AppSurface
 import com.garidoctor.app.ui.theme.Spacing
 import com.garidoctor.app.ui.theme.Tone
 import com.garidoctor.app.ui.theme.tone
@@ -99,7 +100,7 @@ fun HomeScreen(vm: MainViewModel, onOpen: (Long) -> Unit, onAdd: () -> Unit, onN
         LazyColumn(
             state = list, modifier = Modifier.padding(pad),
             contentPadding = PaddingValues(start = Spacing.gutter, end = Spacing.gutter, bottom = 96.dp),
-            verticalArrangement = Arrangement.spacedBy(Spacing.m),
+            verticalArrangement = Arrangement.spacedBy(Spacing.l),
         ) {
             item {
                 val open = tasks.size
@@ -117,8 +118,7 @@ fun HomeScreen(vm: MainViewModel, onOpen: (Long) -> Unit, onAdd: () -> Unit, onN
             if (tasks.isNotEmpty()) {
                 item { SectionHeader(t("Needs attention", "মনোযোগ দরকার")) }
                 item {
-                    Card(shape = MaterialTheme.shapes.large, colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-                        modifier = Modifier.animateContentSize()) {
+                    AppSurface(Modifier.fillMaxWidth().animateContentSize()) { Column {
                         val shown = if (showAllTasks) tasks else tasks.take(5)
                         shown.forEachIndexed { i, task ->
                             if (i > 0) HorizontalDivider(Modifier.padding(start = 72.dp), color = MaterialTheme.colorScheme.outlineVariant)
@@ -127,7 +127,7 @@ fun HomeScreen(vm: MainViewModel, onOpen: (Long) -> Unit, onAdd: () -> Unit, onN
                         if (tasks.size > 5) TextButton(onClick = { showAllTasks = !showAllTasks }, modifier = Modifier.padding(start = 8.dp, bottom = 4.dp)) {
                             Text(if (showAllTasks) t("Show less", "কম দেখান") else t("Show all ${tasks.size}", "সবগুলো দেখুন (${n(tasks.size)})"))
                         }
-                    }
+                    } }
                 }
             }
             if (!pro) item { Box(Modifier.padding(top = Spacing.s)) { com.garidoctor.app.ads.BannerAd() } }
@@ -142,7 +142,7 @@ private fun VehicleCard(v: VehicleEntity, c: Checkup?, rec: VehicleRecords?, sub
     val score = c?.health?.score ?: 100
     val overdue = c?.parts?.count { it.state == DueState.OVERDUE } ?: 0
     val papers = rec?.documents?.count { DocumentExpiry.status(it, today()).state != ExpiryState.VALID } ?: 0
-    ElevatedCard(onClick = onOpen, shape = MaterialTheme.shapes.large, modifier = Modifier.fillMaxWidth()) {
+    AppSurface(Modifier.fillMaxWidth(), radius = 28.dp, elevation = 8.dp, onClick = onOpen, contentDescription = v.nickname) {
         Column(Modifier.padding(Spacing.l)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 ScoreRing(score, 84.dp, 9.dp)

@@ -12,6 +12,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -29,6 +37,7 @@ fun SettingsScreen(vm: MainViewModel, onBack: (() -> Unit)?, bottomBar: @Composa
     var showPro by remember { mutableStateOf(false) }
     Screen(t("Settings", "সেটিংস"), onBack, large = true, bottomBar = bottomBar) { pad ->
         Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            AppearanceSection(vm)
             SectionCard(t("Language", "ভাষা")) {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     FilterChip(lang == Lang.BN, { vm.setLang(Lang.BN); AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("bn")) }, { Text("বাংলা") })
@@ -123,5 +132,56 @@ private fun BackupSection(vm: MainViewModel) {
             text = { Text(t("All vehicles and logs on this phone will be replaced by the backup.", "এই ফোনের সব গাড়ি ও লগ ব্যাকআপ দিয়ে বদলে যাবে।")) },
             confirmButton = { TextButton(onClick = { confirmRestore = null; action() }) { Text(t("Restore", "ফেরত আনুন")) } },
             dismissButton = { TextButton(onClick = { confirmRestore = null }) { Text(t("Cancel", "বাতিল")) } })
+    }
+}
+
+/** Appearance options: visual style, light/dark, accent colour. Changes apply instantly. */
+@Composable
+private fun AppearanceSection(vm: MainViewModel) {
+    val style by vm.prefs.uiStyle.collectAsStateWithLifecycle()
+    val mode by vm.prefs.themeMode.collectAsStateWithLifecycle()
+    val accent by vm.prefs.accent.collectAsStateWithLifecycle()
+    SectionCard(t("Appearance", "চেহারা")) {
+        Text(t("Style", "স্টাইল"), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
+            val opts = listOf("SOFT" to t("Soft", "সফট"), "MATERIAL" to t("Material", "ম্যাটেরিয়াল"))
+            opts.forEachIndexed { i, (key, label) ->
+                SegmentedButton(selected = style == key, onClick = { vm.prefs.setUiStyle(key) }, shape = SegmentedButtonDefaults.itemShape(i, opts.size)) { Text(label) }
+            }
+        }
+        Text(t("Soft gives raised, tactile surfaces. Material uses flat cards.", "সফট দেয় উঁচু, স্পর্শযোগ্য সারফেস। ম্যাটেরিয়াল সমতল কার্ড ব্যবহার করে।"),
+            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Gap(4.dp)
+        Text(t("Theme", "থিম"), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
+            val opts = listOf("SYSTEM" to t("System", "সিস্টেম"), "LIGHT" to t("Light", "লাইট"), "DARK" to t("Dark", "ডার্ক"))
+            opts.forEachIndexed { i, (key, label) ->
+                SegmentedButton(selected = mode == key, onClick = {
+                    if (mode != key) { vm.prefs.setThemeMode(key); com.garidoctor.app.GariDoctorApp.applyThemeMode(key) }
+                }, shape = SegmentedButtonDefaults.itemShape(i, opts.size)) { Text(label, maxLines = 1) }
+            }
+        }
+        Gap(4.dp)
+        Text(t("Accent colour", "অ্যাকসেন্ট রং"), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Row(horizontalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier.padding(vertical = 4.dp)) {
+            com.garidoctor.app.ui.theme.Accent.entries.forEach { a ->
+                val name = when (a) {
+                    com.garidoctor.app.ui.theme.Accent.TEAL -> t("Teal", "টিল")
+                    com.garidoctor.app.ui.theme.Accent.BLUE -> t("Blue", "নীল")
+                    com.garidoctor.app.ui.theme.Accent.ORANGE -> t("Orange", "কমলা")
+                    com.garidoctor.app.ui.theme.Accent.PURPLE -> t("Purple", "বেগুনি")
+                }
+                val selected = accent == a.name
+                Box(
+                    Modifier.size(48.dp)
+                        .then(if (selected) Modifier.border(3.dp, MaterialTheme.colorScheme.onSurface, androidx.compose.foundation.shape.CircleShape) else Modifier)
+                        .padding(5.dp)
+                        .background(a.swatch, androidx.compose.foundation.shape.CircleShape)
+                        .clickableItem { vm.prefs.setAccent(a.name) }
+                        .semantics { contentDescription = name; this.selected = selected },
+                    contentAlignment = Alignment.Center,
+                ) { if (selected) Icon(Icons.Default.Check, null, tint = androidx.compose.ui.graphics.Color.White) }
+            }
+        }
     }
 }

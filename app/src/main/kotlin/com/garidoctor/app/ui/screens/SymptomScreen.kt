@@ -24,6 +24,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.garidoctor.app.data.SymptomEntity
 import com.garidoctor.app.data.today
 import com.garidoctor.app.ui.*
+import com.garidoctor.app.ui.theme.AppSurface
 import com.garidoctor.app.ui.theme.Spacing
 import com.garidoctor.app.ui.theme.Tone
 import com.garidoctor.app.ui.theme.tone
@@ -87,7 +88,7 @@ fun SymptomScreen(vm: MainViewModel, id: Long, onBack: () -> Unit, onGarages: ()
                 val d = if (forward) 1 else -1
                 (slideInHorizontally { it / 5 * d } + fadeIn()) togetherWith (slideOutHorizontally { -it / 5 * d } + fadeOut())
             }) { target ->
-                Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(Spacing.gutter), verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
+                Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(Spacing.gutter), verticalArrangement = Arrangement.spacedBy(Spacing.l)) {
                     when (target) {
                         DoctorPage.Entries -> {
                             Text(t("What's wrong with ${v.nickname}?", "${v.nickname} এর কী সমস্যা?"), style = MaterialTheme.typography.headlineSmall)
@@ -104,7 +105,7 @@ fun SymptomScreen(vm: MainViewModel, id: Long, onBack: () -> Unit, onGarages: ()
                         is DoctorPage.Question -> {
                             Text(target.node.question.tr(), style = MaterialTheme.typography.headlineSmall)
                             target.node.options.forEachIndexed { i, o ->
-                                OutlinedCard(onClick = { session?.answer(i); sync() }, shape = MaterialTheme.shapes.large, modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp)) {
+                                AppSurface(Modifier.fillMaxWidth().heightIn(min = 64.dp), radius = 20.dp, elevation = 5.dp, onClick = { session?.answer(i); sync() }, contentDescription = o.label.tr()) {
                                     Row(Modifier.fillMaxWidth().padding(Spacing.l), verticalAlignment = Alignment.CenterVertically) {
                                         Text(o.label.tr(), style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
                                         Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, null, tint = MaterialTheme.colorScheme.onSurfaceVariant)

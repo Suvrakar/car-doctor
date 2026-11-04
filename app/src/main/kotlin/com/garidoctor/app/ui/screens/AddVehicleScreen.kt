@@ -10,6 +10,7 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -33,6 +34,7 @@ import com.garidoctor.app.data.ServiceEntity
 import com.garidoctor.app.data.VehicleEntity
 import com.garidoctor.app.data.today
 import com.garidoctor.app.ui.*
+import com.garidoctor.app.ui.theme.AppSurface
 import com.garidoctor.app.ui.theme.Spacing
 import com.garidoctor.core.model.EnergyType
 import com.garidoctor.core.template.ModelPreset
@@ -87,13 +89,12 @@ fun AddVehicleScreen(vm: MainViewModel, onBack: () -> Unit, onCreated: (Long) ->
 
 @Composable
 private fun TypeStep(all: List<VehicleTemplate>, selected: String?, onPick: (String) -> Unit) {
-    LazyVerticalGrid(GridCells.Adaptive(150.dp), contentPadding = PaddingValues(Spacing.gutter), horizontalArrangement = Arrangement.spacedBy(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
+    LazyVerticalGrid(GridCells.Adaptive(150.dp), contentPadding = PaddingValues(Spacing.gutter + 4.dp), horizontalArrangement = Arrangement.spacedBy(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.l)) {
         items(all, key = { it.id }) { tpl ->
             val sel = tpl.id == selected
-            OutlinedCard(
-                onClick = { onPick(tpl.id) }, shape = MaterialTheme.shapes.large,
-                border = BorderStroke(if (sel) 2.dp else 1.dp, if (sel) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant),
-                modifier = Modifier.height(120.dp),
+            AppSurface(
+                modifier = Modifier.height(120.dp).then(if (sel) Modifier.border(BorderStroke(2.dp, MaterialTheme.colorScheme.primary), MaterialTheme.shapes.large) else Modifier),
+                onClick = { onPick(tpl.id) }, contentDescription = tpl.name.tr(), elevation = if (sel) 2.dp else 6.dp,
             ) {
                 Column(Modifier.fillMaxSize().padding(Spacing.m), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
                     IconBadge(vehicleIcon(tpl.id), size = 48.dp)
