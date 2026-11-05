@@ -9,6 +9,15 @@ service cloud.firestore {
                          && (request.resource == null || request.resource.data.backup.size() < 900000);
     }
 
+    // FCM device tokens, saved only for users who are already signed in, so a Cloud Function can
+    // message one user. Owner-only; small documents with known fields.
+    match /users/{uid}/devices/{device} {
+      allow read, delete: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['token', 'lang', 'platform', 'updated'])
+        && request.resource.data.token is string && request.resource.data.token.size() < 4096;
+    }
+
     // Cloud-AI allowance, one document per user per UTC day (key = days since 1970-01-01 UTC).
     // The app reserves one use before every Gemini request. These rules make the counter
     // tamper-proof: only today's document, only +1 per write, never above the hard cap

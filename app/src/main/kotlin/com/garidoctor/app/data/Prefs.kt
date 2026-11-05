@@ -51,6 +51,11 @@ class Prefs(context: Context) {
     val aiConsent: StateFlow<Boolean> = _aiConsent
     fun setAiConsent(v: Boolean) { sp.edit().putBoolean("ai_consent", v).apply(); _aiConsent.value = v }
 
+    // ---- Firebase news & tips (topic subscriptions). Reminders are local and unaffected. ----
+    private val _push = MutableStateFlow(sp.getBoolean("push_news", true))
+    val pushEnabled: StateFlow<Boolean> = _push
+    fun setPushEnabled(v: Boolean) { sp.edit().putBoolean("push_news", v).apply(); _push.value = v }
+
     // ---- Performance: AUTO (decide from the device), FULL, LITE ----
     private val _perf = MutableStateFlow(sp.getString("perf_mode", "AUTO")!!)
     val perfMode: StateFlow<String> = _perf

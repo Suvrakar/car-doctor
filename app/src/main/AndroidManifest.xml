@@ -41,8 +41,18 @@
         android:theme="@style/Theme.GariDoctor"
         android:enableOnBackInvokedCallback="true">
 
+        <!-- Firebase Cloud Messaging: news and tips sent from the Firebase Console to topics. -->
+        <service android:name=".notify.PushService" android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <meta-data android:name="com.google.firebase.messaging.default_notification_channel_id" android:value="news" />
+        <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@drawable/ic_launcher_foreground" />
+
         <activity
             android:name=".ui.MainActivity"
+            android:launchMode="singleTop"
             android:exported="true"
             android:windowSoftInputMode="adjustResize"
             android:configChanges="locale|layoutDirection"

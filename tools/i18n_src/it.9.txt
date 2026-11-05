@@ -1,0 +1,11 @@
+1155|Cancella tutto
+1156|Segna tutto come letto
+1157|Novità e consigli
+1158|Ancora nessuna notifica
+1159|Notifiche
+1160|Apri notifiche
+1161|Impostazioni notifiche del telefono
+1162|Consigli stagionali, richiami e offerte per i tuoi tipi di veicolo, da Car Doctor AI.
+1163|Qui compaiono promemoria di manutenzione e documenti, avvisi dei controlli live e novità di Car Doctor AI.
+1164|I promemoria di manutenzione, documenti e controlli live sono creati su questo telefono e arrivano sempre, anche offline.
+1165|{0}: il controllo live ha trovato {1} problemi

@@ -27,6 +27,9 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -60,6 +63,47 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }.flowOn(Dispatchers.Default).stateIn(viewModelScope, SharingStarted.Eagerly, UiState(registry = g.registry.value))
 
     val garages: List<Garage> by lazy { Garages.load(app, g.remote.string("garages")) }
+
+    /** A screen to open, from a tapped notification or an in-app banner. Resolved once data has loaded. */
+    data class OpenRequest(val route: String, val vehicleId: Long?)
+    val pendingOpen = kotlinx.coroutines.flow.MutableStateFlow<OpenRequest?>(null)
+
+    fun open(route: String?, vehicleId: Long?) { if (route != null) pendingOpen.value = OpenRequest(route, vehicleId) }
+
+    /** Turns a request into a nav route; null if it names nothing we allow. */
+    fun resolve(r: OpenRequest): String? =
+        com.garidoctor.app.notify.Routes.resolve(r.route, r.vehicleId, prefs.lastVehicleId) { id -> state.value.snapshot.vehicles.any { it.id == id } }
+
+    /**
+     * Intent from a notification. Our own notifications carry EXTRA_ROUTE; a Firebase notification
+     * tapped while the app was closed carries its custom data ("title", "body", "route") as extras,
+     * which we add to the inbox because onMessageReceived never ran for it.
+     */
+    fun handleLaunch(i: android.content.Intent) {
+        val app = getApplication<android.app.Application>()
+        val inboxId = i.getLongExtra(MainActivity.EXTRA_INBOX_ID, -1L).takeIf { it > 0 }
+        inboxId?.let { com.garidoctor.app.notify.Inbox.markRead(app, it) }
+        var route = i.getStringExtra(MainActivity.EXTRA_ROUTE)
+        if (i.hasExtra("google.message_id")) {
+            route = i.getStringExtra("route") ?: route ?: "inbox"
+            val title = i.getStringExtra("title")
+            if (title != null) {
+                val now = System.currentTimeMillis()
+                com.garidoctor.app.notify.Inbox.add(app, com.garidoctor.app.notify.InboxItem(now, title, i.getStringExtra("body") ?: "", i.getStringExtra("route"), now, "news", read = true))
+            }
+        }
+        open(route, i.getLongExtra(MainActivity.EXTRA_VEHICLE, -1L).takeIf { it > 0 })
+    }
+
+    init {
+        // Firebase topics follow the settings: language, vehicle types in the garage, plan, on/off.
+        viewModelScope.launch {
+            val types = state.filter { it.loaded }.map { s -> s.snapshot.vehicles.map { it.templateId }.toSet() }.distinctUntilChanged()
+            combine(prefs.pushEnabled, prefs.lang, prefs.pro, types) { on, l, p, t -> com.garidoctor.app.notify.Push.wantedTopics(on, l.code, t, p) }
+                .distinctUntilChanged()
+                .collect { runCatching { com.garidoctor.app.notify.Push.sync(getApplication(), it) } }
+        }
+    }
 
     /** Sponsored tip for a part category from Remote Config (`sponsor_<CATEGORY>`), if a brand bought the slot. */
     private val sponsorCache = java.util.concurrent.ConcurrentHashMap<String, Pair<String, String>>()
@@ -157,6 +201,15 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         val km = state.value.snapshot.vehicles.firstOrNull { it.id == vehicleId }?.odometerKm
         repo.addObdSession(com.garidoctor.app.data.ObdSessionEntity(vehicleId = vehicleId, epochDay = com.garidoctor.app.data.today(), startedAtMillis = summary.startedAtMillis,
             durationSec = summary.durationSec, worst = summary.worst.name, flagCount = summary.flags.size, summaryJson = summary.toJson(), odometerKm = km))
+        // Findings also go to the in-app notifications, linked to the vehicle's history.
+        if (summary.flags.isNotEmpty()) {
+            val l = lang.value
+            val name = state.value.snapshot.vehicles.firstOrNull { it.id == vehicleId }?.nickname ?: ""
+            val n = summary.flags.size
+            com.garidoctor.app.notify.Notifier.post(getApplication(), GariDoctorApp.CH_ALERTS,
+                l.pick("$name: live check found $n problem(s)", "$name: লাইভ চেকে ${com.garidoctor.core.health.Bn.digits(n)}টি সমস্যা"),
+                summary.flags.joinToString("\n") { it.message.get(l) }, kind = "alert", route = "history", vehicleId = vehicleId, system = false)
+        }
     }
     fun addDocument(d: DocumentEntity) = io { repo.addDocument(d) }
     fun updateDocument(d: DocumentEntity) = io { repo.updateDocument(d) }

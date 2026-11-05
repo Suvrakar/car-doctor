@@ -1,0 +1,11 @@
+1155|Alle löschen
+1156|Alle als gelesen markieren
+1157|Neuigkeiten & Tipps
+1158|Noch keine Benachrichtigungen
+1159|Benachrichtigungen
+1160|Benachrichtigungen öffnen
+1161|Benachrichtigungseinstellungen des Telefons
+1162|Saisonale Pflegetipps, Rückrufe und Angebote für Ihre Fahrzeugtypen, von Car Doctor AI.
+1163|Wartungs- und Papiererinnerungen, Live-Check-Warnungen und Neuigkeiten von Car Doctor AI erscheinen hier.
+1164|Wartungs-, Papier- und Live-Check-Erinnerungen entstehen auf diesem Telefon und kommen immer an, auch offline.
+1165|{0}: Live-Check hat {1} Problem(e) gefunden

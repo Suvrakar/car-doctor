@@ -55,7 +55,9 @@ class MainActivity : AppCompatActivity() {
         // real content instead of an empty list that pops in.
         val start = SystemClock.uptimeMillis()
         splash.setKeepOnScreenCondition { !vm.state.value.loaded && SystemClock.uptimeMillis() - start < 1200 }
-        val startVehicle = intent.getLongExtra(EXTRA_VEHICLE, -1L)
+        // Notification taps carry a route; the older vehicle-only extra still opens the vehicle.
+        val startVehicle = if (intent.hasExtra(EXTRA_ROUTE)) -1L else intent.getLongExtra(EXTRA_VEHICLE, -1L)
+        if (savedInstanceState == null) vm.handleLaunch(intent)
         val shortcut = intent.getStringExtra(EXTRA_SHORTCUT)
         setContent {
             val lang by vm.lang.collectAsStateWithLifecycle()
@@ -77,7 +79,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onNewIntent(intent: android.content.Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        vm.handleLaunch(intent)
+    }
+
+    // Firebase messages that arrive while the app is visible become in-app banners, not system notifications.
+    override fun onStart() { super.onStart(); com.garidoctor.app.notify.Inbox.foreground = true }
+    override fun onStop() { com.garidoctor.app.notify.Inbox.foreground = false; super.onStop() }
+
     companion object {
+        /** In-app destination to open (see notify.Routes). */
+        const val EXTRA_ROUTE = "route"
+        const val EXTRA_INBOX_ID = "inbox_id"
         const val EXTRA_VEHICLE = "vehicle_id"
         /** Launcher shortcuts: "speak", "scan_paper", "scan_bill", "fuel". */
         const val EXTRA_SHORTCUT = "shortcut"
@@ -115,6 +130,14 @@ private fun AppNav(vm: MainViewModel, startVehicle: Long, shortcut: String?) {
             else -> nav.navigate("vehicle/$id?action=$shortcut")
         }
     }
+    // A tapped notification or in-app banner: open its screen once the data is there.
+    val pending by vm.pendingOpen.collectAsStateWithLifecycle()
+    LaunchedEffect(pending, st.loaded) {
+        val req = pending ?: return@LaunchedEffect
+        if (!st.loaded) return@LaunchedEffect
+        vm.pendingOpen.value = null
+        vm.resolve(req)?.let { r -> runCatching { nav.navigate(r) { launchSingleTop = true } } }
+    }
     val lite = LocalPerf.current.lite
     // Top-level tabs keep their own back stack/state, like Google apps.
     val selectTab: (Tab) -> Unit = { tab ->
@@ -125,6 +148,7 @@ private fun AppNav(vm: MainViewModel, startVehicle: Long, shortcut: String?) {
         }
     }
     val bar: @Composable (Tab) -> Unit = { MainNavBar(it, selectTab) }
+    androidx.compose.foundation.layout.Box {
     NavHost(
         nav, startDestination = "home",
         // Lite: screens switch instantly (no animation work on slow GPUs).
@@ -153,5 +177,8 @@ private fun AppNav(vm: MainViewModel, startVehicle: Long, shortcut: String?) {
         composable("battery/{id}", idArg) { BatteryScreen(vm, it.arguments!!.getLong("id"), back) }
         composable("lights/{id}", idArg) { WarningLightsScreen(vm, it.arguments!!.getLong("id"), back) }
         composable("garages") { GaragesScreen(vm, back) }
+        composable("inbox") { InboxScreen(vm, back) }
+    }
+    InAppBanner(vm)
     }
 }

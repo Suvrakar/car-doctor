@@ -73,20 +73,13 @@ class ReminderWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(c
         return Result.success()
     }
 
+    /** System notification + in-app inbox entry; tapping opens the matching screen of that vehicle. */
+    @Suppress("UNUSED_PARAMETER")
     private fun notify(channel: String, id: Int, title: String, body: String, vehicleId: Long) {
-        val ctx = applicationContext
-        if (Build.VERSION.SDK_INT >= 33 && ContextCompat.checkSelfPermission(ctx, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) return
-        val intent = Intent(ctx, MainActivity::class.java).putExtra(MainActivity.EXTRA_VEHICLE, vehicleId).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pi = PendingIntent.getActivity(ctx, id, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
-        val n = NotificationCompat.Builder(ctx, channel)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle(title)
-            .setContentText(body)
-            .setStyle(NotificationCompat.BigTextStyle().bigText(body))
-            .setContentIntent(pi)
-            .setAutoCancel(true)
-            .build()
-        try { NotificationManagerCompat.from(ctx).notify(id, n) } catch (_: SecurityException) { }
+        com.garidoctor.app.notify.Notifier.post(applicationContext, channel, title, body,
+            kind = if (channel == GariDoctorApp.CH_ALERTS) "alert" else "reminder",
+            route = when (channel) { GariDoctorApp.CH_PAPERS -> "docs"; GariDoctorApp.CH_ALERTS -> "fuel"; else -> "vehicle" },
+            vehicleId = vehicleId)
     }
 
     companion object {

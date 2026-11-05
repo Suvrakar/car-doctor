@@ -1153,5 +1153,16 @@
 "engine running",
 "min",
 "s",
-"{0} reading(s) need attention"
+"{0} reading(s) need attention",
+"Clear all",
+"Mark all read",
+"News & tips",
+"No notifications yet",
+"Notifications",
+"Open notifications",
+"Phone notification settings",
+"Seasonal care tips, recalls and offers for your vehicle types, from Car Doctor AI.",
+"Service and paper reminders, live-check alerts and news from Car Doctor AI appear here.",
+"Service, paper and live-check reminders are made on this phone and always arrive, even offline.",
+"{0}: live check found {1} problem(s)"
 ]

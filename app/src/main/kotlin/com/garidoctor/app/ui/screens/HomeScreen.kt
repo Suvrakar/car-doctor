@@ -79,6 +79,7 @@ fun HomeScreen(vm: MainViewModel, onOpen: (Long) -> Unit, onAdd: () -> Unit, onN
 
     Screen(
         title = t("Car Doctor AI", "কার ডক্টর AI"), onBack = null, large = true, bottomBar = bottomBar,
+        actions = { InboxBell { onNav("inbox") } },
         fab = {
             if (st.snapshot.vehicles.isNotEmpty()) ExtendedFloatingActionButton(
                 onClick = { if (vm.canAddVehicle()) onAdd() else showPro = true }, expanded = expandedFab,

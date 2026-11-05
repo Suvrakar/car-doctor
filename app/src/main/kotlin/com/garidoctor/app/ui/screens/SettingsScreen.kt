@@ -55,6 +55,7 @@ fun SettingsScreen(vm: MainViewModel, onBack: (() -> Unit)?, bottomBar: @Composa
                 if (!pro) Button(onClick = { showPro = true }) { Text(t("Unlock / redeem code", "আনলক / কোড রিডিম")) }
             }
             AiSection(vm)
+            NotificationsSection(vm)
             BackupSection(vm)
             SectionCard(t("SOS contacts", "SOS কন্টাক্ট")) {
                 if (contacts.isEmpty()) Text(t("Add contacts from the SOS screen.", "SOS স্ক্রিন থেকে কন্টাক্ট যোগ করুন।"), style = MaterialTheme.typography.bodySmall)
@@ -244,3 +245,32 @@ private fun PerformanceSection(vm: MainViewModel) {
         )
     }
 }
+
+/** Firebase news on/off; reminders and alerts are made on the phone and always work offline. */
+@Composable
+private fun NotificationsSection(vm: MainViewModel) {
+    val ctx = androidx.compose.ui.platform.LocalContext.current
+    val on by vm.prefs.pushEnabled.collectAsStateWithLifecycle()
+    SectionCard(t("Notifications", "নোটিফিকেশন")) {
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Column(Modifier.weight(1f)) {
+                Text(t("News & tips", "খবর ও টিপস"), style = MaterialTheme.typography.bodyLarge)
+                Text(t("Seasonal care tips, recalls and offers for your vehicle types, from Car Doctor AI.",
+                    "আপনার গাড়ির ধরন অনুযায়ী মৌসুমি যত্নের টিপস, রিকল ও অফার, কার ডক্টর AI থেকে।"),
+                    style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            Switch(on, { vm.prefs.setPushEnabled(it) })
+        }
+        Text(t("Service, paper and live-check reminders are made on this phone and always arrive, even offline.",
+            "সার্ভিস, কাগজ ও লাইভ চেকের রিমাইন্ডার এই ফোনেই তৈরি হয় এবং অফলাইনেও আসে।"),
+            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        TextButton(onClick = {
+            val i = if (android.os.Build.VERSION.SDK_INT >= 26) android.content.Intent(android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                .putExtra(android.provider.Settings.EXTRA_APP_PACKAGE, ctx.packageName)
+            else android.content.Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, android.net.Uri.parse("package:" + ctx.packageName))
+            runCatching { ctx.startActivity(i.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)) }
+        }) { Text(t("Phone notification settings", "ফোনের নোটিফিকেশন সেটিংস")) }
+        TextButton(onClick = { vm.open("inbox", null) }) { Text(t("Open notifications", "নোটিফিকেশন দেখুন")) }
+    }
+}
+

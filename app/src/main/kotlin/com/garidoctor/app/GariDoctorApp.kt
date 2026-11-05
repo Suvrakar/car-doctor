@@ -69,6 +69,7 @@ class GariDoctorApp : Application() {
             Translations.preload(prefs.lang.value)
             // 2. Everything else, after the UI is up.
             createChannels()
+            com.garidoctor.app.notify.Inbox.load(this@GariDoctorApp)
             ReminderWorker.schedule(this@GariDoctorApp)
             // App Check must be installed before any Firebase AI / Firestore call (required for AI Logic).
             if (runCatching { com.google.firebase.FirebaseApp.getApps(this@GariDoctorApp).isNotEmpty() }.getOrDefault(false)) {
@@ -89,6 +90,7 @@ class GariDoctorApp : Application() {
         nm.createNotificationChannel(NotificationChannel(CH_SERVICE, "Service reminders / সার্ভিস রিমাইন্ডার", NotificationManager.IMPORTANCE_DEFAULT))
         nm.createNotificationChannel(NotificationChannel(CH_PAPERS, "Paper expiry / কাগজের মেয়াদ", NotificationManager.IMPORTANCE_HIGH))
         nm.createNotificationChannel(NotificationChannel(CH_ALERTS, "Health alerts / হেলথ অ্যালার্ট", NotificationManager.IMPORTANCE_DEFAULT))
+        nm.createNotificationChannel(NotificationChannel(CH_NEWS, "News & tips / খবর ও টিপস", NotificationManager.IMPORTANCE_DEFAULT))
     }
 
     companion object {
@@ -103,6 +105,8 @@ class GariDoctorApp : Application() {
         const val CH_SERVICE = "service"
         const val CH_PAPERS = "papers"
         const val CH_ALERTS = "alerts"
+        /** Firebase Cloud Messaging (also set as FCM's default channel in the manifest). */
+        const val CH_NEWS = "news"
         lateinit var instance: GariDoctorApp; private set
     }
 }
