@@ -1,0 +1,39 @@
+1079|Adresse
+1080|Luftmasse (MAF)
+1081|Luftdruck
+1082|Bluetooth LE
+1083|Motorkontrollleuchte AN · {0} Code(s)
+1084|Motorkontrollleuchte aus
+1085|Verbinde mit {0}…
+1086|Verbindung fehlgeschlagen
+1087|Trennen
+1088|Fehlercodes
+1089|Für „BLE“- oder „iPhone“-Adapter (Vgate iCar Pro BLE, OBDLink CX…). Einstecken, Zündung AN und suchen. Nicht in den Telefoneinstellungen koppeln.
+1090|Tankfüllstand
+1091|Wie verbindet sich Ihr Adapter?
+1092|Zündzeitpunkt
+1093|Ansaugdruck
+1094|Langzeit-Kraftstofftrimm
+1095|Sieht aus wie ein OBD-Adapter
+1096|Niedrig
+1097|Die meisten Adapter nutzen 192.168.0.10, Port 35000. Falls Ihrer abweicht, steht es auf der Verpackung oder im Handbuch.
+1098|Öltemperatur
+1099|Außentemperatur
+1100|Ausstehend: einmal erkannt, noch nicht bestätigt
+1101|Stecken Sie zuerst das USB-Kabel ein.
+1102|Wi-Fi-Adapter einstecken, Zündung AN, dann das WLAN des Handys mit seinem Netz verbinden (oft „WiFi_OBDII“ oder „V-LINK“). Hierher zurückkehren und Verbinden tippen.
+1103|Port
+1104|Protokoll
+1105|Fehlercodes werden gelesen…
+1106|Erneut verbinden
+1107|Laufzeit
+1108|Als Fahrgestellnr. speichern
+1109|Nach Adaptern suchen
+1110|Suche…
+1111|Kurzzeit-Kraftstofftrimm
+1112|Spreche mit dem Auto…
+1113|Dieser Adapter ist nicht mehr gekoppelt.
+1114|Das Motorsteuergerät meldet nichts.
+1115|Schwach
+1116|WLAN
+1117|{0} Messwerte unterstützt

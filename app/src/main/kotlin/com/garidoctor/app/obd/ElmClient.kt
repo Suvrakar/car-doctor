@@ -9,6 +9,7 @@ import android.content.Context
 import com.garidoctor.core.obd.DiagnosticTroubleCode
 import com.garidoctor.core.obd.DtcInfo
 import com.garidoctor.core.obd.LiveData
+import com.garidoctor.core.obd.MonitorStatus
 import com.garidoctor.core.obd.ObdDecoder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -38,8 +39,17 @@ private class BluetoothLink(private val socket: BluetoothSocket) : ElmLink {
     override fun close() = socket.close()
 }
 
+/** What the car told us right after connecting. Any field may be missing on older cars. */
+data class CarInfo(
+    val protocol: String?,
+    val adapterVolts: Double?,
+    val status: MonitorStatus?,
+    val supportedPids: Set<Int>,
+    val vin: String?,
+)
+
 /**
- * ELM327 client over Bluetooth Classic or USB. All parsing lives in [ObdDecoder] (:core).
+ * ELM327 client over Bluetooth Classic, Bluetooth LE, Wi-Fi or USB. All parsing lives in [ObdDecoder] (:core).
  * Bluetooth callers must hold BLUETOOTH_CONNECT (API 31+); USB callers need the device permission
  * from [UsbElm.requestPermission].
  */
@@ -77,7 +87,45 @@ class ElmClient(private val context: Context) : Closeable {
         throw lastError ?: IllegalStateException("No reply from the adapter. Turn the ignition ON and try again.")
     }
 
-    private suspend fun initialise() = ObdDecoder.INIT_COMMANDS.forEach { send(it) }
+    suspend fun connectWifi(host: String, port: Int) = withContext(Dispatchers.IO) {
+        close()
+        link = WifiElm.open(context, host, port)
+        initialise()
+    }
+
+    suspend fun connectBle(device: BluetoothDevice) = withContext(Dispatchers.IO) {
+        close()
+        link = BleElm.open(context, device)
+        initialise()
+    }
+
+    /** Cheap clones take a second or two to reset, so ATZ gets a longer wait than the rest. */
+    private suspend fun initialise() = ObdDecoder.INIT_COMMANDS.forEach { send(it, if (it == "ATZ") 5000 else 3000) }
+
+    private var supported: Set<Int> = emptySet()
+
+    /**
+     * Asks the car what it supports, once per connection. The first 0100 makes the adapter search
+     * for the car's protocol, which can take several seconds on older (K-line) cars.
+     */
+    suspend fun probe(): CarInfo {
+        val volts = runCatching { ObdDecoder.decodeAdapterVoltage(send("ATRV", 2000)) }.getOrNull()
+        val sup = HashSet<Int>()
+        for ((i, cmd) in listOf("0100", "0120", "0140").withIndex()) {
+            val r = runCatching { send(cmd, if (i == 0) 12_000 else 3000) }.getOrNull() ?: break
+            val got = ObdDecoder.decodeSupported(r)
+            if (got.isEmpty()) break
+            sup += got
+            if ((i + 1) * 0x20 !in got) break // the next block's "supported" bit
+        }
+        supported = sup
+        val protocol = runCatching { ObdDecoder.protocolName(send("ATDP", 2000)) }.getOrNull()
+        val status = if (sup.isEmpty() || 0x01 in sup) runCatching { ObdDecoder.decodeStatus(send("0101", 3000)) }.getOrNull() else null
+        val vin = runCatching { ObdDecoder.decodeVin(send("0902", 6000)) }.getOrNull()
+        return CarInfo(protocol, volts, status, sup, vin)
+    }
+
+    suspend fun adapterVolts(): Double? = runCatching { ObdDecoder.decodeAdapterVoltage(send("ATRV", 2000)) }.getOrNull()
 
     suspend fun send(cmd: String, timeoutMs: Long = 4000): String = withContext(Dispatchers.IO) {
         val l = link ?: error("not connected")
@@ -100,10 +148,13 @@ class ElmClient(private val context: Context) : Closeable {
     }
 
     suspend fun readCodes(dict: Map<String, DtcInfo>): List<DiagnosticTroubleCode> = ObdDecoder.decodeDtcs(send("03", 8000), dict)
+    /** Faults seen once but not yet confirmed; they often explain a problem before the light comes on. */
+    suspend fun readPending(dict: Map<String, DtcInfo>): List<DiagnosticTroubleCode> =
+        runCatching { ObdDecoder.decodeDtcs(send("07", 8000), dict, responseByte = 0x47) }.getOrDefault(emptyList())
     suspend fun clearCodes() { send("04") }
-    suspend fun readLive(): List<LiveData> = ObdDecoder.LIVE_PIDS.mapNotNull { pid -> runCatching { ObdDecoder.decodeLive(send(pid)) }.getOrNull() }
+    suspend fun readLive(): List<LiveData> = ObdDecoder.livePidsFor(supported).mapNotNull { pid -> runCatching { ObdDecoder.decodeLive(send(pid, 2000)) }.getOrNull() }
 
-    override fun close() { runCatching { link?.close() }; link = null }
+    override fun close() { runCatching { link?.close() }; link = null; supported = emptySet() }
 
     companion object { val SPP_UUID: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB") }
 }

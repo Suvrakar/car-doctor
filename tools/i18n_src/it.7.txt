@@ -1,0 +1,39 @@
+1079|Indirizzo
+1080|Flusso d'aria (MAF)
+1081|Pressione atmosferica
+1082|Bluetooth LE
+1083|Spia motore ACCESA · {0} codici
+1084|Spia motore spenta
+1085|Connessione a {0}…
+1086|Connessione non riuscita
+1087|Disconnetti
+1088|Codici guasto
+1089|Per adattatori "BLE" o "iPhone" (Vgate iCar Pro BLE, OBDLink CX…). Collegalo, accendi il quadro e cerca. Non associarlo nelle impostazioni del telefono.
+1090|Livello carburante
+1091|Come si collega il tuo adattatore?
+1092|Anticipo accensione
+1093|Pressione aspirazione
+1094|Correzione carburante a lungo termine
+1095|Sembra un adattatore OBD
+1096|Bassa
+1097|La maggior parte degli adattatori usa 192.168.0.10, porta 35000. Se il tuo è diverso, è indicato sulla scatola o nel manuale.
+1098|Temp. olio
+1099|Temp. esterna
+1100|In sospeso: visto una volta, non ancora confermato
+1101|Collega prima il cavo USB.
+1102|Collega l'adattatore Wi-Fi, accendi il quadro, poi collega il Wi-Fi del telefono alla sua rete (spesso "WiFi_OBDII" o "V-LINK"). Torna qui e tocca Connetti.
+1103|Porta
+1104|Protocollo
+1105|Lettura codici guasto…
+1106|Riconnetti
+1107|Tempo di funzionamento
+1108|Salva come n. telaio
+1109|Cerca adattatori
+1110|Ricerca…
+1111|Correzione carburante a breve termine
+1112|Comunicazione con l'auto…
+1113|Quell'adattatore non è più associato.
+1114|La centralina motore non segnala nulla.
+1115|Debole
+1116|Wi-Fi
+1117|{0} letture supportate

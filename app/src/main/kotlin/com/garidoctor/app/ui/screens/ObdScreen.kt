@@ -9,28 +9,39 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Bluetooth
-import androidx.compose.material.icons.filled.Usb
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.garidoctor.app.GariDoctorApp
 import com.garidoctor.app.data.VoltageEntity
 import com.garidoctor.app.data.today
+import com.garidoctor.app.obd.BleElm
+import com.garidoctor.app.obd.CarInfo
 import com.garidoctor.app.obd.ElmClient
 import com.garidoctor.app.obd.UsbElm
+import com.garidoctor.app.obd.WifiElm
 import com.garidoctor.app.ui.*
-import com.garidoctor.app.ui.theme.Bad
-import com.garidoctor.app.ui.theme.Warn
+import com.garidoctor.app.ui.theme.AppSurface
+import com.garidoctor.app.ui.theme.Spacing
+import com.garidoctor.app.ui.theme.Tone
+import com.garidoctor.core.identity.VehicleIdentity
 import com.garidoctor.core.obd.DiagnosticTroubleCode
 import com.garidoctor.core.obd.LiveData
 import com.garidoctor.core.pro.ProFeature
@@ -38,145 +49,296 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
-/** ELM327 over Bluetooth or a USB cable (OTG): fault codes decoded offline + live data (Pro). */
+/** The four ways an ELM327 adapter can talk to the phone. */
+private enum class Link(val icon: ImageVector) { BLUETOOTH(Icons.Default.Bluetooth), BLE(Icons.Default.BluetoothSearching), WIFI(Icons.Default.Wifi), USB(Icons.Default.Usb) }
+
+/**
+ * OBD scan with any ELM327 adapter: Bluetooth Classic, Bluetooth LE, Wi-Fi or a USB cable (OTG).
+ * After connecting we ask the car what it supports once, then read stored and pending fault codes
+ * (explained offline) and live data (Pro). The last adapter that worked reconnects in one tap.
+ */
 @SuppressLint("MissingPermission")
 @Composable
 fun ObdScreen(vm: MainViewModel, id: Long, onBack: () -> Unit) {
     val ctx = LocalContext.current
+    val st by vm.state.collectAsStateWithLifecycle()
+    val lang by vm.lang.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
     val client = remember { ElmClient(ctx) }
     DisposableEffect(Unit) { onDispose { client.close() } }
-    val needsPerm = Build.VERSION.SDK_INT >= 31
-    var granted by remember { mutableStateOf(!needsPerm || ContextCompat.checkSelfPermission(ctx, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED) }
-    val permLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted = it }
-    var devices by remember { mutableStateOf<List<BluetoothDevice>>(emptyList()) }
+    val dict = remember { GariDoctorApp.instance.repository.dtc }
+    val usbSupported = remember { UsbElm.isSupported(ctx) }
+
+    fun has(p: String) = ContextCompat.checkSelfPermission(ctx, p) == PackageManager.PERMISSION_GRANTED
+    val btPerms = if (Build.VERSION.SDK_INT >= 31) arrayOf(Manifest.permission.BLUETOOTH_CONNECT) else emptyArray()
+    val blePerms = if (Build.VERSION.SDK_INT >= 31) arrayOf(Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT) else arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+    var btGranted by remember { mutableStateOf(btPerms.all(::has)) }
+    var bleGranted by remember { mutableStateOf(blePerms.all(::has)) }
+    val btLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { r -> btGranted = r.values.all { it } }
+    val bleLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { r -> bleGranted = r.values.all { it } }
+
+    var link by rememberSaveable { mutableStateOf(Link.BLUETOOTH) }
+    var bonded by remember { mutableStateOf<List<BluetoothDevice>>(emptyList()) }
+    val bleFound = remember { mutableStateListOf<BleElm.Found>() }
+    var bleScanning by remember { mutableStateOf(false) }
+    var usbAdapters by remember { mutableStateOf<List<UsbElm.Adapter>>(emptyList()) }
+    var host by rememberSaveable { mutableStateOf(WifiElm.DEFAULT_HOST) }
+    var port by rememberSaveable { mutableStateOf(WifiElm.DEFAULT_PORT.toString()) }
+
     var connected by remember { mutableStateOf<String?>(null) }
-    var busy by remember { mutableStateOf(false) }
+    var busy by remember { mutableStateOf<String?>(null) }
     var error by remember { mutableStateOf<String?>(null) }
+    var info by remember { mutableStateOf<CarInfo?>(null) }
     var codes by remember { mutableStateOf<List<DiagnosticTroubleCode>?>(null) }
+    var pending by remember { mutableStateOf<List<DiagnosticTroubleCode>>(emptyList()) }
     var live by remember { mutableStateOf<List<LiveData>>(emptyList()) }
     var liveOn by remember { mutableStateOf(false) }
     var showPro by remember { mutableStateOf(false) }
-    val dict = remember { GariDoctorApp.instance.repository.dtc }
+    val vehicle = st.snapshot.vehicles.firstOrNull { it.id == id }
 
-    val usbSupported = remember { UsbElm.isSupported(ctx) }
-    var useUsb by rememberSaveable { mutableStateOf(false) }
-    var usbAdapters by remember { mutableStateOf<List<UsbElm.Adapter>>(emptyList()) }
-
-    LaunchedEffect(granted) { if (granted) devices = runCatching { client.bondedDevices() }.getOrDefault(emptyList()) }
-    // Android only tells activities about a newly plugged cable, so look for one every 2 s while this tab is open.
-    LaunchedEffect(useUsb, connected) {
-        while (useUsb && connected == null && isActive) { usbAdapters = UsbElm.adapters(ctx); delay(2000) }
+    /** Connect with [open], remember the adapter, then ask the car what it supports. */
+    fun connect(name: String, key: String, open: suspend () -> Unit) {
+        busy = lang.pick("Connecting to $name…", "$name এর সাথে যুক্ত হচ্ছে…"); error = null
+        scope.launch {
+            runCatching {
+                open()
+                vm.prefs.lastObd = key; vm.prefs.lastObdName = name
+                busy = lang.pick("Talking to the car…", "গাড়ির সাথে কথা হচ্ছে…")
+                info = client.probe()
+            }.onSuccess { connected = name }
+                .onFailure { client.close(); error = lang.pick("Could not connect: ${it.message}", "কানেক্ট হয়নি: ${it.message}") }
+            busy = null
+        }
     }
-    LaunchedEffect(liveOn) {
-        while (liveOn && isActive) { live = runCatching { client.readLive() }.getOrDefault(live); delay(1000) }
+    fun connectBt(d: BluetoothDevice) = connect(d.name ?: d.address, "bt:${d.address}") { client.connect(d) }
+    fun connectBle(d: BluetoothDevice, name: String) = connect(name, "ble:${d.address}") { client.connectBle(d) }
+    fun connectWifi(h: String, p: Int) = connect("Wi-Fi $h", "wifi:$h:$p") { client.connectWifi(h, p) }
+    fun connectUsb(a: UsbElm.Adapter) = connect(a.title, "usb") {
+        if (!UsbElm.requestPermission(ctx, a)) throw IllegalStateException(lang.pick("USB access was not allowed", "ইউএসবি অনুমতি দেওয়া হয়নি"))
+        client.connect(a)
     }
 
-    Screen(t("OBD scan", "OBD স্ক্যান"), onBack) { pad ->
-        LazyColumn(Modifier.padding(pad), contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            if (connected == null && usbSupported) item {
-                SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
-                    SegmentedButton(selected = !useUsb, onClick = { useUsb = false; error = null }, shape = SegmentedButtonDefaults.itemShape(0, 2),
-                        icon = { SegmentedButtonDefaults.Icon(!useUsb) { Icon(Icons.Default.Bluetooth, null, Modifier.size(SegmentedButtonDefaults.IconSize)) } }) { Text(t("Bluetooth", "ব্লুটুথ")) }
-                    SegmentedButton(selected = useUsb, onClick = { useUsb = true; error = null }, shape = SegmentedButtonDefaults.itemShape(1, 2),
-                        icon = { SegmentedButtonDefaults.Icon(useUsb) { Icon(Icons.Default.Usb, null, Modifier.size(SegmentedButtonDefaults.IconSize)) } }) { Text(t("USB cable", "ইউএসবি ক্যাবল")) }
-                }
-            }
-            if (connected == null) item {
-                Text(
-                    if (useUsb) t("Plug the ELM327 USB cable into the OBD-II port (under the steering) and into your phone with an OTG adapter, then turn the ignition ON. Allow access when Android asks.",
-                        "ELM327 ইউএসবি ক্যাবল OBD-II পোর্টে (স্টিয়ারিং এর নিচে) লাগান, OTG অ্যাডাপ্টার দিয়ে ফোনে লাগান, তারপর চাবি ON করুন। অ্যান্ড্রয়েড অনুমতি চাইলে দিন।")
-                    else t("Plug an ELM327 Bluetooth dongle into the OBD-II port (under the steering), turn ignition ON, and pair it in phone Bluetooth settings (PIN usually 1234 or 0000).",
-                        "ELM327 ব্লুটুথ ডঙ্গল OBD-II পোর্টে (স্টিয়ারিং এর নিচে) লাগান, চাবি ON করুন এবং ফোনের ব্লুটুথ সেটিংসে পেয়ার করুন (পিন সাধারণত ১২৩৪ বা ০০০০)।"),
-                    style = MaterialTheme.typography.bodySmall,
-                )
-            }
-            error?.let { item { Text(it, color = Bad) } }
-            if (connected == null && useUsb) {
-                if (usbAdapters.isEmpty()) item {
-                    Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                        CircularProgressIndicator(Modifier.size(20.dp), strokeWidth = 2.dp)
-                        Text(t("Waiting for a USB OBD cable…", "ইউএসবি OBD ক্যাবলের অপেক্ষায়…"))
+    /** One tap back to the adapter that worked last time. */
+    val last = vm.prefs.lastObd
+    fun reconnect() {
+        val key = last ?: return
+        when {
+            key.startsWith("bt:") -> { if (!btGranted) { btLauncher.launch(btPerms); return }
+                client.bondedDevices().firstOrNull { it.address == key.removePrefix("bt:") }?.let(::connectBt)
+                    ?: run { error = lang.pick("That adapter is no longer paired.", "ওই অ্যাডাপ্টার আর পেয়ার করা নেই।") } }
+            key.startsWith("ble:") -> { if (!bleGranted) { bleLauncher.launch(blePerms); return }
+                BleElm.device(ctx, key.removePrefix("ble:"))?.let { connectBle(it, vm.prefs.lastObdName ?: "OBD") } }
+            key.startsWith("wifi:") -> key.removePrefix("wifi:").split(':').let { (h, p) -> connectWifi(h, p.toIntOrNull() ?: WifiElm.DEFAULT_PORT) }
+            key == "usb" -> UsbElm.adapters(ctx).firstOrNull()?.let(::connectUsb)
+                ?: run { error = lang.pick("Plug the USB cable in first.", "আগে ইউএসবি ক্যাবল লাগান।") }
+        }
+    }
+
+    LaunchedEffect(btGranted) { if (btGranted) bonded = runCatching { client.bondedDevices() }.getOrDefault(emptyList()) }
+    // Android only tells activities about a newly plugged cable, so look for one every 2 s while that tab is open.
+    LaunchedEffect(link, connected) { while (link == Link.USB && connected == null && isActive) { usbAdapters = UsbElm.adapters(ctx); delay(2000) } }
+    // BLE scan runs for 12 s at a time.
+    LaunchedEffect(bleScanning) {
+        if (!bleScanning) return@LaunchedEffect
+        bleFound.clear()
+        val handle = runCatching { BleElm.scan(ctx) { f -> scope.launch { if (bleFound.none { it.device.address == f.device.address }) bleFound += f } } }
+            .onFailure { error = it.message; bleScanning = false }.getOrNull() ?: return@LaunchedEffect
+        try { delay(12_000) } finally { handle.close(); bleScanning = false }
+    }
+    LaunchedEffect(liveOn) { while (liveOn && isActive) { live = runCatching { client.readLive() }.getOrDefault(live); delay(1000) } }
+
+    Screen(t("OBD scan", "OBD স্ক্যান"), onBack, actions = {
+        if (connected != null) TextButton(onClick = { liveOn = false; client.close(); connected = null; info = null; codes = null; pending = emptyList(); live = emptyList() }) {
+            Text(t("Disconnect", "সংযোগ বিচ্ছিন্ন"))
+        }
+    }) { pad ->
+        LazyColumn(Modifier.padding(pad), contentPadding = PaddingValues(Spacing.gutter, Spacing.s, Spacing.gutter, Spacing.xxl), verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
+            busy?.let { msg -> item { Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) { CircularProgressIndicator(Modifier.size(20.dp), strokeWidth = 2.dp); Text(msg) } } }
+            error?.let { item { StatusBanner(Icons.Default.ErrorOutline, Tone.BAD, t("Couldn't connect", "কানেক্ট হয়নি"), it) } }
+
+            if (connected == null) {
+                if (last != null && busy == null) item {
+                    AppSurface(Modifier.fillMaxWidth(), onClick = ::reconnect) {
+                        Row(Modifier.padding(Spacing.l), verticalAlignment = Alignment.CenterVertically) {
+                            Icon(Icons.Default.Refresh, null, tint = MaterialTheme.colorScheme.primary)
+                            Spacer(Modifier.width(Spacing.m))
+                            Column(Modifier.weight(1f)) {
+                                Text(t("Reconnect", "আবার যুক্ত করুন"), style = MaterialTheme.typography.titleMedium)
+                                Text(vm.prefs.lastObdName ?: "OBD", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
+                        }
                     }
                 }
-                items(usbAdapters, key = { it.key }) { a ->
-                    ListItem(headlineContent = { Text(a.title) }, supportingContent = { Text(a.chip) },
-                        leadingContent = { Icon(Icons.Default.Usb, null) }, trailingContent = {
-                        TextButton(enabled = !busy, onClick = {
-                            busy = true; error = null
-                            scope.launch {
-                                runCatching {
-                                    if (!UsbElm.requestPermission(ctx, a)) throw IllegalStateException(t2(vm, "USB access was not allowed", "ইউএসবি অনুমতি দেওয়া হয়নি"))
-                                    client.connect(a)
-                                }
-                                    .onSuccess { connected = a.title }
-                                    .onFailure { error = t2(vm, "Could not connect: ${it.message}", "কানেক্ট হয়নি: ${it.message}") }
-                                busy = false
-                            }
-                        }) { Text(t("Connect", "কানেক্ট")) }
-                    })
-                }
-            } else if (connected == null) {
-                if (granted && devices.isEmpty()) item { Text(t("No paired devices. Pair the dongle first.", "কোনো পেয়ার করা ডিভাইস নেই। আগে ডঙ্গল পেয়ার করুন।")) }
-                items(devices, key = { it.address }) { d ->
-                    ListItem(headlineContent = { Text(d.name ?: d.address) }, supportingContent = { Text(d.address) }, trailingContent = {
-                        TextButton(enabled = !busy, onClick = {
-                            busy = true; error = null
-                            scope.launch {
-                                runCatching { client.connect(d) }
-                                    .onSuccess { connected = d.name ?: d.address }
-                                    .onFailure { error = t2(vm, "Could not connect: ${it.message}", "কানেক্ট হয়নি: ${it.message}") }
-                                busy = false
-                            }
-                        }) { Text(t("Connect", "কানেক্ট")) }
-                    })
-                }
-            } else {
-                item { Text(t("Connected to $connected", "$connected এর সাথে যুক্ত"), fontWeight = FontWeight.SemiBold) }
                 item {
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Button(enabled = !busy, onClick = {
-                            busy = true
-                            scope.launch {
-                                runCatching { client.readCodes(dict) }.onSuccess { codes = it; vm.replaceFaultCodes(id, it.map { c -> c.code }) }.onFailure { error = it.message }
-                                busy = false
+                    Text(t("How does your adapter connect?", "আপনার অ্যাডাপ্টার কীভাবে যুক্ত হয়?"), style = MaterialTheme.typography.titleSmall)
+                    Gap(Spacing.s)
+                    Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
+                        Link.entries.filter { it != Link.USB || usbSupported }.forEach { l ->
+                            FilterChip(selected = link == l, onClick = { link = l; error = null }, leadingIcon = { Icon(l.icon, null, Modifier.size(FilterChipDefaults.IconSize)) },
+                                label = { Text(when (l) { Link.BLUETOOTH -> t("Bluetooth", "ব্লুটুথ"); Link.BLE -> t("Bluetooth LE", "ব্লুটুথ LE"); Link.WIFI -> t("Wi-Fi", "ওয়াই-ফাই"); Link.USB -> t("USB cable", "ইউএসবি ক্যাবল") }) })
+                        }
+                    }
+                }
+                item {
+                    Text(when (link) {
+                        Link.BLUETOOTH -> t("Plug an ELM327 Bluetooth dongle into the OBD-II port (under the steering), turn ignition ON, and pair it in phone Bluetooth settings (PIN usually 1234 or 0000).",
+                            "ELM327 ব্লুটুথ ডঙ্গল OBD-II পোর্টে (স্টিয়ারিং এর নিচে) লাগান, চাবি ON করুন এবং ফোনের ব্লুটুথ সেটিংসে পেয়ার করুন (পিন সাধারণত ১২৩৪ বা ০০০০)।")
+                        Link.BLE -> t("For \"BLE\" or \"iPhone\" adapters (Vgate iCar Pro BLE, OBDLink CX…). Plug it in, turn the ignition ON and scan. Don't pair it in phone settings.",
+                            "\"BLE\" বা \"iPhone\" অ্যাডাপ্টারের জন্য (Vgate iCar Pro BLE, OBDLink CX…)। লাগিয়ে চাবি ON করে স্ক্যান করুন। ফোনের সেটিংসে পেয়ার করবেন না।")
+                        Link.WIFI -> t("Plug the Wi-Fi adapter in, turn the ignition ON, then connect the phone's Wi-Fi to its network (often \"WiFi_OBDII\" or \"V-LINK\"). Come back here and tap Connect.",
+                            "ওয়াই-ফাই অ্যাডাপ্টার লাগিয়ে চাবি ON করুন, তারপর ফোনের ওয়াই-ফাই এর নেটওয়ার্কে যুক্ত করুন (প্রায়ই \"WiFi_OBDII\" বা \"V-LINK\")। এখানে ফিরে কানেক্ট চাপুন।")
+                        Link.USB -> t("Plug the ELM327 USB cable into the OBD-II port (under the steering) and into your phone with an OTG adapter, then turn the ignition ON. Allow access when Android asks.",
+                            "ELM327 ইউএসবি ক্যাবল OBD-II পোর্টে (স্টিয়ারিং এর নিচে) লাগান, OTG অ্যাডাপ্টার দিয়ে ফোনে লাগান, তারপর চাবি ON করুন। অ্যান্ড্রয়েড অনুমতি চাইলে দিন।")
+                    }, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+                when (link) {
+                    Link.BLUETOOTH -> {
+                        if (!btGranted) item { Button(onClick = { btLauncher.launch(btPerms) }) { Text(t("Allow Bluetooth", "ব্লুটুথ অনুমতি দিন")) } }
+                        else if (bonded.isEmpty()) item { Text(t("No paired devices. Pair the dongle first.", "কোনো পেয়ার করা ডিভাইস নেই। আগে ডঙ্গল পেয়ার করুন।")) }
+                        items(bonded, key = { "bt" + it.address }) { d ->
+                            AdapterRow(Icons.Default.Bluetooth, d.name ?: d.address, d.address, enabled = busy == null) { connectBt(d) }
+                        }
+                    }
+                    Link.BLE -> {
+                        item {
+                            if (!bleGranted) Button(onClick = { bleLauncher.launch(blePerms) }) { Text(t("Allow Bluetooth", "ব্লুটুথ অনুমতি দিন")) }
+                            else Button(enabled = !bleScanning && busy == null, onClick = { bleScanning = true }) {
+                                if (bleScanning) { CircularProgressIndicator(Modifier.size(16.dp), strokeWidth = 2.dp); Spacer(Modifier.width(8.dp)) }
+                                Text(if (bleScanning) t("Scanning…", "খোঁজা হচ্ছে…") else t("Scan for adapters", "অ্যাডাপ্টার খুঁজুন"))
                             }
-                        }) { Text(t("Read fault codes", "ফল্ট কোড পড়ুন")) }
-                        OutlinedButton(onClick = { if (vm.allowed(ProFeature.LIVE_OBD_GRAPHS)) liveOn = !liveOn else showPro = true }) {
-                            Text(if (liveOn) t("Stop live", "লাইভ বন্ধ") else t("Live data", "লাইভ ডেটা"))
+                        }
+                        val sorted = bleFound.sortedWith(compareByDescending<BleElm.Found> { it.looksLikeObd }.thenByDescending { it.rssi })
+                        items(sorted, key = { "ble" + it.device.address }) { f ->
+                            AdapterRow(Icons.Default.BluetoothSearching, f.name, if (f.looksLikeObd) t("Looks like an OBD adapter", "OBD অ্যাডাপ্টার মনে হচ্ছে") else f.device.address, enabled = busy == null) {
+                                bleScanning = false; connectBle(f.device, f.name)
+                            }
+                        }
+                    }
+                    Link.WIFI -> item {
+                        Column(verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+                            Row(horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
+                                OutlinedTextField(host, { host = it.trim() }, label = { Text(t("Address", "ঠিকানা")) }, singleLine = true, modifier = Modifier.weight(2f),
+                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri))
+                                OutlinedTextField(port, { port = it.filter(Char::isDigit) }, label = { Text(t("Port", "পোর্ট")) }, singleLine = true, modifier = Modifier.weight(1f),
+                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+                            }
+                            Button(enabled = busy == null && host.isNotBlank() && port.toIntOrNull() != null, onClick = { connectWifi(host, port.toInt()) }) {
+                                Icon(Icons.Default.Wifi, null, Modifier.size(18.dp)); Spacer(Modifier.width(8.dp)); Text(t("Connect", "কানেক্ট"))
+                            }
+                            Text(t("Most adapters use 192.168.0.10 port 35000. If yours differs, it is printed on the box or in its manual.",
+                                "বেশিরভাগ অ্যাডাপ্টার 192.168.0.10, পোর্ট 35000 ব্যবহার করে। আলাদা হলে বাক্সে বা ম্যানুয়ালে লেখা থাকে।"),
+                                style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
+                    }
+                    Link.USB -> {
+                        if (usbAdapters.isEmpty()) item {
+                            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                                CircularProgressIndicator(Modifier.size(20.dp), strokeWidth = 2.dp)
+                                Text(t("Waiting for a USB OBD cable…", "ইউএসবি OBD ক্যাবলের অপেক্ষায়…"))
+                            }
+                        }
+                        items(usbAdapters, key = { "usb" + it.key }) { a -> AdapterRow(Icons.Default.Usb, a.title, a.chip, enabled = busy == null) { connectUsb(a) } }
+                        item { Text(t("Works with FTDI, CH340, CP210x and PL2303 cables. Your phone must support USB OTG.", "FTDI, CH340, CP210x ও PL2303 ক্যাবলে কাজ করে। ফোনে USB OTG সাপোর্ট থাকতে হবে।"), style = MaterialTheme.typography.bodySmall) }
+                    }
+                }
+                item { Text(t("Tip: buy a tested dongle. Cheap clones (v2.1) often fail on newer cars.", "টিপ: পরীক্ষিত ডঙ্গল কিনুন। সস্তা ক্লোন (v2.1) নতুন গাড়িতে প্রায়ই কাজ করে না।"), style = MaterialTheme.typography.bodySmall) }
+            } else {
+                // ── What the car told us ──
+                val i = info
+                item {
+                    AppSurface(Modifier.fillMaxWidth(), radius = 28.dp) {
+                        Column(Modifier.fillMaxWidth().padding(Spacing.xl), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                            Text(t("Connected to $connected", "$connected এর সাথে যুক্ত"), style = MaterialTheme.typography.titleMedium)
+                            i?.status?.let { s ->
+                                StatusPill(if (s.milOn) t("Check-engine light ON · ${s.storedCodes} code(s)", "চেক-ইঞ্জিন লাইট জ্বলছে · ${n(s.storedCodes)}টি কোড")
+                                    else t("Check-engine light off", "চেক-ইঞ্জিন লাইট বন্ধ"), if (s.milOn) Tone.BAD else Tone.GOOD)
+                            }
+                            i?.adapterVolts?.let { v ->
+                                val tone = when { v < 11.8 -> Tone.BAD; v < 12.3 -> Tone.WARN; else -> Tone.GOOD }
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text(t("Battery", "ব্যাটারি") + ": " + "%.1f V".format(v), Modifier.weight(1f))
+                                    StatusPill(when (tone) { Tone.BAD -> t("Low", "কম"); Tone.WARN -> t("Weak", "দুর্বল"); else -> t("Good", "ভালো") }, tone)
+                                }
+                            }
+                            i?.protocol?.let { Text(t("Protocol", "প্রোটোকল") + ": $it", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant) }
+                            if (i != null && i.supportedPids.isNotEmpty()) Text(t("${i.supportedPids.size} readings supported", "${n(i.supportedPids.size)}টি রিডিং সাপোর্টেড"),
+                                style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            i?.vin?.let { vin ->
+                                Text("VIN: $vin", style = MaterialTheme.typography.bodyMedium)
+                                val clash = vehicle?.let { v -> st.snapshot.vehicles.any { o -> o.id != v.id && VehicleIdentity.normalize(o.chassisNo) == VehicleIdentity.normalize(vin) } } ?: true
+                                if (vehicle != null && vehicle.chassisNo.isNullOrBlank() && !clash)
+                                    TextButton(onClick = { vm.updateVehicle(vehicle.copy(chassisNo = vin)) }) { Text(t("Save as chassis no.", "চেসিস নম্বর হিসেবে সেভ করুন")) }
+                            }
+                            Row(horizontalArrangement = Arrangement.spacedBy(Spacing.s), modifier = Modifier.padding(top = Spacing.s)) {
+                                Button(enabled = busy == null, onClick = {
+                                    busy = lang.pick("Reading fault codes…", "ফল্ট কোড পড়া হচ্ছে…")
+                                    scope.launch {
+                                        runCatching { client.readCodes(dict) }.onSuccess { codes = it; vm.replaceFaultCodes(id, it.map { c -> c.code }) }.onFailure { error = it.message }
+                                        pending = client.readPending(dict).filter { p -> codes?.none { it.code == p.code } ?: true }
+                                        busy = null
+                                    }
+                                }) { Text(t("Read fault codes", "ফল্ট কোড পড়ুন")) }
+                                OutlinedButton(onClick = { if (vm.allowed(ProFeature.LIVE_OBD_GRAPHS)) liveOn = !liveOn else showPro = true }) {
+                                    Text(if (liveOn) t("Stop live", "লাইভ বন্ধ") else t("Live data", "লাইভ ডেটা"))
+                                }
+                            }
+                            i?.adapterVolts?.let { v ->
+                                TextButton(onClick = { vm.addVoltage(VoltageEntity(vehicleId = id, volts = v, nominalVolts = 12.0, epochDay = today())) }) {
+                                    Text(t("Save battery voltage to health record", "ব্যাটারি ভোল্টেজ হেলথ রেকর্ডে সেভ করুন"))
+                                }
+                            }
                         }
                     }
                 }
                 codes?.let { list ->
-                    if (list.isEmpty()) item { Text(t("No fault codes stored ✓", "কোনো ফল্ট কোড নেই ✓")) }
-                    items(list, key = { it.code }) { c ->
-                        SectionCard(c.code) {
-                            Text(c.describe().tr(), fontWeight = FontWeight.SemiBold, color = if ((c.info?.severity ?: 2) >= 3) Bad else Warn)
-                            c.info?.advice?.let { Text(it.tr(), style = MaterialTheme.typography.bodySmall) }
-                        }
-                    }
+                    item { SectionHeader(t("Fault codes", "ফল্ট কোড")) }
+                    if (list.isEmpty() && pending.isEmpty()) item { StatusBanner(Icons.Default.Verified, Tone.GOOD, t("No fault codes stored ✓", "কোনো ফল্ট কোড নেই ✓"), t("The engine computer has nothing to report.", "ইঞ্জিন কম্পিউটারে কোনো সমস্যা জমা নেই।")) }
+                    items(list, key = { "s" + it.code }) { c -> CodeCard(c, pendingCode = false) }
+                    items(pending, key = { "p" + it.code }) { c -> CodeCard(c, pendingCode = true) }
                     if (list.isNotEmpty()) item {
-                        OutlinedButton(onClick = { scope.launch { runCatching { client.clearCodes() }; codes = emptyList(); vm.replaceFaultCodes(id, emptyList()) } }) {
+                        OutlinedButton(onClick = { scope.launch { runCatching { client.clearCodes() }; codes = emptyList(); pending = emptyList(); vm.replaceFaultCodes(id, emptyList()) } }) {
                             Text(t("Clear codes (after repair)", "কোড মুছুন (মেরামতের পর)"))
                         }
                     }
                 }
-                if (live.isNotEmpty()) item {
-                    SectionCard(t("Live data", "লাইভ ডেটা")) {
-                        live.forEach { l -> Row { Text(l.name.tr(), Modifier.weight(1f)); Text("${"%.1f".format(l.value)} ${l.unit}", fontWeight = FontWeight.Bold) } }
-                        live.firstOrNull { it.pid == "42" }?.let { volt ->
-                            TextButton(onClick = { vm.addVoltage(VoltageEntity(vehicleId = id, volts = volt.value, nominalVolts = 12.0, epochDay = today())) }) {
-                                Text(t("Save battery voltage to health record", "ব্যাটারি ভোল্টেজ হেলথ রেকর্ডে সেভ করুন"))
+                if (live.isNotEmpty()) {
+                    item { SectionHeader(t("Live data", "লাইভ ডেটা")) }
+                    item {
+                        FlowRow(horizontalArrangement = Arrangement.spacedBy(Spacing.s), verticalArrangement = Arrangement.spacedBy(Spacing.s), maxItemsInEachRow = 2) {
+                            live.forEach { l ->
+                                AppSurface(Modifier.weight(1f), radius = 20.dp) {
+                                    Column(Modifier.padding(Spacing.l)) {
+                                        Text(l.name.tr(), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1)
+                                        Row(verticalAlignment = Alignment.Bottom) {
+                                            Text(if (l.unit == "rpm" || l.unit == "km/h" || l.unit == "s") "%.0f".format(l.value) else "%.1f".format(l.value),
+                                                style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Medium)
+                                            Spacer(Modifier.width(4.dp))
+                                            Text(l.unit, style = MaterialTheme.typography.labelMedium, modifier = Modifier.padding(bottom = 4.dp))
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
-            if (useUsb && connected == null) item { Text(t("Works with FTDI, CH340, CP210x and PL2303 cables. Your phone must support USB OTG.", "FTDI, CH340, CP210x ও PL2303 ক্যাবলে কাজ করে। ফোনে USB OTG সাপোর্ট থাকতে হবে।"), style = MaterialTheme.typography.bodySmall) }
-            item { Text(t("Tip: buy a tested dongle. Cheap clones (v2.1) often fail on newer cars.", "টিপ: পরীক্ষিত ডঙ্গল কিনুন। সস্তা ক্লোন (v2.1) নতুন গাড়িতে প্রায়ই কাজ করে না।"), style = MaterialTheme.typography.bodySmall) }
         }
     }
     if (showPro) ProDialog(vm, t("Live OBD graphs are a Pro feature.", "লাইভ OBD গ্রাফ প্রো ফিচার।")) { showPro = false }
 }
 
-private fun t2(vm: MainViewModel, en: String, bn: String) = vm.lang.value.pick(en, bn)
+@Composable
+private fun AdapterRow(icon: ImageVector, title: String, subtitle: String, enabled: Boolean, onConnect: () -> Unit) {
+    ListItem(headlineContent = { Text(title) }, supportingContent = { Text(subtitle) }, leadingContent = { Icon(icon, null) },
+        trailingContent = { TextButton(enabled = enabled, onClick = onConnect) { Text(t("Connect", "কানেক্ট")) } })
+}
+
+@Composable
+private fun CodeCard(c: DiagnosticTroubleCode, pendingCode: Boolean) {
+    SectionCard(c.code) {
+        if (pendingCode) StatusPill(t("Pending: seen once, not confirmed yet", "পেন্ডিং: একবার দেখা গেছে, এখনো নিশ্চিত নয়"), Tone.WARN)
+        Text(c.describe().tr(), fontWeight = FontWeight.SemiBold,
+            color = if ((c.info?.severity ?: 2) >= 3) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface)
+        c.info?.advice?.let { Text(it.tr(), style = MaterialTheme.typography.bodySmall) }
+    }
+}

@@ -57,6 +57,16 @@ class Prefs(context: Context) {
     fun setPerfMode(v: String) { sp.edit().putString("perf_mode", v).apply(); _perf.value = v }
 
     /** Vehicle opened most recently: launcher shortcuts and quick actions go straight to it. */
+    /** Last OBD adapter that worked: "bt:<mac>", "ble:<mac>", "wifi:<host>:<port>" or "usb". */
+    var lastObd: String?
+        get() = sp.getString("last_obd", null)
+        set(v) { sp.edit().putString("last_obd", v).apply() }
+
+    /** Name shown on the reconnect button. */
+    var lastObdName: String?
+        get() = sp.getString("last_obd_name", null)
+        set(v) { sp.edit().putString("last_obd_name", v).apply() }
+
     var lastVehicleId: Long
         get() = sp.getLong("last_vehicle", -1L)
         set(v) { sp.edit().putLong("last_vehicle", v).apply() }
