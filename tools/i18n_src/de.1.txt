@@ -403,9 +403,9 @@
 402|Einspritzfehler am Motorrad. Markenwerkstatt mit Diagnosegerät aufsuchen.
 403|GPS-Fahrt (Schätzung)
 404|Werkstatt
-405|GariDoctor
-406|GariDoctor Pro
-407|GariDoctor Fahrzeugpass
+405|Car Doctor AI
+406|Car Doctor AI Pro
+407|Car Doctor AI Fahrzeugpass
 408|Gasleck an Verschraubungen, Leitung oder Regler
 409|Gasleck — riecht es nach Gas?
 410|Getriebeöl

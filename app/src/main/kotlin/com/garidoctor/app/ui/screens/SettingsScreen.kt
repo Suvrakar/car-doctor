@@ -50,7 +50,7 @@ fun SettingsScreen(vm: MainViewModel, onBack: (() -> Unit)?, bottomBar: @Composa
                     TextButton(onClick = { showLang = true }) { Text(t("Change", "বদলান")) }
                 }
             }
-            SectionCard(t("GariDoctor Pro", "গাড়িডাক্তার প্রো")) {
+            SectionCard(t("Car Doctor AI Pro", "কার ডক্টর AI প্রো")) {
                 Text(if (pro) t("Pro is active ✓", "প্রো চালু আছে ✓") else t("Multiple vehicles, PDF passport, live OBD graphs, fleet mode, no ads.", "একাধিক গাড়ি, পিডিএফ পাসপোর্ট, লাইভ OBD গ্রাফ, ফ্লিট মোড, বিজ্ঞাপন নেই।"))
                 if (!pro) Button(onClick = { showPro = true }) { Text(t("Unlock / redeem code", "আনলক / কোড রিডিম")) }
             }
@@ -66,7 +66,7 @@ fun SettingsScreen(vm: MainViewModel, onBack: (() -> Unit)?, bottomBar: @Composa
                 Text(t("Your logs and photos stay on this phone. Nothing is uploaded unless you turn on backup.", "আপনার লগ ও ছবি এই ফোনেই থাকে। ব্যাকআপ চালু না করলে কিছুই আপলোড হয় না।"), style = MaterialTheme.typography.bodySmall)
                 Text(t("Diagnoses are possible causes only. Always confirm with a mechanic.", "রোগনির্ণয় শুধু সম্ভাব্য কারণ। সবসময় মেকানিক দিয়ে নিশ্চিত হোন।"), style = MaterialTheme.typography.bodySmall)
             }
-            Text("GariDoctor ${BuildConfig.VERSION_NAME}", style = MaterialTheme.typography.labelSmall)
+            Text("Car Doctor AI ${BuildConfig.VERSION_NAME}", style = MaterialTheme.typography.labelSmall)
         }
     }
     if (showPro) ProDialog(vm, t("Unlock everything once.", "একবারেই সব আনলক করুন।")) { showPro = false }

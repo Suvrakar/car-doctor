@@ -403,9 +403,9 @@
 402|バイクの燃料噴射の不具合。診断機のあるメーカー系サービスへ。
 403|GPS 走行（推定）
 404|整備工場
-405|GariDoctor
-406|GariDoctor Pro
-407|GariDoctor 車両パスポート
+405|Car Doctor AI
+406|Car Doctor AI Pro
+407|Car Doctor AI 車両パスポート
 408|継手・配管・レギュレーターからのガス漏れ
 409|ガス漏れ — ガス臭はしますか？
 410|ギアオイル

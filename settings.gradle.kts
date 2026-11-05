@@ -26,7 +26,7 @@ dependencyResolutionManagement {
         maven("https://jitpack.io") { content { includeGroup("com.github.mik3y") } }
     }
 }
-rootProject.name = "GariDoctor"
+rootProject.name = "CarDoctorAI"
 include(":core")
 // The Android app needs the Android SDK. Pass -PcoreOnly to build/test the pure-Kotlin core without it.
 if (!providers.gradleProperty("coreOnly").isPresent) {

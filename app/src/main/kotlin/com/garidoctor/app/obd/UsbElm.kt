@@ -42,7 +42,7 @@ object UsbElm {
 
     fun hasPermission(context: Context, a: Adapter) = context.getSystemService(UsbManager::class.java)?.hasPermission(a.device) == true
 
-    /** Shows Android's "Allow GariDoctor to access the USB device?" dialog. Resumes with the answer. */
+    /** Shows Android's "Allow Car Doctor AI to access the USB device?" dialog. Resumes with the answer. */
     suspend fun requestPermission(context: Context, a: Adapter): Boolean {
         val usb = context.getSystemService(UsbManager::class.java) ?: return false
         if (usb.hasPermission(a.device)) return true

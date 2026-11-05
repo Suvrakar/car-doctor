@@ -1,8 +1,8 @@
-# GariDoctor (গাড়িডাক্তার)
+# Car Doctor AI (কার ডক্টর AI)
 
 **A health doctor for every vehicle.** One Android app that tracks, checks and explains the health of any vehicle — motorcycle, scooter, car, SUV/jeep, CNG auto-rickshaw, electric easy-bike or e-scooter, microbus, bus, pickup, truck, or anything else via "Other vehicle" — in **Bangla and English**, running almost entirely on the phone. Available in **11 languages**: English, বাংলা, हिन्दी, اردو, नेपाली, العربية, 中文, 日本語, Русский, Deutsch, Italiano (right-to-left layouts for Urdu and Arabic).
 
-[![Build](https://github.com/limon27121/GariDoctor/actions/workflows/build.yml/badge.svg)](https://github.com/limon27121/GariDoctor/actions/workflows/build.yml)
+[![Build](https://github.com/Suvrakar/car-doctor/actions/workflows/build.yml/badge.svg)](https://github.com/Suvrakar/car-doctor/actions/workflows/build.yml)
 
 > "Your Pulsar is at **72/100**. Engine oil is 400 km overdue (−13), chain hasn't been adjusted in 1,200 km (−8), and your tax token expires in 9 days (−3)."
 

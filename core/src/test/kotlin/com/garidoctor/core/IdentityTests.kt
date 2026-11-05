@@ -19,13 +19,13 @@ class IdentityTests {
 
     @Test fun qrTextHasEveryReferenceAndSkipsBlanks() {
         val q = axio.qrText(Lang.EN)
-        assertTrue(q.startsWith("GariDoctor · Vehicle ID\nFamily Axio — Car · Toyota Corolla Axio"), q)
+        assertTrue(q.startsWith("Car Doctor AI · Vehicle ID\nFamily Axio — Car · Toyota Corolla Axio"), q)
         listOf("Registration no.: DHAKA METRO-GA 12-3456", "Engine no.: 1NZ-A123456", "Chassis no.: NZE141-6012345",
             "Driver: Rahim Uddin", "Driving licence no.: DK0123456789", "Phone: 01711000000").forEach { assertTrue(it in q, "missing $it in\n$q") }
         val noDriver = axio.qrText(Lang.EN, includeDriver = false)
         assertFalse("Rahim" in noDriver || "01711000000" in noDriver)
         val bare = VehicleIdentity("Bike", "Motorcycle", registrationNo = "  ").qrText(Lang.EN)
-        assertEquals("GariDoctor · Vehicle ID\nBike — Motorcycle", bare)
+        assertEquals("Car Doctor AI · Vehicle ID\nBike — Motorcycle", bare)
     }
 
     @Test fun qrTextIsLocalised() {

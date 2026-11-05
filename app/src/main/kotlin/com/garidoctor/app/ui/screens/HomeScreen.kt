@@ -78,7 +78,7 @@ fun HomeScreen(vm: MainViewModel, onOpen: (Long) -> Unit, onAdd: () -> Unit, onN
     val tasks = remember(st.snapshot, st.checkups, lang) { buildTasks(st.snapshot.vehicles, st.checkups, st.snapshot.records, st.snapshot.symptoms, lang) }
 
     Screen(
-        title = t("GariDoctor", "গাড়িডাক্তার"), onBack = null, large = true, bottomBar = bottomBar,
+        title = t("Car Doctor AI", "কার ডক্টর AI"), onBack = null, large = true, bottomBar = bottomBar,
         fab = {
             if (st.snapshot.vehicles.isNotEmpty()) ExtendedFloatingActionButton(
                 onClick = { if (vm.canAddVehicle()) onAdd() else showPro = true }, expanded = expandedFab,
@@ -237,7 +237,7 @@ fun ProDialog(vm: MainViewModel, reason: String, onDismiss: () -> Unit) {
     var code by remember { mutableStateOf("") }
     var error by remember { mutableStateOf(false) }
     AlertDialog(onDismissRequest = onDismiss,
-        title = { Text(t("GariDoctor Pro", "গাড়িডাক্তার প্রো")) },
+        title = { Text(t("Car Doctor AI Pro", "কার ডক্টর AI প্রো")) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(reason)

@@ -89,7 +89,7 @@ fun rememberPassportAction(vm: MainViewModel, id: Long): (PassportMode) -> Unit 
             PassportPdf.write(ctx, p, { pid -> tpl.part(pid)?.name?.get(lang) ?: pid }, lang,
                 v.identity(tpl, lang), vm.prefs.shareDriverDetails, buildHistory(st.snapshot, id, tpl, lang))
         }.onSuccess { f ->
-            if (mode == PassportMode.PRINT) Printing.printPdf(ctx, f, "GariDoctor · ${v.nickname}") else PassportPdf.share(ctx, f)
+            if (mode == PassportMode.PRINT) Printing.printPdf(ctx, f, "Car Doctor AI · ${v.nickname}") else PassportPdf.share(ctx, f)
         }.onFailure { Toast.makeText(ctx, it.message, Toast.LENGTH_LONG).show() }
     }
     pending?.let { mode ->

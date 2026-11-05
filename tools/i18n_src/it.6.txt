@@ -16,7 +16,7 @@
 1029|Ogni numero può appartenere a un solo veicolo del tuo garage.
 1030|N. motore
 1031|Multa / pratica
-1032|GariDoctor · ID veicolo
+1032|Car Doctor AI · ID veicolo
 1033|ID e QR
 1034|Includi dati del conducente
 1035|Premio assicurativo

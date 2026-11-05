@@ -60,7 +60,7 @@ object IdCard {
     }
 
     fun png(context: Context, id: VehicleIdentity, lang: Lang, includeDriver: Boolean): File {
-        val f = File(Printing.outDir(context), "GariDoctor_ID_${safe(id.nickname)}.png")
+        val f = File(Printing.outDir(context), "CarDoctorAI_ID_${safe(id.nickname)}.png")
         f.outputStream().use { render(id, lang, includeDriver).compress(Bitmap.CompressFormat.PNG, 100, it) }
         return f
     }
@@ -76,7 +76,7 @@ object IdCard {
         page.canvas.drawBitmap(card, null, RectF(left, top, left + w, top + h), Paint(Paint.FILTER_BITMAP_FLAG))
         page.canvas.drawRect(RectF(left, top, left + w, top + h), Paint().apply { style = Paint.Style.STROKE; color = Color.LTGRAY; strokeWidth = 0.5f })
         doc.finishPage(page)
-        val f = File(Printing.outDir(context), "GariDoctor_ID_${safe(id.nickname)}.pdf")
+        val f = File(Printing.outDir(context), "CarDoctorAI_ID_${safe(id.nickname)}.pdf")
         f.outputStream().use { doc.writeTo(it) }
         doc.close()
         return f

@@ -37,7 +37,7 @@ object PassportPdf {
         fun t(en: String, bn: String) = lang.pick(en, bn)
         var y = M + 10
 
-        c.drawText(t("GariDoctor Vehicle Passport", "গাড়িডাক্তার ভেহিকল পাসপোর্ট"), M, y, title); y += 26
+        c.drawText(t("Car Doctor AI Vehicle Passport", "কার ডক্টর AI ভেহিকল পাসপোর্ট"), M, y, title); y += 26
         c.drawText("${p.vehicle.nickname} · ${p.templateName}${p.modelName?.let { " · $it" } ?: ""}", M, y, h2); y += 18
         val idFields = if (identity != null) VehicleIdentity.VEHICLE_FIELDS.mapNotNull { f -> identity.value(f)?.let { f to it } }
             else listOfNotNull(p.vehicle.registrationNo?.let { VehicleIdentity.Field.REGISTRATION to it })
@@ -121,13 +121,13 @@ object PassportPdf {
         }
         y += 16; newPageIfNeeded()
         c.drawText(t("Fingerprint", "ফিঙ্গারপ্রিন্ট") + ": ${p.fingerprint.take(32)}", M, y, muted); y += 12
-        c.drawText(t("Self-reported by the owner in GariDoctor. Not a garage inspection unless marked verified.",
-            "মালিক নিজে গাড়িডাক্তার অ্যাপে তথ্য দিয়েছেন। 'ভেরিফায়েড' চিহ্ন না থাকলে এটি গ্যারেজ পরিদর্শন নয়।"), M, y, muted)
+        c.drawText(t("Self-reported by the owner in Car Doctor AI. Not a garage inspection unless marked verified.",
+            "মালিক নিজে কার ডক্টর AI অ্যাপে তথ্য দিয়েছেন। 'ভেরিফায়েড' চিহ্ন না থাকলে এটি গ্যারেজ পরিদর্শন নয়।"), M, y, muted)
         doc.finishPage(page)
 
         val dir = Printing.outDir(context)
         val safe = p.vehicle.nickname.replace(Regex("[^A-Za-z0-9]+"), "_").ifBlank { "vehicle" }
-        val f = File(dir, "GariDoctor_Passport_${safe}_${p.generatedEpochDay}.pdf")
+        val f = File(dir, "CarDoctorAI_Passport_${safe}_${p.generatedEpochDay}.pdf")
         f.outputStream().use { doc.writeTo(it) }
         doc.close()
         return f

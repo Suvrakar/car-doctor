@@ -246,7 +246,7 @@
 745|Roller
 746|Marke oder Modell suchen
 747|Sicherheitsgurt
-748|Vom Besitzer in GariDoctor selbst angegeben. Keine Werkstattprüfung, sofern nicht als geprüft markiert.
+748|Vom Besitzer in Car Doctor AI selbst angegeben. Keine Werkstattprüfung, sofern nicht als geprüft markiert.
 749|Sendet nur das Foto oder den Satz, den du auswählst.
 750|Wartungshistorie
 751|Anlage und Luftfilter warten.

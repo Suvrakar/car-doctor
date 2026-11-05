@@ -403,9 +403,9 @@
 402|摩托车电喷故障。请到有诊断仪的品牌服务站。
 403|GPS 行程（估算）
 404|修理厂
-405|GariDoctor
-406|GariDoctor Pro
-407|GariDoctor 车辆护照
+405|Car Doctor AI
+406|Car Doctor AI Pro
+407|Car Doctor AI 车辆护照
 408|接头、管路或减压器漏气
 409|漏气——闻到燃气味？
 410|齿轮油

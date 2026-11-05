@@ -246,7 +246,7 @@
 745|Scooter
 746|Cerca marca o modello
 747|Cintura di sicurezza
-748|Dichiarato dal proprietario in GariDoctor. Non è un’ispezione d’officina se non è indicato come verificato.
+748|Dichiarato dal proprietario in Car Doctor AI. Non è un’ispezione d’officina se non è indicato come verificato.
 749|Invia solo la foto o la frase che scegli.
 750|Storico interventi
 751|Revisiona impianto e filtro aria.

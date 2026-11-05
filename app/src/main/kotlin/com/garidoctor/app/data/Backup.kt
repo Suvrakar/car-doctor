@@ -39,7 +39,7 @@ class BackupManager(private val db: AppDatabase) {
     /** Replaces everything on this phone with the backup. Throws if the text isn't a GariDoctor backup. */
     suspend fun restore(text: String): Int {
         val b = json.decodeFromString(BackupFile.serializer(), text)
-        require(b.format == BackupFile.FORMAT) { "Not a GariDoctor backup" }
+        require(b.format == BackupFile.FORMAT) { "Not a Car Doctor AI backup" }
         db.withTransaction {
             dao.deleteAllVehicles()
             dao.insertVehicles(b.vehicles); dao.insertServices(b.services); dao.insertFuel(b.fuel); dao.insertDocuments(b.documents)

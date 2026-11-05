@@ -78,7 +78,7 @@ fun VehicleIdScreen(vm: MainViewModel, id: Long, onBack: () -> Unit) {
         save(); busy = true
         scope.launch {
             runCatching { withContext(Dispatchers.Default) { if (print) IdCard.pdf(ctx, identity, lang, includeDriver) else IdCard.png(ctx, identity, lang, includeDriver) } }
-                .onSuccess { f -> if (print) Printing.printPdf(ctx, f, "GariDoctor ID · ${v.nickname}") else Printing.share(ctx, f, "image/png", v.nickname) }
+                .onSuccess { f -> if (print) Printing.printPdf(ctx, f, "Car Doctor AI ID · ${v.nickname}") else Printing.share(ctx, f, "image/png", v.nickname) }
                 .onFailure { Toast.makeText(ctx, it.message, Toast.LENGTH_LONG).show() }
             busy = false
         }

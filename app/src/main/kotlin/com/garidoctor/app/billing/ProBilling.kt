@@ -26,7 +26,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 /**
- * One-time "GariDoctor Pro" unlock through Google Play Billing (in-app product [BuildConfig.PRO_PRODUCT_ID],
+ * One-time "Car Doctor AI Pro" unlock through Google Play Billing (in-app product [BuildConfig.PRO_PRODUCT_ID],
  * priced ৳299–499 in Play Console). Restores the unlock on every start. Promo codes are a separate path.
  */
 class ProBilling(context: Context, private val prefs: Prefs) {

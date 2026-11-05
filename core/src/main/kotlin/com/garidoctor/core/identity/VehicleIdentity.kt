@@ -47,7 +47,7 @@ data class VehicleIdentity(
     }
 
     companion object {
-        val HEADER = L10n("GariDoctor · Vehicle ID", "গাড়িডাক্তার · গাড়ির পরিচয়")
+        val HEADER = L10n("Car Doctor AI · Vehicle ID", "কার ডক্টর AI · গাড়ির পরিচয়")
         val VEHICLE_FIELDS = listOf(Field.REGISTRATION, Field.ENGINE, Field.CHASSIS)
 
         /** "Dhaka Metro-GA 12-3456", "DHAKA METRO GA 123456" and "ঢাকা মেট্রো..." with Bangla digits compare equal. */

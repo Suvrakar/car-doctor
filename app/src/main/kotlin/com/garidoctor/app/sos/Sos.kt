@@ -26,7 +26,7 @@ object Sos {
             reg?.let { append(" ($it)") }
             diagnosis?.let { append("\n" + lang.pick("Problem:", "সমস্যা:") + " $it") }
             append("\n" + lang.pick("Location:", "লোকেশন:") + " " + (map ?: lang.pick("unavailable", "পাওয়া যায়নি")))
-            append("\n— " + lang.pick("GariDoctor", "গাড়িডাক্তার"))
+            append("\n— " + lang.pick("Car Doctor AI", "কার ডক্টর AI"))
         }
     }
 

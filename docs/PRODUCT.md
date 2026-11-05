@@ -1,4 +1,4 @@
-# GariDoctor — product & business plan
+# Car Doctor AI — product & business plan
 
 **One-line pitch:** One app that tracks, checks, and explains the health of any vehicle (motorcycle, scooter, car, SUV/jeep, CNG auto-rickshaw, electric easy-bike or e-scooter, microbus, bus, pickup, truck, or any other vehicle) in Bangla and English, running almost entirely on the phone.
 

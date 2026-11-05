@@ -403,9 +403,9 @@
 402|Guasto all’iniezione della moto. Rivolgiti a un centro assistenza della marca con strumento diagnostico.
 403|Viaggio GPS (stima)
 404|Officina
-405|GariDoctor
-406|GariDoctor Pro
-407|Passaporto veicolo GariDoctor
+405|Car Doctor AI
+406|Car Doctor AI Pro
+407|Passaporto veicolo Car Doctor AI
 408|Perdita di gas da raccordi, tubi o riduttore
 409|Perdita di gas — senti odore di gas?
 410|Olio cambio
