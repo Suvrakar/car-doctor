@@ -9,7 +9,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
     entities = [VehicleEntity::class, ServiceEntity::class, FuelEntity::class, DocumentEntity::class, CheckEntity::class,
-        SymptomEntity::class, VoltageEntity::class, FaultCodeEntity::class, OdometerEntity::class, IntervalOverrideEntity::class, ExpenseEntity::class],
+        SymptomEntity::class, VoltageEntity::class, FaultCodeEntity::class, OdometerEntity::class, IntervalOverrideEntity::class, ExpenseEntity::class, ObdSessionEntity::class],
     version = 2,
     exportSchema = true,
 )
@@ -19,7 +19,7 @@ abstract class AppDatabase : RoomDatabase() {
     companion object {
         @Volatile private var instance: AppDatabase? = null
 
-        /** v2: engine/chassis numbers and the driver's licence number on each vehicle; the expenses table. */
+        /** v2: engine/chassis numbers and the driver's licence number on each vehicle; the expenses and obd_sessions tables. */
         val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL("ALTER TABLE vehicles ADD COLUMN engineNo TEXT")
@@ -28,6 +28,8 @@ abstract class AppDatabase : RoomDatabase() {
                 // Same SQL Room generates for ExpenseEntity, so the schema check after migrating passes.
                 db.execSQL("CREATE TABLE IF NOT EXISTS `expenses` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `vehicleId` INTEGER NOT NULL, `category` TEXT NOT NULL, `amountBdt` INTEGER NOT NULL, `epochDay` INTEGER NOT NULL, `note` TEXT, `receiptPath` TEXT, FOREIGN KEY(`vehicleId`) REFERENCES `vehicles`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )")
                 db.execSQL("CREATE INDEX IF NOT EXISTS `index_expenses_vehicleId` ON `expenses` (`vehicleId`)")
+                db.execSQL("CREATE TABLE IF NOT EXISTS `obd_sessions` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `vehicleId` INTEGER NOT NULL, `epochDay` INTEGER NOT NULL, `startedAtMillis` INTEGER NOT NULL, `durationSec` INTEGER NOT NULL, `worst` TEXT NOT NULL, `flagCount` INTEGER NOT NULL, `summaryJson` TEXT NOT NULL, `odometerKm` INTEGER, FOREIGN KEY(`vehicleId`) REFERENCES `vehicles`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_obd_sessions_vehicleId` ON `obd_sessions` (`vehicleId`)")
             }
         }
         fun get(context: Context): AppDatabase = instance ?: synchronized(this) {

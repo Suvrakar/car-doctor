@@ -145,6 +145,11 @@ object ObdDecoder {
     /** "ATDP" → "AUTO, ISO 15765-4 (CAN 11/500)"; strip the AUTO prefix for display. */
     fun protocolName(raw: String): String? = raw.replace(">", "").trim().removePrefix("AUTO,").removePrefix("AUTO").trim().takeIf { it.isNotEmpty() && !it.contains('?') }
 
+    /** Display name and unit for a live key: a PID ("05") or "RV" (adapter voltage). */
+    fun label(key: String): Pair<L10n, String> =
+        if (key == "RV") L10n("Battery", "ব্যাটারি") to "V"
+        else decodeLive("41 $key 00 00")?.let { it.name to it.unit } ?: (L10n(key, key) to "")
+
     fun loadDictionary(jsonText: String): Map<String, DtcInfo> =
         Json { ignoreUnknownKeys = true }.decodeFromString(ListSerializer(DtcInfo.serializer()), jsonText).associateBy { it.code }
 }

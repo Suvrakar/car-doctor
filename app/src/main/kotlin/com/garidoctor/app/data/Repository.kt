@@ -40,6 +40,7 @@ data class Snapshot(
     val checks: List<CheckEntity> = emptyList(),
     val overrides: List<IntervalOverrideEntity> = emptyList(),
     val expenses: List<ExpenseEntity> = emptyList(),
+    val obdSessions: List<ObdSessionEntity> = emptyList(),
 )
 
 class Repository(private val dao: GariDao, val registry: () -> TemplateRegistry, private val dtcLoader: () -> Map<String, DtcInfo>) {
@@ -51,26 +52,27 @@ class Repository(private val dao: GariDao, val registry: () -> TemplateRegistry,
         combine(dao.symptoms(), dao.faultCodes(), dao.voltages(), dao.checks()) { sy, fc, vo, ch -> Quad(sy, fc, vo, ch) },
         dao.intervalOverrides(),
         dao.expenses(),
-    ) { a, b, o, e -> build(a.a, a.b, a.c, a.d, b.a, b.b, b.c, b.d, o).copy(expenses = e) }
+        dao.obdSessions(),
+    ) { a, b, o, e, obd -> build(a.a, a.b, a.c, a.d, b.a, b.b, b.c, b.d, o, obd).copy(expenses = e, obdSessions = obd) }
 
     private data class Quad<A, B, C, D>(val a: A, val b: B, val c: C, val d: D)
 
     private fun build(
         v: List<VehicleEntity>, s: List<ServiceEntity>, f: List<FuelEntity>, d: List<DocumentEntity>,
         sy: List<SymptomEntity>, fc: List<FaultCodeEntity>, vo: List<VoltageEntity>, ch: List<CheckEntity>,
-        ov: List<IntervalOverrideEntity>,
+        ov: List<IntervalOverrideEntity>, obd: List<ObdSessionEntity>,
     ): Snapshot {
         val records = v.associate { ve ->
             ve.id to records(ve, s.filter { it.vehicleId == ve.id }, f.filter { it.vehicleId == ve.id }, d.filter { it.vehicleId == ve.id },
                 sy.filter { it.vehicleId == ve.id }, fc.filter { it.vehicleId == ve.id }, vo.filter { it.vehicleId == ve.id }.maxByOrNull { it.epochDay },
-                ch.filter { it.vehicleId == ve.id }, ov.filter { it.vehicleId == ve.id })
+                ch.filter { it.vehicleId == ve.id }, ov.filter { it.vehicleId == ve.id }, obd.firstOrNull { it.vehicleId == ve.id })
         }
         return Snapshot(v, records, s, f, d, sy, fc, vo, ch, ov)
     }
 
     private fun records(
         ve: VehicleEntity, s: List<ServiceEntity>, f: List<FuelEntity>, d: List<DocumentEntity>, sy: List<SymptomEntity>,
-        fc: List<FaultCodeEntity>, vo: VoltageEntity?, ch: List<CheckEntity>, ov: List<IntervalOverrideEntity>,
+        fc: List<FaultCodeEntity>, vo: VoltageEntity?, ch: List<CheckEntity>, ov: List<IntervalOverrideEntity>, live: ObdSessionEntity?,
     ) = VehicleRecords(
         vehicle = ve.toModel(),
         baselineKm = ve.baselineKm,
@@ -82,12 +84,14 @@ class Repository(private val dao: GariDao, val registry: () -> TemplateRegistry,
         voltage = vo?.let { VoltageReading(it.volts, it.nominalVolts, it.epochDay) },
         faultCodes = if (fc.isEmpty()) emptyList() else fc.map { DiagnosticTroubleCode(it.code, dtc[it.code]) },
         intervalOverrides = ov.associate { it.partId to IntervalOverride(it.intervalKm, it.intervalMonths) },
+        liveCheck = live?.let { com.garidoctor.core.obd.LiveSummary.fromJson(it.summaryJson) },
+        liveCheckEpochDay = live?.epochDay,
     )
 
     /** Records loaded directly (for workers that don't observe flows). */
     suspend fun recordsOnce(ve: VehicleEntity) = records(
         ve, dao.servicesOnce(ve.id), dao.fuelOnce(ve.id), dao.documentsOnce(ve.id), dao.symptomsOnce(ve.id),
-        dao.faultCodesOnce(ve.id), dao.latestVoltage(ve.id), dao.checksOnce(ve.id), dao.intervalOverridesOnce(ve.id),
+        dao.faultCodesOnce(ve.id), dao.latestVoltage(ve.id), dao.checksOnce(ve.id), dao.intervalOverridesOnce(ve.id), dao.latestObdSession(ve.id),
     )
 
     fun checkup(r: VehicleRecords) = registry().template(r.vehicle.templateId)?.let { VehicleDoctor.checkup(it, r, today()) }
@@ -116,6 +120,8 @@ class Repository(private val dao: GariDao, val registry: () -> TemplateRegistry,
     suspend fun deleteFuel(id: Long) = dao.deleteFuel(id)
     suspend fun addExpense(e: ExpenseEntity) = dao.insert(e)
     suspend fun deleteExpense(id: Long) = dao.deleteExpense(id)
+    suspend fun addObdSession(o: ObdSessionEntity) = dao.insert(o)
+    suspend fun deleteObdSession(id: Long) = dao.deleteObdSession(id)
     suspend fun addDocument(d: DocumentEntity) = dao.insert(d)
     suspend fun updateDocument(d: DocumentEntity) = dao.update(d)
     suspend fun deleteDocument(id: Long) = dao.deleteDocument(id)

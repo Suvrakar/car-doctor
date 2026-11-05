@@ -139,6 +139,23 @@ data class ExpenseEntity(
     val receiptPath: String? = null,
 )
 
+/** A saved live-data check from the OBD screen: min/max/avg per reading and what was flagged (schema v2). */
+@Serializable
+@Entity(tableName = "obd_sessions", foreignKeys = [ForeignKey(entity = VehicleEntity::class, parentColumns = ["id"], childColumns = ["vehicleId"], onDelete = ForeignKey.CASCADE)], indices = [Index("vehicleId")])
+data class ObdSessionEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val vehicleId: Long,
+    val epochDay: Long,
+    val startedAtMillis: Long,
+    val durationSec: Long,
+    /** [com.garidoctor.core.obd.LiveLevel] name of the worst finding. */
+    val worst: String,
+    val flagCount: Int,
+    /** [com.garidoctor.core.obd.LiveSummary] as JSON. */
+    val summaryJson: String,
+    val odometerKm: Int? = null,
+)
+
 /** User-edited service interval for one part of one vehicle ("defaults per model, editable by the user"). */
 @Serializable
 @Entity(tableName = "interval_overrides", primaryKeys = ["vehicleId", "partId"], foreignKeys = [ForeignKey(entity = VehicleEntity::class, parentColumns = ["id"], childColumns = ["vehicleId"], onDelete = ForeignKey.CASCADE)])

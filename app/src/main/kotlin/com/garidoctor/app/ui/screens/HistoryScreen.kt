@@ -41,7 +41,7 @@ import java.util.Locale
 
 private enum class HistoryFilter(val kinds: Set<HistoryKind>?) {
     ALL(null), SERVICE(setOf(HistoryKind.SERVICE)), FUEL(setOf(HistoryKind.FUEL)), BILLS(setOf(HistoryKind.EXPENSE)),
-    CHECKS(setOf(HistoryKind.CHECK, HistoryKind.PROBLEM)),
+    CHECKS(setOf(HistoryKind.CHECK, HistoryKind.PROBLEM, HistoryKind.LIVE_CHECK)),
 }
 
 /** Everything that happened to one vehicle, newest first, with what it cost. Printable as the passport. */
@@ -134,11 +134,12 @@ fun HistoryScreen(vm: MainViewModel, id: Long, onBack: () -> Unit, nav: (String)
     }
     open?.let { e ->
         AlertDialog(onDismissRequest = { open = null }, icon = { Icon(kindIcon(e.kind), null) }, title = { Text(e.title) }, text = {
-            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 Text(LocalDate.ofEpochDay(e.epochDay).format(DateTimeFormatter.ofPattern("d MMMM yyyy", locale)))
                 e.odometerKm?.let { Text(t("Odometer", "ওডোমিটার") + ": " + n(it) + " " + t("km", "কিমি")) }
                 e.amountBdt?.let { Text(t("Cost", "খরচ") + ": ৳" + n(it), fontWeight = FontWeight.Medium) }
-                e.detail?.let { Text(it) }
+                if (e.kind == HistoryKind.LIVE_CHECK) st.snapshot.obdSessions.firstOrNull { it.id == e.refId }?.let { LiveCheckDetails(it.summaryJson) }
+                else e.detail?.let { Text(it) }
                 e.receiptPath?.let { path ->
                     TextButton(onClick = {
                         runCatching {
@@ -154,6 +155,7 @@ fun HistoryScreen(vm: MainViewModel, id: Long, onBack: () -> Unit, nav: (String)
                     HistoryKind.SERVICE -> { { vm.deleteService(e.refId!!) } }
                     HistoryKind.FUEL -> { { vm.deleteFuel(e.refId!!) } }
                     HistoryKind.EXPENSE -> { { vm.deleteExpense(e.refId!!) } }
+                    HistoryKind.LIVE_CHECK -> { { vm.deleteObdSession(e.refId!!) } }
                     else -> null
                 }
                 if (del != null && e.refId != null) TextButton(onClick = { del(); open = null }) { Text(t("Delete", "মুছুন"), color = MaterialTheme.colorScheme.error) }
@@ -179,11 +181,39 @@ private fun kindIcon(k: HistoryKind): ImageVector = when (k) {
     HistoryKind.ODOMETER -> Icons.Default.Speed
     HistoryKind.CHECK -> Icons.Default.CameraAlt
     HistoryKind.PROBLEM -> Icons.Default.HealthAndSafety
+    HistoryKind.LIVE_CHECK -> Icons.Default.Speed
 }
 
 private fun kindTone(e: HistoryEntry): Tone = when (e.kind) {
     HistoryKind.PROBLEM -> Tone.WARN
     else -> Tone.NEUTRAL
+}
+
+/** Findings and min / average / max of every reading in a saved live check. */
+@Composable
+private fun LiveCheckDetails(json: String) {
+    val sum = remember(json) { com.garidoctor.core.obd.LiveSummary.fromJson(json) } ?: return
+    Text(t("Duration", "সময়কাল") + ": " + n(sum.durationSec / 60) + " " + t("min", "মিনিট") + " " + n(sum.durationSec % 60) + " " + t("s", "সে"),
+        style = MaterialTheme.typography.bodySmall)
+    if (sum.flags.isEmpty()) Text(t("All readings normal", "সব রিডিং স্বাভাবিক"), color = com.garidoctor.app.ui.theme.Status.colors.good)
+    sum.flags.forEach { f ->
+        val (name, unit) = com.garidoctor.core.obd.ObdDecoder.label(f.key)
+        Row(verticalAlignment = Alignment.Top) {
+            Icon(if (f.level == com.garidoctor.core.obd.LiveLevel.BAD) Icons.Default.Error else Icons.Default.Warning, null, Modifier.size(18.dp).padding(top = 2.dp),
+                tint = if (f.level == com.garidoctor.core.obd.LiveLevel.BAD) MaterialTheme.colorScheme.error else com.garidoctor.app.ui.theme.Status.colors.warn)
+            Spacer(Modifier.width(6.dp))
+            Text(name.tr() + " " + "%.1f".format(f.value) + " " + unit + ": " + f.message.tr(), style = MaterialTheme.typography.bodySmall)
+        }
+    }
+    HorizontalDivider(Modifier.padding(vertical = 4.dp))
+    Text(t("Min · average · max", "সর্বনিম্ন · গড় · সর্বোচ্চ"), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    sum.stats.forEach { s ->
+        val (name, unit) = com.garidoctor.core.obd.ObdDecoder.label(s.key)
+        Row {
+            Text(name.tr(), Modifier.weight(1f), style = MaterialTheme.typography.bodySmall)
+            Text("%.1f · %.1f · %.1f %s".format(s.min, s.avg, s.max, unit), style = MaterialTheme.typography.bodySmall)
+        }
+    }
 }
 
 /** A bill that isn't a part service or fuel: paper fees, insurance, tolls, fines, washes… */

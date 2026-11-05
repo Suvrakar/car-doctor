@@ -21,6 +21,7 @@ data class BackupFile(
     val odometer: List<OdometerEntity>,
     val overrides: List<IntervalOverrideEntity> = emptyList(),
     val expenses: List<ExpenseEntity> = emptyList(),
+    val obdSessions: List<ObdSessionEntity> = emptyList(),
 ) {
     companion object { const val FORMAT = "garidoctor-backup" }
 }
@@ -33,7 +34,7 @@ class BackupManager(private val db: AppDatabase) {
         exportedEpochDay = today(),
         vehicles = dao.vehiclesOnce(), services = dao.allServices(), fuel = dao.allFuel(), documents = dao.allDocuments(),
         checks = dao.allChecks(), symptoms = dao.allSymptoms(), voltages = dao.allVoltages(), faultCodes = dao.allFaultCodes(),
-        odometer = dao.allOdometer(), overrides = dao.allOverrides(), expenses = dao.allExpenses(),
+        odometer = dao.allOdometer(), overrides = dao.allOverrides(), expenses = dao.allExpenses(), obdSessions = dao.allObdSessions(),
     ))
 
     /** Replaces everything on this phone with the backup. Throws if the text isn't a GariDoctor backup. */
@@ -44,7 +45,7 @@ class BackupManager(private val db: AppDatabase) {
             dao.deleteAllVehicles()
             dao.insertVehicles(b.vehicles); dao.insertServices(b.services); dao.insertFuel(b.fuel); dao.insertDocuments(b.documents)
             dao.insertChecks(b.checks); dao.insertSymptoms(b.symptoms); dao.insertVoltages(b.voltages); dao.insertFaultCodes(b.faultCodes)
-            dao.insertOdometer(b.odometer); dao.insertOverrides(b.overrides); dao.insertExpenses(b.expenses)
+            dao.insertOdometer(b.odometer); dao.insertOverrides(b.overrides); dao.insertExpenses(b.expenses); dao.insertObdSessions(b.obdSessions)
         }
         return b.vehicles.size
     }

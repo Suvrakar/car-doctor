@@ -1,0 +1,37 @@
+1118|Tutti i valori normali
+1119|Batteria scarica o guasta: caricala e falla testare
+1120|Batteria debole: caricala o falla testare
+1121|Ricarica debole: controlla cinghia e morsetti batteria
+1122|Controlla prima di proseguire.
+1123|Durata
+1124|Carburante basso
+1125|Minimo alto: pulisci il corpo farfallato o cerca perdite d'aria
+1126|Carico alto al minimo: controlla mancate accensioni, freni che strisciano o il clima
+1127|Minimo instabile: pulisci il corpo farfallato o la valvola del minimo
+1128|Anticipo ridotto: possibile battito in testa o carburante scadente
+1129|Aria aspirata molto calda: controlla aspirazione e sensore
+1130|Controllo live salvato nella cronologia
+1131|Controllo motore live
+1132|Minimo basso: rischio di spegnimento, pulisci il corpo farfallato
+1133|Min · media · max
+1134|Normale
+1135|Non ricarica: controlla alternatore e cinghia
+1136|Non si scalda: il termostato potrebbe essere bloccato aperto
+1137|Olio caldo: controlla livello olio e raffreddamento
+1138|Olio surriscaldato: fermati e controlla il livello
+1139|Sovraccarica: il regolatore di tensione potrebbe essere guasto
+1140|Surriscaldamento: fermati in sicurezza e lascia raffreddare il motore
+1141|Temperatura alta: controlla liquido, ventola e radiatore
+1142|Miscela magra: possibile perdita d'aria o alimentazione debole
+1143|Miscela grassa: controlla filtro aria, iniettori e sonda lambda
+1144|Miscela molto magra: controlla perdite d'aria, pompa e iniettori
+1145|Miscela molto grassa: controlla iniettori, sonda lambda e filtro aria
+1146|Salva controllo
+1147|I controlli salvati appaiono nella cronologia e contano nel punteggio di salute per 30 giorni. Un controllo si salva da solo quando fermi i dati live dopo almeno 30 secondi.
+1148|I valori devono restare fuori range per qualche secondo prima di essere segnalati.
+1149|Depressione di aspirazione debole: possibile perdita d'aria o motore usurato
+1150|motore spento
+1151|motore acceso
+1152|min
+1153|s
+1154|{0} valori da controllare

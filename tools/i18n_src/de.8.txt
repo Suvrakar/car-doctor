@@ -1,0 +1,37 @@
+1118|Alle Werte normal
+1119|Batterie leer oder defekt: laden und prüfen lassen
+1120|Batterie schwach: laden oder prüfen lassen
+1121|Ladung schwach: Riemen und Batteriepole prüfen
+1122|Prüfen Sie das, bevor Sie weiterfahren.
+1123|Dauer
+1124|Wenig Kraftstoff
+1125|Leerlauf zu hoch: Drosselklappe reinigen oder auf Falschluft prüfen
+1126|Hohe Last im Leerlauf: auf Zündaussetzer, schleifende Bremsen oder Klimalast prüfen
+1127|Unruhiger Leerlauf: Drosselklappe oder Leerlaufventil reinigen
+1128|Zündzeitpunkt zurückgenommen: mögliches Klopfen oder schlechter Kraftstoff
+1129|Ansaugluft sehr heiß: Lufteinlass und Sensor prüfen
+1130|Live-Check im Verlauf gespeichert
+1131|Live-Motorcheck
+1132|Leerlauf zu niedrig: Absterbegefahr, Drosselklappe reinigen
+1133|Min · Durchschnitt · Max
+1134|Normal
+1135|Lädt nicht: Lichtmaschine und Riemen prüfen
+1136|Wird nicht warm: Thermostat klemmt evtl. offen
+1137|Öl ist heiß: Ölstand und Kühlung prüfen
+1138|Öl überhitzt: anhalten und Ölstand prüfen
+1139|Überladung: Spannungsregler evtl. defekt
+1140|Überhitzung: sicher anhalten und Motor abkühlen lassen
+1141|Läuft heiß: Kühlmittelstand, Lüfter und Kühler prüfen
+1142|Läuft mager: mögliche Falschluft oder schwache Kraftstoffversorgung
+1143|Läuft fett: Luftfilter, Einspritzdüsen und Lambdasonde prüfen
+1144|Läuft sehr mager: Falschluft, Kraftstoffpumpe und Einspritzdüsen prüfen
+1145|Läuft sehr fett: Einspritzdüsen, Lambdasonde und Luftfilter prüfen
+1146|Check speichern
+1147|Gespeicherte Checks erscheinen im Verlauf und zählen 30 Tage in den Gesundheitswert. Ein Check wird automatisch gespeichert, wenn Sie Live-Daten nach mindestens 30 Sekunden beenden.
+1148|Werte müssen einige Sekunden außerhalb des Bereichs liegen, bevor sie markiert werden.
+1149|Schwaches Ansaugvakuum: mögliche Falschluft oder verschlissener Motor
+1150|Motor aus
+1151|Motor läuft
+1152|Min.
+1153|s
+1154|{0} Werte brauchen Aufmerksamkeit

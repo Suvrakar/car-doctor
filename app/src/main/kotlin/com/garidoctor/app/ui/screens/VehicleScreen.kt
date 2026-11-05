@@ -140,6 +140,7 @@ fun VehicleScreen(vm: MainViewModel, id: Long, onBack: () -> Unit, startAction: 
                                 DeductionKind.FAULT_CODE -> Icons.Default.Bluetooth to "obd/$id"
                                 DeductionKind.EFFICIENCY_DROP -> Icons.Default.LocalGasStation to "fuel/$id"
                                 DeductionKind.DOCUMENT -> Icons.Default.Description to "docs/$id"
+                                DeductionKind.LIVE_DATA -> Icons.Default.Speed to "history/$id"
                             }
                             ActionRow(icon, d.reason.tr(), tone = if (d.points >= 10) Tone.BAD else Tone.WARN, trailing = { PointsPill(d.points) }, onClick = { nav(route) })
                         }

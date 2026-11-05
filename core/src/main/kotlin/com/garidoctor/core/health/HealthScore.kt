@@ -17,7 +17,7 @@ import com.garidoctor.core.template.PartCategory
 import kotlin.math.min
 import kotlin.math.roundToInt
 
-enum class DeductionKind { SERVICE_OVERDUE, SERVICE_DUE_SOON, FAILED_CHECK, SYMPTOM, LOW_VOLTAGE, FAULT_CODE, EFFICIENCY_DROP, DOCUMENT }
+enum class DeductionKind { SERVICE_OVERDUE, SERVICE_DUE_SOON, FAILED_CHECK, SYMPTOM, LOW_VOLTAGE, FAULT_CODE, EFFICIENCY_DROP, DOCUMENT, LIVE_DATA }
 
 data class Deduction(val kind: DeductionKind, val points: Int, val reason: L10n, val partId: String? = null)
 
@@ -63,6 +63,9 @@ data class HealthInputs(
     val faultCodes: List<DiagnosticTroubleCode> = emptyList(),
     val efficiency: EfficiencyTrend? = null,
     val todayEpochDay: Long,
+    /** Latest saved live-data check and the day it was made. */
+    val liveCheck: com.garidoctor.core.obd.LiveSummary? = null,
+    val liveCheckEpochDay: Long? = null,
 )
 
 /**
@@ -77,6 +80,7 @@ data class HealthInputs(
  *  - Active fault codes: 10 each, capped at 25.
  *  - Efficiency drop vs own average: 15%+ → 6, 25%+ → 10.
  *  - Papers: expired 10, ≤7 days 5, ≤15 days 3, ≤30 days 1. Capped at 20 total.
+ *  - Latest live-data check (last 30 days): red finding 8, amber 3, capped at 20.
  * A part only counts once: the worst of its deductions is kept.
  */
 object HealthScoreEngine {
@@ -84,6 +88,8 @@ object HealthScoreEngine {
     const val DOC_CAP = 20
     const val FAULT_CODE_EACH = 10
     const val FAULT_CODE_CAP = 25
+    const val LIVE_VALID_DAYS = 30L
+    const val LIVE_CAP = 20
 
     fun compute(input: HealthInputs): HealthReport {
         val perPart = mutableMapOf<String, Deduction>()
@@ -129,6 +135,16 @@ object HealthScoreEngine {
             if (pts > 0) {
                 val d = drop.roundToInt()
                 others += Deduction(DeductionKind.EFFICIENCY_DROP, pts, L10n("Mileage dropped $d%", "মাইলেজ $d% কমেছে"))
+            }
+        }
+
+        val live = input.liveCheck
+        val liveDay = input.liveCheckEpochDay
+        if (live != null && liveDay != null && input.todayEpochDay - liveDay <= LIVE_VALID_DAYS) {
+            var livePts = 0
+            live.flags.forEach { f ->
+                val pts = minOf(if (f.level == com.garidoctor.core.obd.LiveLevel.BAD) 8 else 3, LIVE_CAP - livePts)
+                if (pts > 0) { livePts += pts; others += Deduction(DeductionKind.LIVE_DATA, pts, f.message) }
             }
         }
 

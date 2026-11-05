@@ -43,7 +43,16 @@ import com.garidoctor.app.ui.theme.Spacing
 import com.garidoctor.app.ui.theme.Tone
 import com.garidoctor.core.identity.VehicleIdentity
 import com.garidoctor.core.obd.DiagnosticTroubleCode
+import com.garidoctor.core.obd.EngineProfile
+import com.garidoctor.core.obd.LiveContext
 import com.garidoctor.core.obd.LiveData
+import com.garidoctor.core.obd.LiveLevel
+import com.garidoctor.core.obd.LiveMonitor
+import com.garidoctor.core.obd.LiveRules
+import com.garidoctor.core.obd.LiveVerdict
+import com.garidoctor.core.model.EnergyType
+import com.garidoctor.app.ui.theme.container
+import com.garidoctor.app.ui.theme.onContainer
 import com.garidoctor.core.pro.ProFeature
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -95,6 +104,18 @@ fun ObdScreen(vm: MainViewModel, id: Long, onBack: () -> Unit) {
     var liveOn by remember { mutableStateOf(false) }
     var showPro by remember { mutableStateOf(false) }
     val vehicle = st.snapshot.vehicles.firstOrNull { it.id == id }
+    val profile = remember(vehicle?.energyType) { EngineProfile.of(vehicle?.energyType?.let { runCatching { EnergyType.valueOf(it) }.getOrNull() } ?: EnergyType.OCTANE) }
+    var monitor by remember { mutableStateOf(LiveMonitor(profile)) }
+    var verdicts by remember { mutableStateOf<Map<String, LiveVerdict>>(emptyMap()) }
+    var liveVolts by remember { mutableStateOf<Double?>(null) }
+    var saved by remember { mutableStateOf(false) }
+    /** Saves the live check to history (once per session; needs at least 20 s of data). */
+    fun saveCheck(): Boolean {
+        if (saved || monitor.samples < 20) return false
+        vm.saveLiveCheck(id, monitor.summary(System.currentTimeMillis())); saved = true
+        android.widget.Toast.makeText(ctx, lang.pick("Live check saved to History", "লাইভ চেক ইতিহাসে সেভ হয়েছে"), android.widget.Toast.LENGTH_SHORT).show()
+        return true
+    }
 
     /** Connect with [open], remember the adapter, then ask the car what it supports. */
     fun connect(name: String, key: String, open: suspend () -> Unit) {
@@ -145,10 +166,22 @@ fun ObdScreen(vm: MainViewModel, id: Long, onBack: () -> Unit) {
             .onFailure { error = it.message; bleScanning = false }.getOrNull() ?: return@LaunchedEffect
         try { delay(12_000) } finally { handle.close(); bleScanning = false }
     }
-    LaunchedEffect(liveOn) { while (liveOn && isActive) { live = runCatching { client.readLive() }.getOrDefault(live); delay(1000) } }
+    // Live loop: readings once a second, the adapter's voltage every 5th pass, all judged by the monitor.
+    LaunchedEffect(liveOn) {
+        if (!liveOn) { if (monitor.samples >= 30) saveCheck(); return@LaunchedEffect }
+        monitor = LiveMonitor(profile); saved = false; verdicts = emptyMap()
+        var pass = 0
+        while (liveOn && isActive) {
+            live = runCatching { client.readLive() }.getOrDefault(live)
+            if (pass++ % 5 == 0) client.adapterVolts()?.let { liveVolts = it }
+            verdicts = monitor.feed(live.associate { it.pid to it.value }, liveVolts, System.currentTimeMillis()).associateBy { it.key }
+            delay(1000)
+        }
+    }
+    DisposableEffect(Unit) { onDispose { if (monitor.samples >= 30 && !saved) vm.saveLiveCheck(id, monitor.summary(System.currentTimeMillis())) } }
 
     Screen(t("OBD scan", "OBD স্ক্যান"), onBack, actions = {
-        if (connected != null) TextButton(onClick = { liveOn = false; client.close(); connected = null; info = null; codes = null; pending = emptyList(); live = emptyList() }) {
+        if (connected != null) TextButton(onClick = { liveOn = false; if (monitor.samples >= 30) saveCheck(); client.close(); connected = null; info = null; codes = null; pending = emptyList(); live = emptyList() }) {
             Text(t("Disconnect", "সংযোগ বিচ্ছিন্ন"))
         }
     }) { pad ->
@@ -253,12 +286,19 @@ fun ObdScreen(vm: MainViewModel, id: Long, onBack: () -> Unit) {
                                 StatusPill(if (s.milOn) t("Check-engine light ON · ${s.storedCodes} code(s)", "চেক-ইঞ্জিন লাইট জ্বলছে · ${n(s.storedCodes)}টি কোড")
                                     else t("Check-engine light off", "চেক-ইঞ্জিন লাইট বন্ধ"), if (s.milOn) Tone.BAD else Tone.GOOD)
                             }
-                            i?.adapterVolts?.let { v ->
-                                val tone = when { v < 11.8 -> Tone.BAD; v < 12.3 -> Tone.WARN; else -> Tone.GOOD }
+                            (liveVolts ?: i?.adapterVolts)?.let { v ->
+                                // Same rule as live data: 12.9 V is fine with the engine off but means "not charging" when running.
+                                val ctxNow = LiveContext.of(live.associate { it.pid to it.value }, v)
+                                val verdict = LiveRules.judge("RV", v, ctxNow, profile)
+                                val tone = when (verdict.level) { LiveLevel.BAD -> Tone.BAD; LiveLevel.WARN -> Tone.WARN; LiveLevel.OK -> Tone.GOOD }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text(t("Battery", "ব্যাটারি") + ": " + "%.1f V".format(v), Modifier.weight(1f))
+                                    Column(Modifier.weight(1f)) {
+                                        Text(t("Battery", "ব্যাটারি") + ": " + "%.1f V".format(v) + " · " + (if (ctxNow.running) t("engine running", "ইঞ্জিন চালু") else t("engine off", "ইঞ্জিন বন্ধ")))
+                                        Text(t("Normal", "স্বাভাবিক") + " " + (verdict.range ?: ""), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                    }
                                     StatusPill(when (tone) { Tone.BAD -> t("Low", "কম"); Tone.WARN -> t("Weak", "দুর্বল"); else -> t("Good", "ভালো") }, tone)
                                 }
+                                verdict.message?.let { Text(it.tr(), style = MaterialTheme.typography.bodySmall, color = tone.onContainer()) }
                             }
                             i?.protocol?.let { Text(t("Protocol", "প্রোটোকল") + ": $it", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant) }
                             if (i != null && i.supportedPids.isNotEmpty()) Text(t("${i.supportedPids.size} readings supported", "${n(i.supportedPids.size)}টি রিডিং সাপোর্টেড"),
@@ -302,23 +342,35 @@ fun ObdScreen(vm: MainViewModel, id: Long, onBack: () -> Unit) {
                     }
                 }
                 if (live.isNotEmpty()) {
-                    item { SectionHeader(t("Live data", "লাইভ ডেটা")) }
+                    val red = verdicts.values.filter { it.level == LiveLevel.BAD }
+                    val amber = verdicts.values.filter { it.level == LiveLevel.WARN }
+                    if (red.isNotEmpty()) item {
+                        StatusBanner(Icons.Default.Error, Tone.BAD, red.first().message?.tr() ?: "",
+                            red.drop(1).joinToString("\n") { it.message?.tr() ?: "" }.ifBlank { t("Check this before driving further.", "আর চালানোর আগে এটি দেখুন।") })
+                    } else if (amber.isNotEmpty()) item {
+                        StatusBanner(Icons.Default.Warning, Tone.WARN, t("${amber.size} reading(s) need attention", "${n(amber.size)}টি রিডিং দেখা দরকার"),
+                            amber.joinToString("\n") { it.message?.tr() ?: "" })
+                    } else if (monitor.samples >= 10) item {
+                        StatusBanner(Icons.Default.Verified, Tone.GOOD, t("All readings normal", "সব রিডিং স্বাভাবিক"),
+                            t("Values must stay out of range for a few seconds before they're flagged.", "কয়েক সেকেন্ড সীমার বাইরে থাকলে তবেই সতর্ক করা হয়।"))
+                    }
                     item {
-                        FlowRow(horizontalArrangement = Arrangement.spacedBy(Spacing.s), verticalArrangement = Arrangement.spacedBy(Spacing.s), maxItemsInEachRow = 2) {
-                            live.forEach { l ->
-                                AppSurface(Modifier.weight(1f), radius = 20.dp) {
-                                    Column(Modifier.padding(Spacing.l)) {
-                                        Text(l.name.tr(), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1)
-                                        Row(verticalAlignment = Alignment.Bottom) {
-                                            Text(if (l.unit == "rpm" || l.unit == "km/h" || l.unit == "s") "%.0f".format(l.value) else "%.1f".format(l.value),
-                                                style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Medium)
-                                            Spacer(Modifier.width(4.dp))
-                                            Text(l.unit, style = MaterialTheme.typography.labelMedium, modifier = Modifier.padding(bottom = 4.dp))
-                                        }
-                                    }
-                                }
+                        SectionHeader(t("Live data", "লাইভ ডেটা")) {
+                            TextButton(enabled = !saved && monitor.samples >= 20, onClick = { saveCheck() }) {
+                                Text(if (saved) t("Saved ✓", "সেভ হয়েছে ✓") else t("Save check", "চেক সেভ করুন"))
                             }
                         }
+                    }
+                    item {
+                        val tiles = live.map { it.pid to it } + (liveVolts?.let { listOf("RV" to LiveData("RV", com.garidoctor.core.obd.ObdDecoder.label("RV").first, it, "V")) } ?: emptyList())
+                        FlowRow(horizontalArrangement = Arrangement.spacedBy(Spacing.s), verticalArrangement = Arrangement.spacedBy(Spacing.s), maxItemsInEachRow = 2) {
+                            tiles.forEach { (key, l) -> LiveTile(l, verdicts[key], Modifier.weight(1f)) }
+                        }
+                    }
+                    item {
+                        Text(t("Saved checks appear in History and count in the health score for 30 days. A check is saved automatically when you stop live data after 30 seconds or more.",
+                            "সেভ করা চেক ইতিহাসে দেখাবে এবং ৩০ দিন হেলথ স্কোরে গণনা হবে। ৩০ সেকেন্ড বা বেশি চালানোর পর লাইভ বন্ধ করলে চেক নিজেই সেভ হয়।"),
+                            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }
@@ -340,5 +392,25 @@ private fun CodeCard(c: DiagnosticTroubleCode, pendingCode: Boolean) {
         Text(c.describe().tr(), fontWeight = FontWeight.SemiBold,
             color = if ((c.info?.severity ?: 2) >= 3) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface)
         c.info?.advice?.let { Text(it.tr(), style = MaterialTheme.typography.bodySmall) }
+    }
+}
+
+/** One live reading: value, safe range, and colour + advice when it's out of range. */
+@Composable
+private fun LiveTile(l: LiveData, v: LiveVerdict?, modifier: Modifier) {
+    val tone = when (v?.level) { LiveLevel.BAD -> Tone.BAD; LiveLevel.WARN -> Tone.WARN; else -> null }
+    AppSurface(modifier, radius = 20.dp, tint = tone?.container()) {
+        Column(Modifier.padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            val fg = tone?.onContainer() ?: MaterialTheme.colorScheme.onSurfaceVariant
+            Text(l.name.tr(), style = MaterialTheme.typography.labelMedium, color = fg, maxLines = 1)
+            Row(verticalAlignment = Alignment.Bottom) {
+                Text(if (l.unit == "rpm" || l.unit == "km/h" || l.unit == "s") "%.0f".format(l.value) else "%.1f".format(l.value),
+                    style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Medium, color = tone?.onContainer() ?: MaterialTheme.colorScheme.onSurface)
+                Spacer(Modifier.width(4.dp))
+                Text(l.unit, style = MaterialTheme.typography.labelMedium, color = fg, modifier = Modifier.padding(bottom = 4.dp))
+            }
+            v?.range?.let { Text(t("Normal", "স্বাভাবিক") + " " + it, style = MaterialTheme.typography.labelSmall, color = fg) }
+            v?.message?.let { Text(it.tr(), style = MaterialTheme.typography.labelSmall, color = fg, maxLines = 3) }
+        }
     }
 }

@@ -150,6 +150,14 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun deleteFuel(id: Long) = io { repo.deleteFuel(id) }
     fun addExpense(e: com.garidoctor.app.data.ExpenseEntity) = io { repo.addExpense(e) }
     fun deleteExpense(id: Long) = io { repo.deleteExpense(id) }
+    fun deleteObdSession(id: Long) = io { repo.deleteObdSession(id) }
+
+    /** Saves a live-data check to history; it then counts in the health score for 30 days. */
+    fun saveLiveCheck(vehicleId: Long, summary: com.garidoctor.core.obd.LiveSummary) = io {
+        val km = state.value.snapshot.vehicles.firstOrNull { it.id == vehicleId }?.odometerKm
+        repo.addObdSession(com.garidoctor.app.data.ObdSessionEntity(vehicleId = vehicleId, epochDay = com.garidoctor.app.data.today(), startedAtMillis = summary.startedAtMillis,
+            durationSec = summary.durationSec, worst = summary.worst.name, flagCount = summary.flags.size, summaryJson = summary.toJson(), odometerKm = km))
+    }
     fun addDocument(d: DocumentEntity) = io { repo.addDocument(d) }
     fun updateDocument(d: DocumentEntity) = io { repo.updateDocument(d) }
     fun deleteDocument(id: Long) = io { repo.deleteDocument(id) }

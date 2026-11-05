@@ -2,7 +2,7 @@ package com.garidoctor.core.history
 
 import java.time.LocalDate
 
-enum class HistoryKind { SERVICE, EXPENSE, FUEL, PAPER, ODOMETER, CHECK, PROBLEM }
+enum class HistoryKind { SERVICE, EXPENSE, FUEL, PAPER, ODOMETER, CHECK, PROBLEM, LIVE_CHECK }
 
 /** One line in a vehicle's history: a bill, a fill-up, a paper renewal, a reading... */
 data class HistoryEntry(

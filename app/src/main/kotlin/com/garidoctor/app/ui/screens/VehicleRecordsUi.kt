@@ -59,6 +59,15 @@ fun buildHistory(s: Snapshot, vehicleId: Long, tpl: VehicleTemplate?, lang: Lang
         val name = tpl?.check(c.checkId)?.title?.get(lang) ?: tpl?.part(c.partId)?.name?.get(lang) ?: c.checkId
         add(HistoryEntry(c.epochDay, HistoryKind.CHECK, name, if (c.passed) lang.pick("Passed", "ঠিক আছে") else lang.pick("Needs work", "কাজ দরকার"), refId = c.id))
     }
+    s.obdSessions.filter { it.vehicleId == vehicleId }.forEach { o ->
+        val sum = com.garidoctor.core.obd.LiveSummary.fromJson(o.summaryJson)
+        val detail = when {
+            sum == null -> null
+            sum.flags.isEmpty() -> lang.pick("All readings normal", "সব রিডিং স্বাভাবিক")
+            else -> sum.flags.first().message.get(lang) + if (sum.flags.size > 1) " · +" + (sum.flags.size - 1) else ""
+        }
+        add(HistoryEntry(o.epochDay, HistoryKind.LIVE_CHECK, lang.pick("Live engine check", "লাইভ ইঞ্জিন চেক"), detail, odometerKm = o.odometerKm, refId = o.id))
+    }
     s.symptoms.filter { it.vehicleId == vehicleId }.forEach { p ->
         val u = runCatching { Urgency.valueOf(p.urgency) }.getOrDefault(Urgency.THIS_WEEK)
         add(HistoryEntry(p.epochDay, HistoryKind.PROBLEM, p.summary, if (p.resolved) lang.pick("Fixed", "ঠিক হয়েছে") else u.label.get(lang), refId = p.id))

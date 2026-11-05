@@ -58,6 +58,11 @@ interface GariDao {
     @Insert suspend fun insert(e: ExpenseEntity): Long
     @Query("DELETE FROM expenses WHERE id = :id") suspend fun deleteExpense(id: Long)
 
+    @Query("SELECT * FROM obd_sessions ORDER BY startedAtMillis DESC") fun obdSessions(): Flow<List<ObdSessionEntity>>
+    @Query("SELECT * FROM obd_sessions WHERE vehicleId = :v ORDER BY startedAtMillis DESC LIMIT 1") suspend fun latestObdSession(v: Long): ObdSessionEntity?
+    @Insert suspend fun insert(o: ObdSessionEntity): Long
+    @Query("DELETE FROM obd_sessions WHERE id = :id") suspend fun deleteObdSession(id: Long)
+
     @Query("SELECT * FROM interval_overrides") fun intervalOverrides(): Flow<List<IntervalOverrideEntity>>
     @Query("SELECT * FROM interval_overrides WHERE vehicleId = :v") suspend fun intervalOverridesOnce(v: Long): List<IntervalOverrideEntity>
     @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun upsert(o: IntervalOverrideEntity)
@@ -75,6 +80,8 @@ interface GariDao {
     @Query("SELECT * FROM interval_overrides") suspend fun allOverrides(): List<IntervalOverrideEntity>
     @Query("SELECT * FROM expenses") suspend fun allExpenses(): List<ExpenseEntity>
     @Insert suspend fun insertExpenses(v: List<ExpenseEntity>)
+    @Query("SELECT * FROM obd_sessions") suspend fun allObdSessions(): List<ObdSessionEntity>
+    @Insert suspend fun insertObdSessions(v: List<ObdSessionEntity>)
     @Query("DELETE FROM vehicles") suspend fun deleteAllVehicles() // children cascade
     @Insert suspend fun insertVehicles(v: List<VehicleEntity>)
     @Insert suspend fun insertServices(v: List<ServiceEntity>)

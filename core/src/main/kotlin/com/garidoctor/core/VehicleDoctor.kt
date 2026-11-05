@@ -33,6 +33,9 @@ data class VehicleRecords(
     val faultCodes: List<DiagnosticTroubleCode> = emptyList(),
     /** User-edited intervals for this vehicle, keyed by part id. */
     val intervalOverrides: Map<String, IntervalOverride> = emptyMap(),
+    /** Latest saved live-data check (OBD) and its day. */
+    val liveCheck: com.garidoctor.core.obd.LiveSummary? = null,
+    val liveCheckEpochDay: Long? = null,
 )
 
 data class Checkup(val parts: List<PartStatus>, val fuel: FuelStats, val health: HealthReport)
@@ -45,7 +48,7 @@ object VehicleDoctor {
         )
         val fuel = FuelAnalyzer.stats(r.fuel, EfficiencyUnit.of(r.vehicle.energyType), today)
         val health = HealthScoreEngine.compute(
-            HealthInputs(parts, r.documents, r.checks, r.symptoms, r.voltage, r.faultCodes, fuel.trend, today),
+            HealthInputs(parts, r.documents, r.checks, r.symptoms, r.voltage, r.faultCodes, fuel.trend, today, r.liveCheck, r.liveCheckEpochDay),
         )
         return Checkup(parts, fuel, health)
     }
