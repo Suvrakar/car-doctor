@@ -260,6 +260,33 @@ templates.append({"id": "truck", "version": 1, "name": L("Truck / covered van", 
     "models": [M("tata_lpt_1613", "Tata", "LPT 1613"), M("ashok_leyland_1616", "Ashok Leyland", "Ecomet 1616"),
                M("hino_ranger", "Hino", "Ranger / FM"), M("eicher_pro", "Eicher", "Pro 3015")]})
 
+templates.append({"id": "suv", "version": 1, "name": L("SUV / jeep", "এসইউভি / জিপ"), "defaultEnergy": "OCTANE",
+    "parts": car_parts(5000), "documents": DOC_CAR, "checks": CHECKS_CAR, "symptomTreeId": "car", "supportsObd": True, "fleetFriendly": True,
+    "models": [M("toyota_prado", "Toyota", "Land Cruiser Prado", "DIESEL", engine_oil=5000), M("toyota_harrier", "Toyota", "Harrier"),
+               M("toyota_rav4", "Toyota", "RAV4"), M("mitsubishi_pajero", "Mitsubishi", "Pajero", "DIESEL", engine_oil=5000),
+               M("nissan_xtrail_suv", "Nissan", "X-Trail"), M("honda_crv", "Honda", "CR-V"), M("hyundai_tucson", "Hyundai", "Tucson"),
+               M("mahindra_scorpio", "Mahindra", "Scorpio", "DIESEL", engine_oil=7500)]})
+
+templates.append({"id": "bus", "version": 1, "name": L("Bus", "বাস"), "defaultEnergy": "DIESEL",
+    "parts": heavy_parts(10000), "documents": DOC_COMMERCIAL, "checks": CHECKS_CAR, "symptomTreeId": "heavy", "fleetFriendly": True,
+    "models": [M("hino_ak1j", "Hino", "AK1J / RM2"), M("ashok_leyland_viking", "Ashok Leyland", "Viking / Falcon"),
+               M("tata_lp_bus", "Tata", "LP 1512 / Starbus"), M("isuzu_journey", "Isuzu", "Journey / NQR (mini bus)", engine_oil=7500),
+               M("eicher_skyline", "Eicher", "Skyline Pro"), M("toyota_coaster", "Toyota", "Coaster (mini bus)", engine_oil=7500)]})
+
+# For anything not listed (tractor, ambulance, jeep-converted, imported bikes...): a small, safe set of
+# common parts with conservative intervals. Users can edit intervals per vehicle.
+templates.append({"id": "other", "version": 1, "name": L("Other vehicle", "অন্যান্য যানবাহন"), "defaultEnergy": "DIESEL",
+    "parts": [
+        P("engine_oil", "Engine oil", "ইঞ্জিন অয়েল", "ENGINE_OIL", 5000, 6, 20, "oil_level", (800, 8000)),
+        P("air_filter", "Air filter", "এয়ার ফিল্টার", "FILTER", 10000, 12, 6, None, (300, 3000)),
+        P("fuel_filter", "Fuel filter", "ফুয়েল ফিল্টার", "FILTER", 20000, 12, 5, None, (500, 3500)),
+        P("brakes", "Brake pads / shoes", "ব্রেক প্যাড / শু", "BRAKES", 15000, 12, 15, "brake_pad", (500, 8000)),
+        P("tyres", "Tyres", "টায়ার", "TYRES", 40000, 36, 12, "tyre_tread", (3000, 60000)),
+        P("battery", "Battery", "ব্যাটারি", "BATTERY", None, 24, 8, "battery_terminal", (2000, 15000)),
+        P("coolant", "Coolant", "কুল্যান্ট", "COOLING", 40000, 24, 6, "coolant_level", (800, 4000)),
+    ],
+    "documents": DOC_CAR, "checks": CHECKS_CAR, "symptomTreeId": "heavy", "fleetFriendly": True, "models": []})
+
 out = os.path.join(os.path.dirname(__file__), "..", "core", "src", "main", "resources", "templates")
 os.makedirs(out, exist_ok=True)
 for t in templates:

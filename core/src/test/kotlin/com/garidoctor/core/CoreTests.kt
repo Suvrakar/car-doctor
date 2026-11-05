@@ -31,6 +31,14 @@ class TemplateTests {
         assertTrue(reg.all.sumOf { it.models.size } >= 20)
     }
 
+    @Test fun everyKindOfVehicleCanBeAdded() {
+        val reg = TemplateRegistry.fromClasspath()
+        listOf("motorcycle", "scooter", "car", "suv", "cng_auto", "easy_bike", "e_scooter", "microbus", "bus", "pickup", "truck", "other")
+            .forEach { assertNotNull(reg.template(it), "missing vehicle type $it") }
+        assertTrue(reg.template("other")!!.models.isEmpty(), "Other vehicle has no presets, so the model step is skipped")
+        assertEquals("বাস", reg.template("bus")!!.name.get(com.garidoctor.core.model.Lang.BN))
+    }
+
     @Test fun everyTemplateHasItsSymptomTree() {
         reg.all.forEach { t -> assertNotNull(reg.tree(t.symptomTreeId), "tree for ${t.id}") }
         reg.allTrees.forEach { assertTrue(it.validate().isEmpty(), "${it.id}: ${it.validate()}") }

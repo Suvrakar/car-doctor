@@ -1,6 +1,6 @@
 # GariDoctor (গাড়িডাক্তার)
 
-**A health doctor for every vehicle.** One Android app that tracks, checks and explains the health of any vehicle — car, motorcycle, scooter, CNG auto-rickshaw, microbus, pickup, truck, or electric easy-bike — in **Bangla and English**, running almost entirely on the phone. Available in **11 languages**: English, বাংলা, हिन्दी, اردو, नेपाली, العربية, 中文, 日本語, Русский, Deutsch, Italiano (right-to-left layouts for Urdu and Arabic).
+**A health doctor for every vehicle.** One Android app that tracks, checks and explains the health of any vehicle — motorcycle, scooter, car, SUV/jeep, CNG auto-rickshaw, electric easy-bike or e-scooter, microbus, bus, pickup, truck, or anything else via "Other vehicle" — in **Bangla and English**, running almost entirely on the phone. Available in **11 languages**: English, বাংলা, हिन्दी, اردو, नेपाली, العربية, 中文, 日本語, Русский, Deutsch, Italiano (right-to-left layouts for Urdu and Arabic).
 
 [![Build](https://github.com/limon27121/GariDoctor/actions/workflows/build.yml/badge.svg)](https://github.com/limon27121/GariDoctor/actions/workflows/build.yml)
 
@@ -11,7 +11,7 @@
 | Module | What it is |
 |---|---|
 | [`core/`](core) | Pure Kotlin (JVM) domain engine — no Android dependency, fully unit-tested. Health score, maintenance scheduler, template system, fuel/CNG/charge anomaly detection, symptom decision trees, OBD-II decoding, odometer OCR parsing, battery health, paper expiry, Vehicle Passport, fleet summary, Pro codes. |
-| [`core/src/main/resources/templates`](core/src/main/resources/templates) | 9 vehicle-type templates (JSON) with **54 Bangladesh model presets** (Pulsar, FZS, Apache, Splendor, Axio, Premio, Prius, HiAce, Bajaj RE, easy-bike 48V/60V…). |
+| [`core/src/main/resources/templates`](core/src/main/resources/templates) | 12 vehicle-type templates (JSON) with **68 Bangladesh model presets** (Pulsar, FZS, Apache, Splendor, Axio, Premio, Prius, HiAce, Bajaj RE, easy-bike 48V/60V, Prado, Hino AK1J…). Users add as many vehicles as they like and filter the garage by type. |
 | [`core/src/main/resources/symptoms`](core/src/main/resources/symptoms) | 5 bilingual symptom decision trees, 29 entry symptoms, each leaf with urgency colour + approx. BDT cost. |
 | [`core/src/main/resources/obd/dtc.json`](core/src/main/resources/obd/dtc.json) | Offline OBD fault-code dictionary in Bangla + English. |
 | [`app/`](app) | Android app: Kotlin + Jetpack Compose, Room, WorkManager, ML Kit text recognition, TensorFlow Lite, Bluetooth SPP (ELM327), PdfDocument + ZXing QR, Firebase Remote Config (optional). |

@@ -1,0 +1,5 @@
+1003|Aggiungi tutti i tuoi veicoli: moto, scooter, auto, SUV, risciò CNG, e-risciò, minibus, autobus, pick-up e camion. Ognuno riceve un punteggio di salute 0–100, promemoria di manutenzione e avvisi di scadenza dei documenti. Tutto resta sul tuo telefono.
+1004|Pastiglie / ganasce freno
+1005|Autobus
+1006|Altro veicolo
+1007|SUV / fuoristrada

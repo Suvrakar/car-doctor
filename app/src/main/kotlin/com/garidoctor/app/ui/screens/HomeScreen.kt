@@ -3,6 +3,8 @@
 package com.garidoctor.app.ui.screens
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -12,6 +14,7 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.Speed
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -94,8 +97,8 @@ fun HomeScreen(vm: MainViewModel, onOpen: (Long) -> Unit, onAdd: () -> Unit, onN
                 EmptyState(
                     Icons.Default.HealthAndSafety,
                     t("A health doctor for every vehicle", "প্রতিটি গাড়ির জন্য একজন হেলথ ডাক্তার"),
-                    t("Add your bike, car, CNG, easy-bike, microbus, pickup or truck. Get a 0–100 health score, service reminders and paper-expiry alerts. Everything stays on your phone.",
-                        "আপনার বাইক, কার, সিএনজি, ইজি বাইক, মাইক্রোবাস, পিকআপ বা ট্রাক যোগ করুন। পান ০–১০০ হেলথ স্কোর, সার্ভিস রিমাইন্ডার ও কাগজের মেয়াদের সতর্কতা। সব তথ্য আপনার ফোনেই থাকে।"),
+                    t("Add all your vehicles: bikes, scooters, cars, SUVs, CNGs, easy-bikes, microbuses, buses, pickups and trucks. Each gets a 0–100 health score, service reminders and paper-expiry alerts. Everything stays on your phone.",
+                        "আপনার সব যানবাহন যোগ করুন: বাইক, স্কুটার, কার, এসইউভি, সিএনজি, ইজি বাইক, মাইক্রোবাস, বাস, পিকআপ ও ট্রাক। প্রতিটি পাবে ০–১০০ হেলথ স্কোর, সার্ভিস রিমাইন্ডার ও কাগজের মেয়াদের সতর্কতা। সব তথ্য আপনার ফোনেই থাকে।"),
                 ) {
                     Button(onClick = onAdd, contentPadding = PaddingValues(horizontal = 24.dp, vertical = 14.dp)) {
                         Icon(Icons.Default.Add, null); Spacer(Modifier.width(8.dp)); Text(t("Add your first vehicle", "প্রথম গাড়ি যোগ করুন"))
@@ -104,6 +107,10 @@ fun HomeScreen(vm: MainViewModel, onOpen: (Long) -> Unit, onAdd: () -> Unit, onN
             }
             return@Screen
         }
+        val types = remember(st.snapshot.vehicles) { st.snapshot.vehicles.groupingBy { it.templateId }.eachCount().toList() }
+        var typeFilter by rememberSaveable { mutableStateOf<String?>(null) }
+        val active = typeFilter?.takeIf { f -> types.any { it.first == f } } // the filtered type may have been deleted
+        val shownVehicles = remember(st.snapshot.vehicles, active) { st.snapshot.vehicles.filter { active == null || it.templateId == active } }
         LazyColumn(
             state = list, modifier = Modifier.padding(pad),
             contentPadding = PaddingValues(start = Spacing.gutter, end = Spacing.gutter, bottom = 96.dp),
@@ -117,7 +124,18 @@ fun HomeScreen(vm: MainViewModel, onOpen: (Long) -> Unit, onAdd: () -> Unit, onN
                     style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            items(st.snapshot.vehicles, key = { it.id }) { v ->
+            // Type filter appears once the garage holds more than one kind of vehicle.
+            if (types.size > 1) item {
+                Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
+                    FilterChip(selected = active == null, onClick = { typeFilter = null }, label = { Text(t("All", "সব") + " · " + n(st.snapshot.vehicles.size)) })
+                    types.forEach { (id, count) ->
+                        FilterChip(selected = active == id, onClick = { typeFilter = if (active == id) null else id },
+                            leadingIcon = { Icon(vehicleIcon(id), null, Modifier.size(FilterChipDefaults.IconSize)) },
+                            label = { Text((st.registry.template(id)?.name?.tr() ?: id) + " · " + n(count)) })
+                    }
+                }
+            }
+            items(shownVehicles, key = { it.id }) { v ->
                 VehicleCard(v, st.checkups[v.id], st.snapshot.records[v.id], st.registry.template(v.templateId)?.let { tpl ->
                     listOfNotNull(tpl.name.tr(), tpl.model(v.modelPresetId)?.let { "${it.brand} ${it.model}" }).joinToString(" · ")
                 } ?: "", onOpen = { onOpen(v.id) }, onOdometer = { onNav("odometer/${v.id}") }, onAction = { a -> onNav(if (a == "fuel") "fuel/${v.id}" else "vehicle/${v.id}?action=$a") })

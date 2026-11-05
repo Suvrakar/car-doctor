@@ -1,6 +1,6 @@
 # GariDoctor — product & business plan
 
-**One-line pitch:** One app that tracks, checks, and explains the health of any vehicle (car, motorcycle, scooter, CNG auto-rickshaw, microbus, pickup, truck, or electric easy-bike) in Bangla and English, running almost entirely on the phone.
+**One-line pitch:** One app that tracks, checks, and explains the health of any vehicle (motorcycle, scooter, car, SUV/jeep, CNG auto-rickshaw, electric easy-bike or e-scooter, microbus, bus, pickup, truck, or any other vehicle) in Bangla and English, running almost entirely on the phone.
 
 ## 1. Vehicle Health Score
 Every vehicle gets a score from 0 to 100, like a medical checkup, computed on the phone from engine oil, brakes, tyres, battery, chain/belt, filters/plugs/coolant, fault codes, fuel efficiency and papers. It turns boring maintenance into something people want to keep high, like a fitness ring. See [ARCHITECTURE.md](ARCHITECTURE.md#health-score-rules-healthscoreengine) for the exact rules.
@@ -14,7 +14,7 @@ A template system: each vehicle type is a JSON template listing its parts, servi
 | Motorcycle / scooter | Chain care, brake pads, oil every 1,000–2,000 km, spark plug, carb/FI symptoms |
 | CNG auto-rickshaw | CNG cylinder retest dates, daily-use wear, driver-owner tracking |
 | Electric easy-bike / e-scooter | Battery health: charge cycles, range drop, water top-up for lead-acid |
-| Microbus / pickup / truck | Heavy-use schedules, route permit and fitness papers, fleet mode |
+| Microbus / bus / pickup / truck | Heavy-use schedules, route permit and fitness papers, fleet mode |
 
 The electric easy-bike angle is a big, ignored market in Bangladesh: owners lose money every time a battery set dies early.
 

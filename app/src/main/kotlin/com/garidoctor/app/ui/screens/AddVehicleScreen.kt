@@ -48,7 +48,10 @@ fun vehicleIcon(templateId: String): ImageVector = when (templateId) {
     "easy_bike" -> Icons.Default.BatteryChargingFull
     "e_scooter" -> Icons.Default.EvStation
     "microbus" -> Icons.Default.AirportShuttle
+    "suv" -> Icons.Default.DirectionsCarFilled
+    "bus" -> Icons.Default.DirectionsBus
     "pickup", "truck" -> Icons.Default.LocalShipping
+    "other" -> Icons.Default.Commute
     else -> Icons.Default.DirectionsCar
 }
 
@@ -60,8 +63,10 @@ fun AddVehicleScreen(vm: MainViewModel, onBack: () -> Unit, onCreated: (Long) ->
     var templateId by rememberSaveable { mutableStateOf<String?>(null) }
     var modelId by rememberSaveable { mutableStateOf<String?>(null) }
     val tpl = templateId?.let { st.registry.template(it) }
-    val goBack: () -> Unit = { if (step > 0) step-- else onBack() }
-    BackHandler(enabled = step > 0) { step-- }
+    // Types without model presets (e.g. "Other vehicle") skip the model step both ways.
+    val stepBack: () -> Unit = { step = if (step == 2 && tpl?.models.isNullOrEmpty()) 0 else step - 1 }
+    val goBack: () -> Unit = { if (step > 0) stepBack() else onBack() }
+    BackHandler(enabled = step > 0) { stepBack() }
 
     val titles = listOf(t("What do you drive?", "কোন গাড়ি চালান?"), t("Which model?", "কোন মডেল?"), t("A few details", "কিছু তথ্য"))
     Screen(t("Add vehicle", "গাড়ি যোগ করুন"), goBack) { pad ->
@@ -78,7 +83,7 @@ fun AddVehicleScreen(vm: MainViewModel, onBack: () -> Unit, onCreated: (Long) ->
                 },
             ) { s ->
                 when (s) {
-                    0 -> TypeStep(st.registry.all, templateId) { templateId = it; modelId = null; step = 1 }
+                    0 -> TypeStep(st.registry.all, templateId) { templateId = it; modelId = null; step = if (st.registry.template(it)?.models.isNullOrEmpty()) 2 else 1 }
                     1 -> if (tpl != null) ModelStep(tpl, modelId) { modelId = it; step = 2 }
                     else -> if (tpl != null) DetailsStep(vm, tpl, modelId, onCreated)
                 }

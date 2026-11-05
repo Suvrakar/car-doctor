@@ -39,7 +39,7 @@ class TemplateRegistry private constructor(
 
     companion object {
         val json = Json { ignoreUnknownKeys = true; isLenient = true }
-        private val ORDER = listOf("motorcycle", "scooter", "car", "cng_auto", "easy_bike", "e_scooter", "microbus", "pickup", "truck")
+        private val ORDER = listOf("motorcycle", "scooter", "car", "cng_auto", "easy_bike", "e_scooter", "suv", "microbus", "bus", "pickup", "truck", "other")
         val BUNDLED_TEMPLATES = ORDER
         val BUNDLED_TREES = listOf("motorcycle", "car", "easy_bike", "cng_auto", "heavy")
 

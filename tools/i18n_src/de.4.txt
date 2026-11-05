@@ -1,0 +1,5 @@
+1003|Fügen Sie alle Ihre Fahrzeuge hinzu: Motorräder, Roller, Autos, SUVs, CNG-Rikschas, E-Rikschas, Kleinbusse, Busse, Pick-ups und Lkw. Jedes erhält einen Gesundheitswert von 0–100, Wartungserinnerungen und Hinweise zum Ablauf von Papieren. Alles bleibt auf Ihrem Handy.
+1004|Bremsbeläge / Bremsbacken
+1005|Bus
+1006|Anderes Fahrzeug
+1007|SUV / Geländewagen
