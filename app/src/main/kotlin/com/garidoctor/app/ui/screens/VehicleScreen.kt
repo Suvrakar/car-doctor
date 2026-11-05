@@ -51,8 +51,6 @@ fun VehicleScreen(vm: MainViewModel, id: Long, onBack: () -> Unit, startAction: 
     val c = st.checkups[id] ?: return
     val rec = st.snapshot.records[id] ?: return
     var confirmDelete by remember { mutableStateOf(false) }
-    var showPro by remember { mutableStateOf(false) }
-    var showProFull by remember { mutableStateOf(false) }
     var editing by remember { mutableStateOf(false) }
     var menu by remember { mutableStateOf(false) }
     var showHealthy by remember { mutableStateOf(false) }
@@ -68,14 +66,8 @@ fun VehicleScreen(vm: MainViewModel, id: Long, onBack: () -> Unit, startAction: 
         when (startAction) { "speak" -> speak = true; "scan_paper" -> scanPaper = true; "scan_bill" -> scanBill = true }
     }
     val electric = VehicleDoctor.isElectric(rec.vehicle.energyType)
-    val makePassport: () -> Unit = {
-        val p = VehiclePassport.build(rec.vehicle, tpl.name.get(lang), tpl.model(v.modelPresetId)?.let { "${it.brand} ${it.model}" },
-            c.health, rec.services, rec.documents, c.fuel, today())
-        runCatching { PassportPdf.write(ctx, p, { pid -> tpl.part(pid)?.name?.get(lang) ?: pid }, lang) }
-            .onSuccess { PassportPdf.share(ctx, it) }
-            .onFailure { Toast.makeText(ctx, it.message, Toast.LENGTH_LONG).show() }
-    }
-    val passport: () -> Unit = { if (vm.allowed(ProFeature.PASSPORT_PDF)) { makePassport() } else { showPro = true } }
+    val passportAction = rememberPassportAction(vm, id)
+    val passport: () -> Unit = { passportAction(PassportMode.SHARE) }
 
     val actions = buildList {
         // AI-assisted logging first: no typing.
@@ -85,7 +77,9 @@ fun VehicleScreen(vm: MainViewModel, id: Long, onBack: () -> Unit, startAction: 
         add(QuickAction(Icons.Default.Build, t("Log service", "সার্ভিস লগ")) { nav("service/$id") })
         add(QuickAction(if (electric) Icons.Default.BatteryChargingFull else Icons.Default.LocalGasStation, if (electric) t("Charge", "চার্জ") else t("Fuel", "জ্বালানি")) { nav("fuel/$id") })
         add(QuickAction(Icons.Default.HealthAndSafety, t("Doctor", "ডাক্তার")) { nav("symptoms/$id") })
+        add(QuickAction(Icons.Default.History, t("History", "ইতিহাস")) { nav("history/$id") })
         add(QuickAction(Icons.Default.Description, t("Papers", "কাগজ")) { nav("docs/$id") })
+        add(QuickAction(Icons.Default.QrCode2, t("ID & QR", "পরিচয় ও QR")) { nav("vehicleid/$id") })
         add(QuickAction(Icons.Default.CameraAlt, t("Checks", "চেক")) { nav("checks/$id") })
         add(QuickAction(Icons.Default.Warning, t("Lights", "লাইট")) { nav("lights/$id") })
         if (tpl.supportsObd) add(QuickAction(Icons.Default.Bluetooth, "OBD") { nav("obd/$id") })
@@ -101,7 +95,9 @@ fun VehicleScreen(vm: MainViewModel, id: Long, onBack: () -> Unit, startAction: 
         IconButton(onClick = { menu = true }) { Icon(Icons.Default.MoreVert, t("More", "আরও")) }
         DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
             DropdownMenuItem(text = { Text(t("Edit vehicle", "গাড়ির তথ্য সম্পাদনা")) }, leadingIcon = { Icon(Icons.Default.Edit, null) }, onClick = { menu = false; editing = true })
+            DropdownMenuItem(text = { Text(t("Vehicle ID & driver", "গাড়ির পরিচয় ও চালক")) }, leadingIcon = { Icon(Icons.Default.QrCode2, null) }, onClick = { menu = false; nav("vehicleid/$id") })
             DropdownMenuItem(text = { Text(t("Share Vehicle Passport", "ভেহিকল পাসপোর্ট শেয়ার")) }, leadingIcon = { Icon(Icons.Default.PictureAsPdf, null) }, onClick = { menu = false; passport() })
+            DropdownMenuItem(text = { Text(t("Print Vehicle Passport", "ভেহিকল পাসপোর্ট প্রিন্ট")) }, leadingIcon = { Icon(Icons.Default.Print, null) }, onClick = { menu = false; passportAction(PassportMode.PRINT) })
             DropdownMenuItem(text = { Text(t("Delete vehicle", "গাড়ি মুছুন")) }, leadingIcon = { Icon(Icons.Default.Delete, null) }, onClick = { menu = false; confirmDelete = true })
         }
     }) { pad ->
@@ -193,20 +189,6 @@ fun VehicleScreen(vm: MainViewModel, id: Long, onBack: () -> Unit, startAction: 
         text = { Text(t("All logs and paper records for this vehicle will be deleted. This can't be undone.", "এই গাড়ির সব লগ ও কাগজের তথ্য মুছে যাবে। এটি ফেরানো যাবে না।")) },
         confirmButton = { TextButton(onClick = { confirmDelete = false; vm.deleteVehicle(v); onBack() }) { Text(t("Delete", "মুছুন"), color = MaterialTheme.colorScheme.error) } },
         dismissButton = { TextButton(onClick = { confirmDelete = false }) { Text(t("Cancel", "বাতিল")) } })
-    if (showPro) AlertDialog(onDismissRequest = { showPro = false },
-        icon = { Icon(Icons.Default.PictureAsPdf, null) },
-        title = { Text(t("Vehicle Passport", "ভেহিকল পাসপোর্ট")) },
-        text = { Text(t("A PDF with the health score, full service history and a QR code. Share it when selling to get a better price.",
-            "হেলথ স্কোর, পুরো সার্ভিস ইতিহাস ও QR কোডসহ একটি পিডিএফ। বিক্রির সময় শেয়ার করে ভালো দাম পান।")) },
-        confirmButton = { Button(onClick = { showPro = false; showProFull = true }) { Text(t("Get Pro", "প্রো নিন")) } },
-        dismissButton = {
-            TextButton(onClick = {
-                showPro = false
-                val shown = ctx.findActivity()?.let { a -> com.garidoctor.app.ads.Ads.showRewarded(a) { makePassport() } } ?: false
-                if (!shown) Toast.makeText(ctx, t2(lang, "Ad not ready yet, try again in a moment", "বিজ্ঞাপন এখনো প্রস্তুত নয়, একটু পরে চেষ্টা করুন"), Toast.LENGTH_SHORT).show()
-            }) { Text(t("Watch ad · 1 free", "বিজ্ঞাপন দেখুন · ১টি ফ্রি")) }
-        })
-    if (showProFull) ProDialog(vm, t("Unlock Pro: multiple vehicles, unlimited passports, live OBD graphs, fleet mode, no ads.", "প্রো আনলক: একাধিক গাড়ি, আনলিমিটেড পাসপোর্ট, লাইভ OBD গ্রাফ, ফ্লিট মোড, বিজ্ঞাপন নেই।")) { showProFull = false }
     if (editing) EditVehicleDialog(vm, v) { editing = false }
     if (scanPaper) PaperScanFlow(vm, id, tpl.documents) { scanPaper = false }
     if (scanBill) ReceiptScanFlow(vm, v, tpl) { scanBill = false }
@@ -284,22 +266,17 @@ private fun t2(lang: com.garidoctor.core.model.Lang, en: String, bn: String) = l
 @Composable
 private fun EditVehicleDialog(vm: MainViewModel, v: com.garidoctor.app.data.VehicleEntity, onDismiss: () -> Unit) {
     var nickname by remember { mutableStateOf(v.nickname) }
-    var reg by remember { mutableStateOf(v.registrationNo ?: "") }
-    var driver by remember { mutableStateOf(v.driverName ?: "") }
-    var driverPhone by remember { mutableStateOf(v.driverPhone ?: "") }
     var range by remember { mutableStateOf(v.ratedRangeKm?.toInt()?.toString() ?: "") }
     AlertDialog(onDismissRequest = onDismiss, title = { Text(t("Edit vehicle", "গাড়ির তথ্য সম্পাদনা")) }, text = {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(nickname, { nickname = it }, label = { Text(t("Nickname", "নাম")) }, singleLine = true)
-            OutlinedTextField(reg, { reg = it }, label = { Text(t("Registration no.", "রেজিস্ট্রেশন নম্বর")) }, singleLine = true)
-            OutlinedTextField(driver, { driver = it }, label = { Text(t("Driver name", "চালকের নাম")) }, singleLine = true)
-            NumberField(driverPhone, { driverPhone = it }, t("Driver phone", "চালকের ফোন"))
             if (VehicleDoctor.isElectric(v.toModelEnergy())) NumberField(range, { range = it }, t("Rated range per charge (km)", "এক চার্জে রেঞ্জ (কিমি)"))
+            Text(t("Registration, engine and chassis numbers and the driver are under Vehicle ID & QR.", "রেজিস্ট্রেশন, ইঞ্জিন ও চেসিস নম্বর এবং চালকের তথ্য 'গাড়ির পরিচয় ও QR' অংশে।"),
+                style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }, confirmButton = {
         TextButton(enabled = nickname.isNotBlank(), onClick = {
-            vm.updateVehicle(v.copy(nickname = nickname.trim(), registrationNo = reg.trim().ifBlank { null }, driverName = driver.trim().ifBlank { null },
-                driverPhone = driverPhone.ifBlank { null }, ratedRangeKm = range.toDoubleOrNull() ?: v.ratedRangeKm))
+            vm.updateVehicle(v.copy(nickname = nickname.trim(), ratedRangeKm = range.toDoubleOrNull() ?: v.ratedRangeKm))
             onDismiss()
         }) { Text(t("Save", "সেভ")) }
     }, dismissButton = { TextButton(onClick = onDismiss) { Text(t("Cancel", "বাতিল")) } })

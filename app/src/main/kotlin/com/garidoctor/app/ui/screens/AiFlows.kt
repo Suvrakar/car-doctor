@@ -143,7 +143,8 @@ private fun rememberOneShotCamera(prefix: String, onResult: (Pair<Uri, String>?)
 }
 
 private fun merge(a: ScannedDocument, b: ScannedDocument?) = if (b == null) a else
-    ScannedDocument(b.type ?: a.type, b.number ?: a.number, b.expiryEpochDay ?: a.expiryEpochDay, maxOf(a.confidence, b.confidence), b.source)
+    ScannedDocument(b.type ?: a.type, b.number ?: a.number, b.expiryEpochDay ?: a.expiryEpochDay, maxOf(a.confidence, b.confidence), b.source,
+        b.engineNo ?: a.engineNo, b.chassisNo ?: a.chassisNo)
 
 // ───────────────────────────── Paper scanner ─────────────────────────────
 
@@ -183,6 +184,10 @@ fun PaperScanFlow(vm: MainViewModel, vehicleId: Long, allowed: List<DocumentType
             }
             DateButton(expiry ?: (today() + 365), { expiry = it }, if (expiry == null) t("Set expiry date", "মেয়াদের তারিখ দিন") else t("Expires", "মেয়াদ শেষ"))
             OutlinedTextField(number, { number = it }, label = { Text(t("Number (optional)", "নম্বর (ঐচ্ছিক)")) }, singleLine = true, modifier = Modifier.fillMaxWidth())
+            if (type == DocumentType.REGISTRATION && (r.engineNo != null || r.chassisNo != null)) Text(
+                listOfNotNull(r.engineNo?.let { t("Engine no.", "ইঞ্জিন নম্বর") + ": $it" }, r.chassisNo?.let { t("Chassis no.", "চেসিস নম্বর") + ": $it" }).joinToString("\n") +
+                    "\n" + t("Saved to the vehicle's ID if empty.", "খালি থাকলে গাড়ির পরিচয়ে সেভ হবে।"),
+                style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             if (r.source == "device" && !(r.complete && r.confidence >= 0.85)) {
                 val p = photo
                 if (p != null) CloudAiButton(vm, t("Read with AI", "AI দিয়ে পড়ুন"), onError = { error = it }) {
@@ -194,7 +199,7 @@ fun PaperScanFlow(vm: MainViewModel, vehicleId: Long, allowed: List<DocumentType
         }
     }, confirmButton = {
         Button(enabled = type != null && expiry != null, onClick = {
-            vm.savePaper(vehicleId, type!!, expiry!!, number.trim().ifBlank { null }); onClose()
+            vm.savePaper(vehicleId, type!!, expiry!!, number.trim().ifBlank { null }, r.engineNo, r.chassisNo); onClose()
         }) { Text(t("Save & remind me", "সেভ করে রিমাইন্ডার দিন")) }
     }, dismissButton = { TextButton(onClick = onClose) { Text(t("Cancel", "বাতিল")) } })
 }

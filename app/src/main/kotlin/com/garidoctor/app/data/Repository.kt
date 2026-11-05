@@ -39,6 +39,7 @@ data class Snapshot(
     val voltages: List<VoltageEntity> = emptyList(),
     val checks: List<CheckEntity> = emptyList(),
     val overrides: List<IntervalOverrideEntity> = emptyList(),
+    val expenses: List<ExpenseEntity> = emptyList(),
 )
 
 class Repository(private val dao: GariDao, val registry: () -> TemplateRegistry, private val dtcLoader: () -> Map<String, DtcInfo>) {
@@ -49,7 +50,8 @@ class Repository(private val dao: GariDao, val registry: () -> TemplateRegistry,
         combine(dao.vehicles(), dao.services(), dao.fuel(), dao.documents()) { v, s, f, d -> Quad(v, s, f, d) },
         combine(dao.symptoms(), dao.faultCodes(), dao.voltages(), dao.checks()) { sy, fc, vo, ch -> Quad(sy, fc, vo, ch) },
         dao.intervalOverrides(),
-    ) { a, b, o -> build(a.a, a.b, a.c, a.d, b.a, b.b, b.c, b.d, o) }
+        dao.expenses(),
+    ) { a, b, o, e -> build(a.a, a.b, a.c, a.d, b.a, b.b, b.c, b.d, o).copy(expenses = e) }
 
     private data class Quad<A, B, C, D>(val a: A, val b: B, val c: C, val d: D)
 
@@ -112,6 +114,8 @@ class Repository(private val dao: GariDao, val registry: () -> TemplateRegistry,
     suspend fun deleteService(id: Long) = dao.deleteService(id)
     suspend fun addFuel(f: FuelEntity) { dao.insert(f); updateOdometer(f.vehicleId, f.odometerKm, "fuel") }
     suspend fun deleteFuel(id: Long) = dao.deleteFuel(id)
+    suspend fun addExpense(e: ExpenseEntity) = dao.insert(e)
+    suspend fun deleteExpense(id: Long) = dao.deleteExpense(id)
     suspend fun addDocument(d: DocumentEntity) = dao.insert(d)
     suspend fun updateDocument(d: DocumentEntity) = dao.update(d)
     suspend fun deleteDocument(id: Long) = dao.deleteDocument(id)

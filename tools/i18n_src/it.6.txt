@@ -1,0 +1,65 @@
+1014|Un PDF con i dati del veicolo e del conducente, punteggio di salute, documenti, tutte le spese e un codice QR. Stampalo, tienilo in auto o condividilo quando vendi.
+1015|Accessori
+1016|Aggiungi una spesa
+1017|Spesa
+1018|Già usato da un altro veicolo
+1019|Già usato da {0}
+1020|Importo (৳)
+1021|Qualsiasi fotocamera del telefono legge questo QR. Nessuna app necessaria.
+1022|Spese, rifornimenti, tagliandi e controlli che aggiungi appaiono qui, mese per mese.
+1023|N. telaio
+1024|Controlli e problemi
+1025|Costo
+1026|Conducente
+1027|Stipendio autista
+1028|N. patente
+1029|Ogni numero può appartenere a un solo veicolo del tuo garage.
+1030|N. motore
+1031|Multa / pratica
+1032|GariDoctor · ID veicolo
+1033|ID e QR
+1034|Includi dati del conducente
+1035|Premio assicurativo
+1036|Voce
+1037|Ultimi 12 mesi
+1038|Da sistemare
+1039|N.
+1040|Nota (facoltativa)
+1041|Ancora niente qui
+1042|Altro
+1043|Altra spesa (documenti, pedaggio, multa…)
+1044|Altre spese
+1045|Costo rinnovo documenti
+1046|Parcheggio
+1047|Superato
+1048|Telefono
+1049|Foto della ricevuta
+1050|Foto salvata ✓
+1051|Stampa
+1052|Stampa passaporto del veicolo
+1053|Codice QR con i riferimenti del veicolo
+1054|Targa, numero motore e telaio e il conducente sono in ID veicolo e QR.
+1055|Riparazione / carrozzeria
+1056|Rapporto
+1057|Salvato
+1058|Salvato nell'ID del veicolo se vuoto.
+1059|Scansiona una ricevuta
+1060|Scansiona patente
+1061|Scansiona libretto
+1062|Scansiona con qualsiasi fotocamera
+1063|Manutenzione
+1064|Manutenzione / ricambi
+1065|Condividi PDF
+1066|Condividi QR
+1067|Spese
+1068|La scadenza della patente è seguita in Documenti, con promemoria prima che scada.
+1069|Pedaggio / ponte
+1070|Totale
+1071|Totale speso
+1072|Veicolo
+1073|ID veicolo e QR
+1074|ID veicolo e conducente
+1075|Vedi foto della ricevuta
+1076|Lavaggio e pulizia
+1077|pieno
+1078|{0} spese

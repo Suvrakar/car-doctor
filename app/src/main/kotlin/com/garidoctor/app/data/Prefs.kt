@@ -61,6 +61,11 @@ class Prefs(context: Context) {
         get() = sp.getLong("last_vehicle", -1L)
         set(v) { sp.edit().putLong("last_vehicle", v).apply() }
 
+    /** Put the driver's name, licence and phone on the shared ID QR and passport. */
+    var shareDriverDetails: Boolean
+        get() = sp.getBoolean("share_driver", true)
+        set(v) { sp.edit().putBoolean("share_driver", v).apply() }
+
     var lastNotifiedDay: Long
         get() = sp.getLong("last_notified_day", 0)
         set(v) { sp.edit().putLong("last_notified_day", v).apply() }

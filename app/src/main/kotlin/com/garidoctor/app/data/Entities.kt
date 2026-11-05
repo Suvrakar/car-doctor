@@ -23,6 +23,10 @@ data class VehicleEntity(
     val driverPhone: String? = null,
     /** Rated range per full charge for EVs (km). */
     val ratedRangeKm: Double? = null,
+    // Unique references (schema v2). Must not repeat across the user's vehicles; checked on save.
+    val engineNo: String? = null,
+    val chassisNo: String? = null,
+    val driverLicenceNo: String? = null,
 )
 
 
@@ -118,6 +122,21 @@ data class OdometerEntity(
     val epochDay: Long,
     /** manual | photo | gps | fuel | obd */
     val source: String,
+)
+
+/** A bill that isn't a part service or fuel: paper fees, insurance, tolls, fines, repairs... (schema v2) */
+@Serializable
+@Entity(tableName = "expenses", foreignKeys = [ForeignKey(entity = VehicleEntity::class, parentColumns = ["id"], childColumns = ["vehicleId"], onDelete = ForeignKey.CASCADE)], indices = [Index("vehicleId")])
+data class ExpenseEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val vehicleId: Long,
+    /** [com.garidoctor.core.history.ExpenseCategory] name. */
+    val category: String,
+    val amountBdt: Int,
+    val epochDay: Long,
+    val note: String? = null,
+    /** Bill photo kept on the phone only. */
+    val receiptPath: String? = null,
 )
 
 /** User-edited service interval for one part of one vehicle ("defaults per model, editable by the user"). */

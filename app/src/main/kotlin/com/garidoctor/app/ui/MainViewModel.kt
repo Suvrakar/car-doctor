@@ -104,10 +104,37 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun setAiConsent(v: Boolean) = prefs.setAiConsent(v)
     fun refreshAiQuota() = io { ai.refreshQuota() }
     /** Saves a scanned paper: updates the existing paper of that type, or adds it. */
-    fun savePaper(vehicleId: Long, type: com.garidoctor.core.model.DocumentType, expiryEpochDay: Long, number: String?) {
+    fun savePaper(vehicleId: Long, type: com.garidoctor.core.model.DocumentType, expiryEpochDay: Long, number: String?,
+                  engineNo: String? = null, chassisNo: String? = null) {
         val existing = state.value.snapshot.documents.firstOrNull { it.vehicleId == vehicleId && it.type == type.name }
         if (existing != null) updateDocument(existing.copy(expiryEpochDay = expiryEpochDay, number = number ?: existing.number))
         else addDocument(DocumentEntity(vehicleId = vehicleId, type = type.name, expiryEpochDay = expiryEpochDay, number = number))
+        fillReferencesFromPaper(vehicleId, type, number, engineNo, chassisNo)
+    }
+
+    /**
+     * A scanned registration certificate fills a blank registration/engine/chassis number, a scanned
+     * licence fills the driver's licence number. Never overwrites, never copies a number that
+     * another vehicle in the garage already has.
+     */
+    private fun fillReferencesFromPaper(vehicleId: Long, type: com.garidoctor.core.model.DocumentType, number: String?, engineNo: String?, chassisNo: String?) {
+        val all = state.value.snapshot.vehicles
+        val v = all.firstOrNull { it.id == vehicleId } ?: return
+        val others = all.filter { it.id != vehicleId }
+        fun free(value: String?, of: (VehicleEntity) -> String?): String? {
+            val n = com.garidoctor.core.identity.VehicleIdentity.normalize(value) ?: return null
+            return value!!.trim().takeIf { others.none { o -> com.garidoctor.core.identity.VehicleIdentity.normalize(of(o)) == n } }
+        }
+        val u = when (type) {
+            com.garidoctor.core.model.DocumentType.REGISTRATION -> v.copy(
+                registrationNo = v.registrationNo ?: free(number?.takeIf { "METRO" in it.uppercase() || "মেট্রো" in it }) { it.registrationNo },
+                engineNo = v.engineNo ?: free(engineNo) { it.engineNo },
+                chassisNo = v.chassisNo ?: free(chassisNo) { it.chassisNo },
+            )
+            com.garidoctor.core.model.DocumentType.DRIVING_LICENCE -> v.copy(driverLicenceNo = v.driverLicenceNo ?: number?.trim()?.uppercase())
+            else -> v
+        }
+        if (u != v) updateVehicle(u)
     }
 
     fun setInterval(vehicleId: Long, partId: String, km: Int?, months: Int?) = io { repo.setInterval(vehicleId, partId, km, months) }
@@ -121,6 +148,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun deleteService(id: Long) = io { repo.deleteService(id) }
     fun addFuel(f: FuelEntity) = io { repo.addFuel(f) }
     fun deleteFuel(id: Long) = io { repo.deleteFuel(id) }
+    fun addExpense(e: com.garidoctor.app.data.ExpenseEntity) = io { repo.addExpense(e) }
+    fun deleteExpense(id: Long) = io { repo.deleteExpense(id) }
     fun addDocument(d: DocumentEntity) = io { repo.addDocument(d) }
     fun updateDocument(d: DocumentEntity) = io { repo.updateDocument(d) }
     fun deleteDocument(id: Long) = io { repo.deleteDocument(id) }

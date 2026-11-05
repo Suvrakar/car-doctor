@@ -1,0 +1,65 @@
+1014|Ein PDF mit Fahrzeug- und Fahrerdaten, Gesundheitswert, Papieren, allen Rechnungen und einem QR-Code. Drucken, im Auto aufbewahren oder beim Verkauf teilen.
+1015|Zubehör
+1016|Rechnung hinzufügen
+1017|Rechnung
+1018|Bereits bei einem anderen Fahrzeug eingetragen
+1019|Bereits bei {0} eingetragen
+1020|Betrag (৳)
+1021|Jede Handykamera kann diesen QR-Code lesen. Keine App nötig.
+1022|Rechnungen, Tankfüllungen, Wartungen und Prüfungen erscheinen hier, Monat für Monat.
+1023|Fahrgestellnr.
+1024|Prüfungen & Probleme
+1025|Kosten
+1026|Fahrer
+1027|Fahrerlohn
+1028|Führerscheinnr.
+1029|Jede Nummer darf nur zu einem Fahrzeug in Ihrer Garage gehören.
+1030|Motornr.
+1031|Bußgeld / Verfahren
+1032|GariDoctor · Fahrzeug-ID
+1033|ID & QR
+1034|Fahrerdaten einschließen
+1035|Versicherungsprämie
+1036|Posten
+1037|Letzte 12 Monate
+1038|Muss gemacht werden
+1039|Nr.
+1040|Notiz (optional)
+1041|Noch nichts hier
+1042|Sonstiges
+1043|Andere Rechnung (Papiere, Maut, Bußgeld…)
+1044|Andere Rechnungen
+1045|Gebühr für Papierverlängerung
+1046|Parken
+1047|In Ordnung
+1048|Telefon
+1049|Foto der Rechnung
+1050|Foto gespeichert ✓
+1051|Drucken
+1052|Fahrzeugpass drucken
+1053|QR-Code mit den Fahrzeugdaten
+1054|Kennzeichen, Motor- und Fahrgestellnummer sowie der Fahrer stehen unter Fahrzeug-ID & QR.
+1055|Reparatur / Karosserie
+1056|Bericht
+1057|Gespeichert
+1058|Wird in der Fahrzeug-ID gespeichert, wenn leer.
+1059|Rechnung scannen
+1060|Führerschein scannen
+1061|Zulassung scannen
+1062|Mit jeder Handykamera scannen
+1063|Wartung
+1064|Wartung / Teile
+1065|PDF teilen
+1066|QR teilen
+1067|Ausgaben
+1068|Der Ablauf des Führerscheins wird unter Papiere verfolgt, mit Erinnerungen vor dem Ablauf.
+1069|Maut / Brücke
+1070|Gesamt
+1071|Gesamtausgaben
+1072|Fahrzeug
+1073|Fahrzeug-ID & QR
+1074|Fahrzeug-ID & Fahrer
+1075|Rechnungsfoto ansehen
+1076|Wäsche & Reinigung
+1077|voll
+1078|{0} Rechnungen

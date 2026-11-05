@@ -32,3 +32,18 @@
 | `settings` | **Settings** | Appearance (style, theme, accent), বাংলা/English, Pro & code redeem, backup, SOS contacts, privacy note. |
 
 Design notes: Bangla is the default language; numbers render in Bangla digits when Bangla is selected; urgency always uses the same three colours (green / amber / red); every diagnosis repeats "possible causes, confirm with a mechanic".
+
+## Vehicle ID & QR (`vehicleid/{id}`)
+
+- QR preview at the top (plain text, UTF-8, so any phone camera shows it), a switch to leave out driver details, **Share QR** (PNG card to any app) and **Print** (one A4 page).
+- Vehicle: registration, engine and chassis numbers. Each is compared against the other vehicles in the garage (ignoring spaces, dashes, case and Bangla vs Latin digits); a clash shows under the field and blocks saving.
+- Driver: name, driving licence number, phone. "Scan registration" and "Scan licence" run the paper scanner, save the paper with its expiry reminder and fill any blank references.
+
+## History (`history/{id}`)
+
+- Spending card: total, last 12 months, number of bills, and service / fuel / other split.
+- Filter chips: All, Service, Fuel, Other bills, Checks & problems.
+- Month sections with the month's spend; each row shows date, odometer, note and amount, and a receipt icon when a bill photo exists. Tapping opens details, the bill photo and Delete.
+- **Add bill** button: scan a bill, log a service, log fuel, or add another bill (paper renewal fee, insurance, repair, toll, parking, fine, wash, accessories, driver salary, other) with an optional photo.
+- Top bar: **Print** and **Share PDF** for the Vehicle Passport.
+

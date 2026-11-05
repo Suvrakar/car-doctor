@@ -144,6 +144,8 @@ private fun AppNav(vm: MainViewModel, startVehicle: Long, shortcut: String?) {
         composable("service/{id}", idArg) { ServiceScreen(vm, it.arguments!!.getLong("id"), back) }
         composable("fuel/{id}", idArg) { FuelScreen(vm, it.arguments!!.getLong("id"), back) }
         composable("docs/{id}", idArg) { DocumentsScreen(vm, it.arguments!!.getLong("id"), back) }
+        composable("history/{id}", idArg) { HistoryScreen(vm, it.arguments!!.getLong("id"), back, nav = { r -> nav.navigate(r) }) }
+        composable("vehicleid/{id}", idArg) { VehicleIdScreen(vm, it.arguments!!.getLong("id"), back) }
         composable("symptoms/{id}", idArg) { SymptomScreen(vm, it.arguments!!.getLong("id"), back, onGarages = { nav.navigate("garages") }) }
         composable("checks/{id}", idArg) { ChecksScreen(vm, it.arguments!!.getLong("id"), back) }
         composable("obd/{id}", idArg) { ObdScreen(vm, it.arguments!!.getLong("id"), back) }

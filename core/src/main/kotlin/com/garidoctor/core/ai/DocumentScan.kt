@@ -14,6 +14,9 @@ data class ScannedDocument(
     /** 0..1: how sure we are, used to decide whether to offer an AI read. */
     val confidence: Double = 0.0,
     val source: String = "device",
+    /** Registration certificates also carry these; used to fill the vehicle's ID if it is blank. */
+    val engineNo: String? = null,
+    val chassisNo: String? = null,
 ) {
     val complete: Boolean get() = type != null && expiryEpochDay != null
 }
@@ -46,6 +49,13 @@ object DocumentTextParser {
         Regex("""(?:নং|নম্বর|নাম্বার)[ \t]*[:\-]?[ \t]*((?=[A-Za-z0-9/\-]*\d)[A-Za-z0-9/\-]{4,24})"""),
     )
 
+    // "Engine No: JF50E-1234567", "Chassis No.: MD2A11CZ5KCA12345", "ইঞ্জিন নং: ...", "চেসিস নম্বর: ..."
+    private val engineNo = Regex("""(?:\bengine|\beng\.?|ইঞ্জিন|ইঞ্জিনের)[ \t]*(?:no|number|নং|নম্বর|নাম্বার)\.?[ \t]*[:\-]?[ \t]*((?=[A-Za-z0-9\-]*\d)[A-Za-z0-9][A-Za-z0-9\-]{4,24})""", RegexOption.IGNORE_CASE)
+    private val chassisNo = Regex("""(?:\bchassis|\bchasis|\bframe|\bvin\b|চেসিস|চ্যাসিস)[ \t]*(?:no|number|নং|নম্বর|নাম্বার)?\.?[ \t]*[:\-]?[ \t]*((?=[A-Za-z0-9\-]*\d)[A-Za-z0-9][A-Za-z0-9\-]{5,24})""", RegexOption.IGNORE_CASE)
+
+    fun engineNumber(text: String): String? = engineNo.find(Bn.toAscii(text))?.groupValues?.get(1)?.trimEnd('-')?.uppercase()
+    fun chassisNumber(text: String): String? = chassisNo.find(Bn.toAscii(text))?.groupValues?.get(1)?.trimEnd('-')?.uppercase()
+
     fun parse(text: String, todayEpochDay: Long): ScannedDocument {
         val lower = text.lowercase()
         val type = typeKeywords.maxByOrNull { (_, keys) -> keys.count { it in lower } }?.takeIf { (_, keys) -> keys.any { it in lower } }?.first
@@ -55,7 +65,7 @@ object DocumentTextParser {
         if (type != null) c += 0.4
         if (expiry != null) c += 0.45
         if (number != null) c += 0.15
-        return ScannedDocument(type, number, expiry, c)
+        return ScannedDocument(type, number, expiry, c, engineNo = engineNumber(text), chassisNo = chassisNumber(text))
     }
 
     /** Prefer a date right after an expiry keyword; then the later date of a from–to pair; then the latest plausible date. */

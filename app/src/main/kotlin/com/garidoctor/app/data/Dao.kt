@@ -54,6 +54,10 @@ interface GariDao {
     @Query("SELECT * FROM odometer_log ORDER BY epochDay") fun odometerLog(): Flow<List<OdometerEntity>>
     @Insert suspend fun insert(o: OdometerEntity): Long
 
+    @Query("SELECT * FROM expenses ORDER BY epochDay DESC, id DESC") fun expenses(): Flow<List<ExpenseEntity>>
+    @Insert suspend fun insert(e: ExpenseEntity): Long
+    @Query("DELETE FROM expenses WHERE id = :id") suspend fun deleteExpense(id: Long)
+
     @Query("SELECT * FROM interval_overrides") fun intervalOverrides(): Flow<List<IntervalOverrideEntity>>
     @Query("SELECT * FROM interval_overrides WHERE vehicleId = :v") suspend fun intervalOverridesOnce(v: Long): List<IntervalOverrideEntity>
     @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun upsert(o: IntervalOverrideEntity)
@@ -69,6 +73,8 @@ interface GariDao {
     @Query("SELECT * FROM fault_codes") suspend fun allFaultCodes(): List<FaultCodeEntity>
     @Query("SELECT * FROM odometer_log") suspend fun allOdometer(): List<OdometerEntity>
     @Query("SELECT * FROM interval_overrides") suspend fun allOverrides(): List<IntervalOverrideEntity>
+    @Query("SELECT * FROM expenses") suspend fun allExpenses(): List<ExpenseEntity>
+    @Insert suspend fun insertExpenses(v: List<ExpenseEntity>)
     @Query("DELETE FROM vehicles") suspend fun deleteAllVehicles() // children cascade
     @Insert suspend fun insertVehicles(v: List<VehicleEntity>)
     @Insert suspend fun insertServices(v: List<ServiceEntity>)
