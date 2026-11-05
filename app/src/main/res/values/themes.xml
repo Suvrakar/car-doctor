@@ -3,6 +3,12 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowBackground">@color/bg</item>
     </style>
+    <!-- Instant launch screen (Android 12 style everywhere): no blank white frame on slow phones. -->
+    <style name="Theme.GariDoctor.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/brand</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="postSplashScreenTheme">@style/Theme.GariDoctor</item>
+    </style>
     <color name="bg">#FFF7F8F6</color>
     <color name="brand">#FF0E7C66</color>
 </resources>

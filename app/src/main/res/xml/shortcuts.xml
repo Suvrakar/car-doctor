@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Long-press the app icon: jump straight into the most common jobs for the last-used vehicle. -->
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut android:shortcutId="speak" android:enabled="true" android:icon="@drawable/sc_mic"
+        android:shortcutShortLabel="@string/sc_speak" android:shortcutLongLabel="@string/sc_speak">
+        <intent android:action="android.intent.action.VIEW"
+            android:targetPackage="com.garidoctor.app"
+            android:targetClass="com.garidoctor.app.ui.MainActivity">
+            <extra android:name="shortcut" android:value="speak" />
+        </intent>
+    </shortcut>
+    <shortcut android:shortcutId="scan_paper" android:enabled="true" android:icon="@drawable/sc_paper"
+        android:shortcutShortLabel="@string/sc_scan_paper" android:shortcutLongLabel="@string/sc_scan_paper">
+        <intent android:action="android.intent.action.VIEW"
+            android:targetPackage="com.garidoctor.app"
+            android:targetClass="com.garidoctor.app.ui.MainActivity">
+            <extra android:name="shortcut" android:value="scan_paper" />
+        </intent>
+    </shortcut>
+    <shortcut android:shortcutId="scan_bill" android:enabled="true" android:icon="@drawable/sc_receipt"
+        android:shortcutShortLabel="@string/sc_scan_bill" android:shortcutLongLabel="@string/sc_scan_bill">
+        <intent android:action="android.intent.action.VIEW"
+            android:targetPackage="com.garidoctor.app"
+            android:targetClass="com.garidoctor.app.ui.MainActivity">
+            <extra android:name="shortcut" android:value="scan_bill" />
+        </intent>
+    </shortcut>
+    <shortcut android:shortcutId="fuel" android:enabled="true" android:icon="@drawable/sc_fuel"
+        android:shortcutShortLabel="@string/sc_fuel" android:shortcutLongLabel="@string/sc_fuel">
+        <intent android:action="android.intent.action.VIEW"
+            android:targetPackage="com.garidoctor.app"
+            android:targetClass="com.garidoctor.app.ui.MainActivity">
+            <extra android:name="shortcut" android:value="fuel" />
+        </intent>
+    </shortcut>
+</shortcuts>

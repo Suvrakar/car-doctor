@@ -993,5 +993,13 @@
 "{0} · health score {1}/100",
 "{0}: service due",
 "{0}: symptom reported",
-"≈ {0} cycles left"
+"≈ {0} cycles left",
+"Auto",
+"Auto: this phone runs in Lite mode for speed.",
+"Auto: this phone runs with full effects.",
+"Full effects",
+"Full effects: soft shadows and animations on, even on slower phones.",
+"Lite",
+"Lite: flat surfaces and no animations. Fastest on any phone and saves battery.",
+"Performance"
 ]

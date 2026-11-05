@@ -1,0 +1,8 @@
+995|Automatico
+996|Automatico: questo telefono usa la modalità leggera per essere più veloce.
+997|Automatico: questo telefono usa tutti gli effetti.
+998|Tutti gli effetti
+999|Tutti gli effetti: ombre morbide e animazioni attive anche sui telefoni più lenti.
+1000|Leggera
+1001|Leggera: superfici piatte e nessuna animazione. La più veloce su qualsiasi telefono e fa risparmiare batteria.
+1002|Prestazioni

@@ -33,7 +33,8 @@ class WarningLightClassifier(private val context: Context) : AutoCloseable {
     /** Returns (label, confidence) sorted best first. */
     fun classify(uri: Uri): List<Pair<String, Float>> {
         val itp = interpreter ?: return emptyList()
-        val src = context.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it) } ?: return emptyList()
+        // The model needs 224 px; decode a small copy instead of the full camera image (low-RAM phones).
+        val src = context.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it, null, BitmapFactory.Options().apply { inSampleSize = 8 }) } ?: return emptyList()
         val bmp = Bitmap.createScaledBitmap(src, SIZE, SIZE, true)
         val input = ByteBuffer.allocateDirect(4 * SIZE * SIZE * 3).order(ByteOrder.nativeOrder())
         val px = IntArray(SIZE * SIZE)

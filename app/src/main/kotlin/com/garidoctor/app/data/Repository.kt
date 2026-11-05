@@ -41,7 +41,9 @@ data class Snapshot(
     val overrides: List<IntervalOverrideEntity> = emptyList(),
 )
 
-class Repository(private val dao: GariDao, val registry: () -> TemplateRegistry, val dtc: Map<String, DtcInfo>) {
+class Repository(private val dao: GariDao, val registry: () -> TemplateRegistry, private val dtcLoader: () -> Map<String, DtcInfo>) {
+    /** Fault-code dictionary, loaded the first time it's needed (rarely: only cars with OBD codes). */
+    val dtc: Map<String, DtcInfo> get() = dtcLoader()
 
     val snapshot: Flow<Snapshot> = combine(
         combine(dao.vehicles(), dao.services(), dao.fuel(), dao.documents()) { v, s, f, d -> Quad(v, s, f, d) },
@@ -76,7 +78,7 @@ class Repository(private val dao: GariDao, val registry: () -> TemplateRegistry,
         checks = ch.map { CheckResult(it.partId, it.passed, it.epochDay) },
         symptoms = sy.map { ReportedSymptom(it.partId, it.symptomId, it.epochDay, it.resolved) },
         voltage = vo?.let { VoltageReading(it.volts, it.nominalVolts, it.epochDay) },
-        faultCodes = fc.map { DiagnosticTroubleCode(it.code, dtc[it.code]) },
+        faultCodes = if (fc.isEmpty()) emptyList() else fc.map { DiagnosticTroubleCode(it.code, dtc[it.code]) },
         intervalOverrides = ov.associate { it.partId to IntervalOverride(it.intervalKm, it.intervalMonths) },
     )
 

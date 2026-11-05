@@ -17,8 +17,13 @@ import kotlin.coroutines.resumeWithException
 
 /** On-device OCR (ML Kit, free, offline) and photo helpers shared by the scanners. */
 object TextReader {
+    /**
+     * OCR on a downscaled, upright copy of the photo. Decoding the full 12 MP camera image would
+     * take ~48 MB and can crash low-RAM phones; 2048 px is plenty for printed text.
+     */
     suspend fun read(context: Context, image: Uri): String {
-        val input = InputImage.fromFilePath(context, image)
+        val bmp = bitmap(context, image, maxSide = 2048)
+        val input = if (bmp != null) InputImage.fromBitmap(bmp, 0) else InputImage.fromFilePath(context, image)
         val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
         return try {
             suspendCancellableCoroutine { cont ->

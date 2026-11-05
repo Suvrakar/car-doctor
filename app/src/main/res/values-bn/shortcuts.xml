@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Launcher shortcut labels (generated from the translation catalogs). -->
+<resources>
+    <string name="sc_speak">বলুন</string>
+    <string name="sc_scan_paper">কাগজ স্ক্যান</string>
+    <string name="sc_scan_bill">বিল স্ক্যান</string>
+    <string name="sc_fuel">জ্বালানি</string>
+</resources>

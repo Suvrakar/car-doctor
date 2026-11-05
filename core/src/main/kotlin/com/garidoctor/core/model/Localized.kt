@@ -99,6 +99,9 @@ object Translations {
         return placeholder.replace(t) { ph -> args.getOrNull(ph.groupValues[1].toInt())?.toString() ?: ph.value }
     }
 
+    /** Loads a catalog ahead of time (call off the main thread at startup). */
+    fun preload(lang: Lang) { if (lang != Lang.EN && lang != Lang.BN) load(lang) }
+
     /** Clears loaded catalogs (after remote updates, or in tests). */
     fun reset() = catalogs.clear()
 }

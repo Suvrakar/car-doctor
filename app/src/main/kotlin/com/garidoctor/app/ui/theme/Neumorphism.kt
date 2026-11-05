@@ -19,9 +19,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
@@ -36,61 +35,67 @@ private val blurSupported = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
 /**
  * Raised neumorphic surface: fills with [base] and casts a light shadow up-left and a dark
  * shadow down-right, so the shape reads as extruded from a background of the same colour.
- * On Android 8 and older (no blur in hardware rendering) it draws a flat fill with a hairline edge.
+ *
+ * Paints and blur filters are built once per size/elevation (drawWithCache), not every frame.
+ * With [lite] (low-end phones, Android 8 and older) it draws a flat fill with a hairline edge.
  */
-fun Modifier.neuRaised(radius: Dp, elevation: Dp, base: Color, highlight: Color, shadow: Color): Modifier = drawBehind {
+fun Modifier.neuRaised(radius: Dp, elevation: Dp, base: Color, highlight: Color, shadow: Color, lite: Boolean = !blurSupported): Modifier = drawWithCache {
     val r = radius.toPx()
     val e = elevation.toPx()
-    drawIntoCanvas { canvas ->
-        val c = canvas.nativeCanvas
-        if (e > 0f && blurSupported) {
-            val p = Paint().asFrameworkPaint().apply {
-                isAntiAlias = true
-                maskFilter = BlurMaskFilter(e * 1.6f, BlurMaskFilter.Blur.NORMAL)
+    val fill = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply { color = base.toArgb() }
+    val blurred = !lite && blurSupported && e > 0f
+    val dark = if (blurred) android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply {
+        color = shadow.toArgb(); maskFilter = BlurMaskFilter(e * 1.6f, BlurMaskFilter.Blur.NORMAL)
+    } else null
+    val light = if (blurred) android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply {
+        color = highlight.toArgb(); maskFilter = BlurMaskFilter(e * 1.6f, BlurMaskFilter.Blur.NORMAL)
+    } else null
+    val edge = if (!blurred) android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply {
+        style = android.graphics.Paint.Style.STROKE; strokeWidth = 1.dp.toPx(); color = shadow.copy(alpha = 0.45f).toArgb()
+    } else null
+    val w = size.width; val h = size.height
+    onDrawBehind {
+        drawIntoCanvas { canvas ->
+            val c = canvas.nativeCanvas
+            if (dark != null && light != null) {
+                c.drawRoundRect(e, e, w + e, h + e, r, r, dark)
+                c.drawRoundRect(-e, -e, w - e, h - e, r, r, light)
             }
-            p.color = shadow.toArgb()
-            c.drawRoundRect(e, e, size.width + e, size.height + e, r, r, p)
-            p.color = highlight.toArgb()
-            c.drawRoundRect(-e, -e, size.width - e, size.height - e, r, r, p)
-        }
-        val fill = Paint().asFrameworkPaint().apply { isAntiAlias = true; color = base.toArgb() }
-        c.drawRoundRect(0f, 0f, size.width, size.height, r, r, fill)
-        if (!blurSupported) {
-            val edge = Paint().asFrameworkPaint().apply {
-                isAntiAlias = true; style = android.graphics.Paint.Style.STROKE; strokeWidth = 1.dp.toPx(); color = shadow.copy(alpha = 0.5f).toArgb()
-            }
-            c.drawRoundRect(0f, 0f, size.width, size.height, r, r, edge)
+            c.drawRoundRect(0f, 0f, w, h, r, r, fill)
+            if (edge != null) c.drawRoundRect(0f, 0f, w, h, r, r, edge)
         }
     }
 }
 
 /**
  * Pressed-in ("well") surface: inner shadow dark along the top-left edges and light along the
- * bottom-right, drawn as blurred strokes clipped to the shape.
+ * bottom-right, drawn as blurred strokes clipped to the shape (cached like [neuRaised]).
  */
-fun Modifier.neuInset(radius: Dp, depth: Dp, base: Color, highlight: Color, shadow: Color): Modifier = drawBehind {
+fun Modifier.neuInset(radius: Dp, depth: Dp, base: Color, highlight: Color, shadow: Color, lite: Boolean = !blurSupported): Modifier = drawWithCache {
     val r = radius.toPx()
     val d = depth.toPx()
-    drawIntoCanvas { canvas ->
-        val c = canvas.nativeCanvas
-        val fill = Paint().asFrameworkPaint().apply { isAntiAlias = true; color = base.toArgb() }
-        c.drawRoundRect(0f, 0f, size.width, size.height, r, r, fill)
-        if (!blurSupported || d <= 0f) return@drawIntoCanvas
-        val clip = android.graphics.Path().apply { addRoundRect(0f, 0f, size.width, size.height, r, r, android.graphics.Path.Direction.CW) }
-        c.save()
-        c.clipPath(clip)
-        val stroke = Paint().asFrameworkPaint().apply {
-            isAntiAlias = true
-            style = android.graphics.Paint.Style.STROKE
-            strokeWidth = d * 2f
-            maskFilter = BlurMaskFilter(d, BlurMaskFilter.Blur.NORMAL)
+    val w = size.width; val h = size.height
+    val fill = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply { color = base.toArgb() }
+    val blurred = !lite && blurSupported && d > 0f
+    val clip = android.graphics.Path().apply { addRoundRect(0f, 0f, w, h, r, r, android.graphics.Path.Direction.CW) }
+    val dark = if (blurred) android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply {
+        style = android.graphics.Paint.Style.STROKE; strokeWidth = d * 2f; color = shadow.toArgb(); maskFilter = BlurMaskFilter(d, BlurMaskFilter.Blur.NORMAL)
+    } else null
+    val light = if (blurred) android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply {
+        style = android.graphics.Paint.Style.STROKE; strokeWidth = d * 2f; color = highlight.toArgb(); maskFilter = BlurMaskFilter(d, BlurMaskFilter.Blur.NORMAL)
+    } else null
+    onDrawBehind {
+        drawIntoCanvas { canvas ->
+            val c = canvas.nativeCanvas
+            c.drawRoundRect(0f, 0f, w, h, r, r, fill)
+            if (dark != null && light != null) {
+                c.save(); c.clipPath(clip)
+                // A rect shifted down-right leaves its top/left stroke just inside the top/left edges.
+                c.drawRoundRect(d, d, w + d, h + d, r, r, dark)
+                c.drawRoundRect(-d, -d, w - d, h - d, r, r, light)
+                c.restore()
+            }
         }
-        // A rect shifted down-right leaves its top/left stroke just inside the top/left edges.
-        stroke.color = shadow.toArgb()
-        c.drawRoundRect(d, d, size.width + d, size.height + d, r, r, stroke)
-        stroke.color = highlight.toArgb()
-        c.drawRoundRect(-d, -d, size.width - d, size.height - d, r, r, stroke)
-        c.restore()
     }
 }
 
@@ -118,12 +123,14 @@ fun AppSurface(
         return
     }
     val neu = LocalNeu.current
+    val lite = LocalPerf.current.lite
     val interaction = remember { MutableInteractionSource() }
     val pressed by interaction.collectIsPressedAsState()
     val target = if (onClick != null && pressed) 1.dp else elevation
-    val e by animateDpAsState(target, tween(120), label = "neuElevation")
+    // Lite: no press animation and no blur; the ripple alone gives touch feedback.
+    val e = if (lite) elevation else animateDpAsState(target, tween(120), label = "neuElevation").value
     val shape = RoundedCornerShape(radius)
-    var m = modifier.neuRaised(radius, e, tint ?: neu.base, neu.highlight, neu.shadow).clip(shape)
+    var m = modifier.neuRaised(radius, e, tint ?: neu.base, neu.highlight, neu.shadow, lite).clip(shape)
     if (onClick != null) m = m.clickable(interactionSource = interaction, indication = ripple(), role = Role.Button, onClickLabel = contentDescription, onClick = onClick)
     Box(m, content = content)
 }
@@ -133,7 +140,7 @@ fun AppSurface(
 fun Modifier.softWell(radius: Dp, depth: Dp = 3.dp): Modifier {
     if (LocalUiStyle.current != UiStyle.SOFT) return this
     val neu = LocalNeu.current
-    return this.neuInset(radius, depth, neu.well, neu.highlight, neu.shadow)
+    return this.neuInset(radius, depth, neu.well, neu.highlight, neu.shadow, LocalPerf.current.lite)
 }
 
 /** True when the Soft (neumorphic) style is active. */

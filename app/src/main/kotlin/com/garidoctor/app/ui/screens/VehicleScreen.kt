@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.Speed
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -41,7 +42,7 @@ import com.garidoctor.core.symptom.Urgency
 private data class QuickAction(val icon: ImageVector, val label: String, val onClick: () -> Unit)
 
 @Composable
-fun VehicleScreen(vm: MainViewModel, id: Long, onBack: () -> Unit, nav: (String) -> Unit) {
+fun VehicleScreen(vm: MainViewModel, id: Long, onBack: () -> Unit, startAction: String? = null, nav: (String) -> Unit) {
     val st by vm.state.collectAsStateWithLifecycle()
     val lang by vm.lang.collectAsStateWithLifecycle()
     val ctx = LocalContext.current
@@ -58,6 +59,14 @@ fun VehicleScreen(vm: MainViewModel, id: Long, onBack: () -> Unit, nav: (String)
     var scanPaper by remember { mutableStateOf(false) }
     var scanBill by remember { mutableStateOf(false) }
     var speak by remember { mutableStateOf(false) }
+    // Shortcuts and home quick actions open straight into a flow; remember this vehicle for next time.
+    var actionDone by rememberSaveable { mutableStateOf(false) }
+    LaunchedEffect(id) { vm.prefs.lastVehicleId = id }
+    LaunchedEffect(startAction) {
+        if (actionDone || startAction == null) return@LaunchedEffect
+        actionDone = true
+        when (startAction) { "speak" -> speak = true; "scan_paper" -> scanPaper = true; "scan_bill" -> scanBill = true }
+    }
     val electric = VehicleDoctor.isElectric(rec.vehicle.energyType)
     val makePassport: () -> Unit = {
         val p = VehiclePassport.build(rec.vehicle, tpl.name.get(lang), tpl.model(v.modelPresetId)?.let { "${it.brand} ${it.model}" },

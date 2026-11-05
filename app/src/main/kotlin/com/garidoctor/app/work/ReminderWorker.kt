@@ -24,6 +24,8 @@ import com.garidoctor.core.model.Lang
 import com.garidoctor.core.schedule.DueState
 import com.garidoctor.core.VehicleDoctor
 import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withTimeoutOrNull
 
 /**
  * Runs once a day, fully on the phone (no server): checks every vehicle for services that
@@ -32,6 +34,9 @@ import java.util.concurrent.TimeUnit
 class ReminderWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx, params) {
     override suspend fun doWork(): Result {
         val app = applicationContext as GariDoctorApp
+        // WorkManager may start the process just for this job; templates load in the background,
+        // so wait for them (or retry later) instead of silently skipping every vehicle.
+        withTimeoutOrNull(15_000) { app.registryReady.first { it } } ?: return Result.retry()
         val day = today()
         if (app.prefs.lastNotifiedDay == day) return Result.success()
         val lang = app.prefs.lang.value

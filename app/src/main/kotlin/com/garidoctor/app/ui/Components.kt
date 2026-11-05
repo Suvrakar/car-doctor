@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.garidoctor.app.ui.theme.AppSurface
 import com.garidoctor.app.ui.theme.LocalNeu
+import com.garidoctor.app.ui.theme.LocalPerf
 import com.garidoctor.app.ui.theme.Spacing
 import com.garidoctor.app.ui.theme.isSoft
 import com.garidoctor.app.ui.theme.neuRaised
@@ -65,23 +66,27 @@ import java.time.LocalDate
 // ───────────────────────────── Score ring ─────────────────────────────
 
 /**
- * Fitness-ring style health score. Sweeps in on first show and animates between values,
- * and announces itself to TalkBack as "Health score 72 of 100".
+ * Fitness-ring style health score. The number shows immediately; only the ring sweeps, and it
+ * is read in the draw phase, so animating it never recomposes the text (cheap in long lists).
+ * Lite mode skips the sweep. TalkBack reads "Health score 72 of 100".
  */
 @Composable
 fun ScoreRing(score: Int, size: Dp = 96.dp, stroke: Dp = 10.dp, showLabel: Boolean = size >= 80.dp) {
     val tone = HealthBand.of(score).tone()
     val color = tone.color()
     val track = if (isSoft) MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0f) else MaterialTheme.colorScheme.surfaceContainerHighest
-    val sweep = remember { Animatable(0f) }
-    LaunchedEffect(score) { sweep.animateTo(score / 100f, tween(durationMillis = 900, easing = FastOutSlowInEasing)) }
+    val perf = LocalPerf.current
+    val sweep = remember { Animatable(if (perf.animate) 0f else score / 100f) }
+    LaunchedEffect(score, perf.animate) {
+        if (perf.animate) sweep.animateTo(score / 100f, tween(durationMillis = 700, easing = FastOutSlowInEasing)) else sweep.snapTo(score / 100f)
+    }
     val a11y = t("Health score $score of 100", "হেলথ স্কোর ১০০ এর মধ্যে ${n(score)}")
     val soft = isSoft
     val neu = LocalNeu.current
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.size(size).semantics { contentDescription = a11y }
-            .then(if (soft) Modifier.neuRaised(size / 2, (size.value / 16f).coerceIn(4f, 10f).dp, neu.base, neu.highlight, neu.shadow) else Modifier),
+            .then(if (soft) Modifier.neuRaised(size / 2, (size.value / 16f).coerceIn(4f, 10f).dp, neu.base, neu.highlight, neu.shadow, perf.lite) else Modifier),
     ) {
         if (soft) Box(Modifier.matchParentSize().padding(stroke * 0.35f).softWell(size / 2, (stroke.value / 3f).dp))
         Canvas(Modifier.matchParentSize().padding(if (soft) stroke * 0.6f else 0.dp)) {
@@ -93,7 +98,7 @@ fun ScoreRing(score: Int, size: Dp = 96.dp, stroke: Dp = 10.dp, showLabel: Boole
             drawArc(color, -90f, 360f * sweep.value, false, topLeft = tl, size = arc, style = st)
         }
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(n((sweep.value * 100f).toInt()), fontSize = (size.value / 3.2f).sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
+            Text(n(score), fontSize = (size.value / 3.2f).sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
             if (showLabel) Text(t("of 100", "১০০ এর মধ্যে"), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
@@ -125,7 +130,7 @@ fun IconBadge(icon: ImageVector, tone: Tone = Tone.NEUTRAL, size: Dp = 40.dp) {
     val bg = if (tone == Tone.NEUTRAL) MaterialTheme.colorScheme.secondaryContainer else tone.container()
     val fg = if (tone == Tone.NEUTRAL) MaterialTheme.colorScheme.onSecondaryContainer else tone.onContainer()
     val neu = LocalNeu.current
-    val base = if (isSoft && tone == Tone.NEUTRAL) Modifier.neuRaised(size / 2, 3.dp, neu.base, neu.highlight, neu.shadow) else Modifier.background(bg, CircleShape)
+    val base = if (isSoft && tone == Tone.NEUTRAL) Modifier.neuRaised(size / 2, 3.dp, neu.base, neu.highlight, neu.shadow, LocalPerf.current.lite) else Modifier.background(bg, CircleShape)
     val fgSoft = if (isSoft && tone == Tone.NEUTRAL) MaterialTheme.colorScheme.primary else fg
     Box(Modifier.size(size).then(base), contentAlignment = Alignment.Center) {
         Icon(icon, contentDescription = null, tint = fgSoft, modifier = Modifier.size(size * 0.55f))
@@ -184,7 +189,8 @@ fun ActionRow(
 /** Interval progress bar: how much of the service interval is used, coloured by status. */
 @Composable
 fun UsageBar(fraction: Float, tone: Tone, modifier: Modifier = Modifier.fillMaxWidth()) {
-    val animated by animateFloatAsState(fraction.coerceIn(0f, 1f), tween(700), label = "usage")
+    val target = fraction.coerceIn(0f, 1f)
+    val animated = if (LocalPerf.current.animate) animateFloatAsState(target, tween(500), label = "usage").value else target
     LinearProgressIndicator(
         progress = { animated }, modifier = modifier.height(if (isSoft) 8.dp else 6.dp).softWell(4.dp, 2.dp),
         color = tone.color(), trackColor = if (isSoft) androidx.compose.ui.graphics.Color.Transparent else MaterialTheme.colorScheme.surfaceContainerHighest, strokeCap = StrokeCap.Round,

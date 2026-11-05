@@ -51,6 +51,16 @@ class Prefs(context: Context) {
     val aiConsent: StateFlow<Boolean> = _aiConsent
     fun setAiConsent(v: Boolean) { sp.edit().putBoolean("ai_consent", v).apply(); _aiConsent.value = v }
 
+    // ---- Performance: AUTO (decide from the device), FULL, LITE ----
+    private val _perf = MutableStateFlow(sp.getString("perf_mode", "AUTO")!!)
+    val perfMode: StateFlow<String> = _perf
+    fun setPerfMode(v: String) { sp.edit().putString("perf_mode", v).apply(); _perf.value = v }
+
+    /** Vehicle opened most recently: launcher shortcuts and quick actions go straight to it. */
+    var lastVehicleId: Long
+        get() = sp.getLong("last_vehicle", -1L)
+        set(v) { sp.edit().putLong("last_vehicle", v).apply() }
+
     var lastNotifiedDay: Long
         get() = sp.getLong("last_notified_day", 0)
         set(v) { sp.edit().putLong("last_notified_day", v).apply() }

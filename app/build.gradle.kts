@@ -39,6 +39,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("debug")
         }
@@ -54,10 +55,20 @@ android {
     }
     androidResources { noCompress += "tflite" }
 
+    // Templates, symptom trees, fault codes and translations ship as Android assets: opening an
+    // asset is far faster at startup than reading Java resources out of the APK.
+    sourceSets.getByName("main").assets.srcDir("../core/src/main/resources")
+
     // On-device Gemini Nano (ML Kit GenAI Prompt API, beta) is opt-in until verified on a real
     // device: build with -PenableNano to compile the Nano implementation instead of the stub.
     sourceSets.getByName("main").java.srcDir(if (enableNano) "src/nano/kotlin" else "src/nanoOff/kotlin")
-    packaging { resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" } }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            // Already in assets (see above); don't ship them twice as Java resources.
+            excludes += listOf("templates/**", "symptoms/**", "obd/**", "i18n/**")
+        }
+    }
 }
 
 ksp { arg("room.schemaLocation", "$projectDir/schemas") }
@@ -82,7 +93,11 @@ dependencies {
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
     implementation(libs.work.runtime)
-    implementation(libs.mlkit.text)
+    // Play-services OCR: the model comes from Google Play services instead of being bundled,
+    // which keeps the APK several MB smaller on low-storage phones.
+    implementation(libs.mlkit.text.play)
+    implementation(libs.androidx.splashscreen)
+    implementation(libs.androidx.profileinstaller)
     implementation(libs.androidx.exifinterface)
     implementation(libs.zxing.core)
     implementation(libs.tflite)

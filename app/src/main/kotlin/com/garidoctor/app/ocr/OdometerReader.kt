@@ -14,7 +14,9 @@ import kotlin.coroutines.resumeWithException
 /** On-device ML Kit text recognition (free, offline) → odometer candidates. */
 object OdometerReader {
     suspend fun read(context: Context, image: Uri, previousKm: Int?): List<OdometerCandidate> {
-        val input = InputImage.fromFilePath(context, image)
+        // Downscaled + upright (see TextReader): avoids decoding the full camera image on low-RAM phones.
+        val bmp = TextReader.bitmap(context, image, maxSide = 2048)
+        val input = if (bmp != null) InputImage.fromBitmap(bmp, 0) else InputImage.fromFilePath(context, image)
         val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
         val text = suspendCancellableCoroutine { cont ->
             recognizer.process(input)

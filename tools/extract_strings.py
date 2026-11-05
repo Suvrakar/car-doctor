@@ -4,7 +4,7 @@
 Sources: t("en", "bn") / pick("en", "bn") calls in the app, L10n("en", "bn") in core, every
 {"en","bn"} object in the bundled JSON (templates, symptom trees, fault codes), and literal
 Translations.tr/format calls. Kotlin string templates become {0}, {1}… placeholders.
-Usage: python3 tools/extract_strings.py > keys.json
+Usage: python3 tools/extract_strings.py > /tmp/keys.json && mv /tmp/keys.json tools/i18n_keys.json
 """
 import glob, json, re, sys
 
@@ -49,4 +49,10 @@ keys.update([
 ])
 keys.discard('Battery voltage low ({0}')
 keys.discard('')
-json.dump(sorted(keys), sys.stdout, ensure_ascii=False, indent=0)
+# Append-only: translation sources refer to phrases by index, so existing phrases keep their
+# position and new ones are added at the end. Phrases no longer used stay (harmless).
+import os
+known_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'i18n_keys.json')
+known = json.load(open(known_path, encoding='utf-8')) if os.path.exists(known_path) else []
+merged = known + sorted(k for k in keys if k not in set(known))
+json.dump(merged, sys.stdout, ensure_ascii=False, indent=0)

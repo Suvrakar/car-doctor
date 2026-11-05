@@ -1,0 +1,8 @@
+995|Automatisch
+996|Automatisch: Dieses Handy läuft für mehr Tempo im Lite-Modus.
+997|Automatisch: Dieses Handy läuft mit allen Effekten.
+998|Alle Effekte
+999|Alle Effekte: weiche Schatten und Animationen, auch auf langsameren Handys.
+1000|Lite
+1001|Lite: flache Flächen, keine Animationen. Am schnellsten auf jedem Handy und schont den Akku.
+1002|Leistung

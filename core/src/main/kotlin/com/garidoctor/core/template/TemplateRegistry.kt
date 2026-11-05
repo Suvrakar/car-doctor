@@ -14,6 +14,7 @@ class TemplateRegistry private constructor(
     private val templates: MutableMap<String, VehicleTemplate>,
     private val trees: MutableMap<String, SymptomTree>,
 ) {
+    val isEmpty: Boolean get() = templates.isEmpty()
     val all: List<VehicleTemplate> get() = templates.values.sortedBy { ORDER.indexOf(it.id).let { i -> if (i < 0) 99 else i } }
     fun template(id: String): VehicleTemplate? = templates[id]
     fun tree(id: String?): SymptomTree? = id?.let { trees[it] }
@@ -76,6 +77,9 @@ class TemplateRegistry private constructor(
             }
             return TemplateRegistry(templates, trees)
         }
+
+        /** Placeholder used while the real registry loads in the background. */
+        fun empty(): TemplateRegistry = TemplateRegistry(LinkedHashMap(), LinkedHashMap())
 
         fun fromClasspath(): TemplateRegistry = load { path ->
             TemplateRegistry::class.java.classLoader.getResourceAsStream(path)?.bufferedReader(Charsets.UTF_8)?.use { it.readText() }

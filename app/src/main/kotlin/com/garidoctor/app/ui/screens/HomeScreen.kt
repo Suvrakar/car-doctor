@@ -42,19 +42,19 @@ private sealed class Task(val vehicle: VehicleEntity, val severity: Int, val rou
         Task(v, when (urgency) { Urgency.STOP_NOW -> 100; Urgency.THIS_WEEK -> 70; Urgency.SAFE -> 20 }, "vehicle/${v.id}")
 }
 
-@Composable
+/** Plain function (not composable) so the list is built once per data change, not on every recomposition. */
 private fun buildTasks(vehicles: List<VehicleEntity>, checkups: Map<Long, Checkup>, records: Map<Long, VehicleRecords>,
-                       symptoms: List<com.garidoctor.app.data.SymptomEntity>): List<Task> {
+                       symptoms: List<com.garidoctor.app.data.SymptomEntity>, lang: com.garidoctor.core.model.Lang): List<Task> {
     val out = mutableListOf<Task>()
     val day = today()
     vehicles.forEach { v ->
         checkups[v.id]?.parts?.filter { it.state != DueState.OK }?.forEach { s ->
-            out += Task.Service(v, s.part.name.tr(), s.kmRemaining?.let { -it }?.takeIf { s.drivenBy == "km" },
+            out += Task.Service(v, s.part.name.get(lang), s.kmRemaining?.let { -it }?.takeIf { s.drivenBy == "km" },
                 s.daysRemaining?.let { -it }?.takeIf { s.drivenBy == "time" }, s.state == DueState.OVERDUE)
         }
         records[v.id]?.documents?.forEach { d ->
             val st = DocumentExpiry.status(d, day)
-            if (st.state != ExpiryState.VALID) out += Task.Paper(v, d.type.label.tr(), st.daysLeft)
+            if (st.state != ExpiryState.VALID) out += Task.Paper(v, d.type.label.get(lang), st.daysLeft)
         }
         symptoms.filter { it.vehicleId == v.id && !it.resolved }.forEach { s ->
             out += Task.Problem(v, s.summary, runCatching { Urgency.valueOf(s.urgency) }.getOrDefault(Urgency.THIS_WEEK))
@@ -71,7 +71,8 @@ fun HomeScreen(vm: MainViewModel, onOpen: (Long) -> Unit, onAdd: () -> Unit, onN
     var showAllTasks by remember { mutableStateOf(false) }
     val list = rememberLazyListState()
     val expandedFab by remember { derivedStateOf { list.firstVisibleItemIndex == 0 } }
-    val tasks = buildTasks(st.snapshot.vehicles, st.checkups, st.snapshot.records, st.snapshot.symptoms)
+    val lang = LocalLang.current
+    val tasks = remember(st.snapshot, st.checkups, lang) { buildTasks(st.snapshot.vehicles, st.checkups, st.snapshot.records, st.snapshot.symptoms, lang) }
 
     Screen(
         title = t("GariDoctor", "গাড়িডাক্তার"), onBack = null, large = true, bottomBar = bottomBar,
@@ -82,7 +83,13 @@ fun HomeScreen(vm: MainViewModel, onOpen: (Long) -> Unit, onAdd: () -> Unit, onN
             )
         },
     ) { pad ->
-        if (st.loaded && st.snapshot.vehicles.isEmpty()) {
+        if (!st.loaded) {
+            Column(Modifier.padding(pad).padding(Spacing.gutter), verticalArrangement = Arrangement.spacedBy(Spacing.l)) {
+                repeat(2) { AppSurface(Modifier.fillMaxWidth().height(168.dp), radius = 28.dp) {} }
+            }
+            return@Screen
+        }
+        if (st.snapshot.vehicles.isEmpty()) {
             Box(Modifier.padding(pad).fillMaxSize(), contentAlignment = Alignment.Center) {
                 EmptyState(
                     Icons.Default.HealthAndSafety,
@@ -113,7 +120,7 @@ fun HomeScreen(vm: MainViewModel, onOpen: (Long) -> Unit, onAdd: () -> Unit, onN
             items(st.snapshot.vehicles, key = { it.id }) { v ->
                 VehicleCard(v, st.checkups[v.id], st.snapshot.records[v.id], st.registry.template(v.templateId)?.let { tpl ->
                     listOfNotNull(tpl.name.tr(), tpl.model(v.modelPresetId)?.let { "${it.brand} ${it.model}" }).joinToString(" · ")
-                } ?: "", onOpen = { onOpen(v.id) }, onOdometer = { onNav("odometer/${v.id}") })
+                } ?: "", onOpen = { onOpen(v.id) }, onOdometer = { onNav("odometer/${v.id}") }, onAction = { a -> onNav(if (a == "fuel") "fuel/${v.id}" else "vehicle/${v.id}?action=$a") })
             }
             if (tasks.isNotEmpty()) {
                 item { SectionHeader(t("Needs attention", "মনোযোগ দরকার")) }
@@ -138,7 +145,7 @@ fun HomeScreen(vm: MainViewModel, onOpen: (Long) -> Unit, onAdd: () -> Unit, onN
 }
 
 @Composable
-private fun VehicleCard(v: VehicleEntity, c: Checkup?, rec: VehicleRecords?, subtitle: String, onOpen: () -> Unit, onOdometer: () -> Unit) {
+private fun VehicleCard(v: VehicleEntity, c: Checkup?, rec: VehicleRecords?, subtitle: String, onOpen: () -> Unit, onOdometer: () -> Unit, onAction: (String) -> Unit) {
     val score = c?.health?.score ?: 100
     val overdue = c?.parts?.count { it.state == DueState.OVERDUE } ?: 0
     val papers = rec?.documents?.count { DocumentExpiry.status(it, today()).state != ExpiryState.VALID } ?: 0
@@ -164,6 +171,13 @@ private fun VehicleCard(v: VehicleEntity, c: Checkup?, rec: VehicleRecords?, sub
                 if (overdue > 0) StatusPill(t("$overdue overdue", "${n(overdue)}টি বাকি"), Tone.BAD, Modifier.align(Alignment.CenterVertically))
                 if (papers > 0) StatusPill(t("$papers paper(s)", "${n(papers)}টি কাগজ"), Tone.WARN, Modifier.align(Alignment.CenterVertically))
             }
+            // One tap to the three most common jobs, without opening the vehicle first.
+            HorizontalDivider(Modifier.padding(vertical = Spacing.m), color = MaterialTheme.colorScheme.outlineVariant)
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+                QuickButton(Icons.Default.Mic, t("Speak", "বলুন")) { onAction("speak") }
+                QuickButton(Icons.Default.Receipt, t("Scan bill", "বিল স্ক্যান")) { onAction("scan_bill") }
+                QuickButton(Icons.Default.LocalGasStation, t("Fuel", "জ্বালানি")) { onAction("fuel") }
+            }
         }
     }
 }
@@ -185,6 +199,13 @@ private fun TaskRow(task: Task, multi: Boolean, onClick: () -> Unit) {
         is Task.Problem -> Quad(Icons.Default.HealthAndSafety, task.summary, prefix + task.urgency.label.tr(), task.urgency.tone())
     }
     ActionRow(icon, title, sub, tone, onClick = onClick)
+}
+
+@Composable
+private fun QuickButton(icon: ImageVector, label: String, onClick: () -> Unit) {
+    TextButton(onClick = onClick, modifier = Modifier.heightIn(min = 48.dp)) {
+        Icon(icon, null, Modifier.size(20.dp)); Spacer(Modifier.width(6.dp)); Text(label, maxLines = 1)
+    }
 }
 
 private data class Quad<A, B, C, D>(val a: A, val b: B, val c: C, val d: D)

@@ -40,6 +40,7 @@ fun SettingsScreen(vm: MainViewModel, onBack: (() -> Unit)?, bottomBar: @Composa
     Screen(t("Settings", "সেটিংস"), onBack, large = true, bottomBar = bottomBar) { pad ->
         Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             AppearanceSection(vm)
+            PerformanceSection(vm)
             SectionCard(t("Language", "ভাষা")) {
                 Row(Modifier.fillMaxWidth().clickableItem { showLang = true }.padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f)) {
@@ -216,5 +217,30 @@ private fun AiSection(vm: MainViewModel) {
             if (!pro) Text(t("Pro gives ${30} reads a day. Watching a short ad adds one more (up to 3 a day).", "প্রো-তে দিনে ${n(30)}টি। ছোট বিজ্ঞাপন দেখলে আরও একটি (দিনে সর্বোচ্চ ৩টি)।"),
                 style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
+    }
+}
+
+/** Auto picks Lite on low-end phones; users can force either. */
+@Composable
+private fun PerformanceSection(vm: MainViewModel) {
+    val mode by vm.prefs.perfMode.collectAsStateWithLifecycle()
+    val ctx = androidx.compose.ui.platform.LocalContext.current
+    val lowEnd = remember { com.garidoctor.app.ui.theme.DevicePerf.isLowEnd(ctx) }
+    SectionCard(t("Performance", "পারফরম্যান্স")) {
+        SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
+            val opts = listOf("AUTO" to t("Auto", "অটো"), "FULL" to t("Full effects", "পূর্ণ ইফেক্ট"), "LITE" to t("Lite", "লাইট"))
+            opts.forEachIndexed { i, (key, label) ->
+                SegmentedButton(selected = mode == key, onClick = { vm.prefs.setPerfMode(key) }, shape = SegmentedButtonDefaults.itemShape(i, opts.size)) { Text(label, maxLines = 1) }
+            }
+        }
+        Text(
+            when (mode) {
+                "LITE" -> t("Lite: flat surfaces and no animations. Fastest on any phone and saves battery.", "লাইট: সমতল সারফেস, অ্যানিমেশন নেই। যেকোনো ফোনে সবচেয়ে দ্রুত, ব্যাটারিও বাঁচে।")
+                "FULL" -> t("Full effects: soft shadows and animations on, even on slower phones.", "পূর্ণ ইফেক্ট: ধীর ফোনেও নরম ছায়া ও অ্যানিমেশন চালু।")
+                else -> if (lowEnd) t("Auto: this phone runs in Lite mode for speed.", "অটো: দ্রুততার জন্য এই ফোনে লাইট মোড চলছে।")
+                        else t("Auto: this phone runs with full effects.", "অটো: এই ফোনে পূর্ণ ইফেক্ট চলছে।")
+            },
+            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 }

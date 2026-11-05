@@ -25,7 +25,9 @@ import com.garidoctor.core.pro.ProGate
 import com.garidoctor.core.template.TemplateRegistry
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
@@ -47,15 +49,26 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     val pro: StateFlow<Boolean> = prefs.pro
     val sos: StateFlow<List<SosContact>> = prefs.sosContacts
 
-    val state: StateFlow<UiState> = combine(repo.snapshot, g.registry) { s, reg ->
-        val ups = s.records.mapNotNull { (id, r) -> reg.template(r.vehicle.templateId)?.let { id to com.garidoctor.core.VehicleDoctor.checkup(it, r, today()) } }.toMap()
-        UiState(s, ups, reg, true)
-    }.stateIn(viewModelScope, SharingStarted.Eagerly, UiState(registry = g.registry.value))
+    /**
+     * Everything the screens show. Database reads, joins and every vehicle's checkup run on a
+     * background dispatcher (flowOn), so the main thread only draws.
+     */
+    val state: StateFlow<UiState> = combine(repo.snapshot, g.registry, g.registryReady) { s, reg, ready ->
+        val day = today()
+        val ups = s.records.mapNotNull { (id, r) -> reg.template(r.vehicle.templateId)?.let { id to com.garidoctor.core.VehicleDoctor.checkup(it, r, day) } }.toMap()
+        UiState(s, ups, reg, ready)
+    }.flowOn(Dispatchers.Default).stateIn(viewModelScope, SharingStarted.Eagerly, UiState(registry = g.registry.value))
 
     val garages: List<Garage> by lazy { Garages.load(app, g.remote.string("garages")) }
 
     /** Sponsored tip for a part category from Remote Config (`sponsor_<CATEGORY>`), if a brand bought the slot. */
-    fun sponsorTip(category: String): Pair<String, String>? = g.remote.string("sponsor_$category")?.let {
+    private val sponsorCache = java.util.concurrent.ConcurrentHashMap<String, Pair<String, String>>()
+    private val noSponsor = "" to ""
+    fun sponsorTip(category: String): Pair<String, String>? = sponsorCache.getOrPut("$category/${lang.value.code}") {
+        sponsorTipUncached(category) ?: noSponsor
+    }.takeIf { it !== noSponsor }
+
+    private fun sponsorTipUncached(category: String): Pair<String, String>? = g.remote.string("sponsor_$category")?.let {
         runCatching {
             val o = Json.parseToJsonElement(it).jsonObject
             val texts = o["text"]!!.jsonObject

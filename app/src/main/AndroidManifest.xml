@@ -31,19 +31,26 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:localeConfig="@xml/locales_config"
-        android:theme="@style/Theme.GariDoctor">
+        android:theme="@style/Theme.GariDoctor"
+        android:enableOnBackInvokedCallback="true">
 
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize"
             android:configChanges="locale|layoutDirection"
-            android:theme="@style/Theme.GariDoctor">
+            android:theme="@style/Theme.GariDoctor.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
         </activity>
+
+        <!-- Download the on-device OCR model when the app is installed, so the first scan works offline. -->
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:value="ocr" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
