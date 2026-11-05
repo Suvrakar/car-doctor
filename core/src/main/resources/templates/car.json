@@ -628,6 +628,29 @@
    }
   },
   {
+   "id": "toyota_avanza",
+   "brand": "Toyota",
+   "model": "Avanza (2004–2011)",
+   "overrides": {
+    "engine_oil": {
+     "intervalKm": 5000
+    },
+    "spark_plugs": {
+     "intervalKm": 20000
+    }
+   }
+  },
+  {
+   "id": "toyota_avanza_2012",
+   "brand": "Toyota",
+   "model": "Avanza (2012 on)",
+   "overrides": {
+    "engine_oil": {
+     "intervalKm": 5000
+    }
+   }
+  },
+  {
    "id": "toyota_axio_cng",
    "brand": "Toyota",
    "model": "Axio (CNG converted)",

@@ -196,6 +196,8 @@ templates.append({"id": "car", "version": 1, "name": L("Car", "প্রাই�
         M("nissan_xtrail", "Nissan", "X-Trail", engine_oil=5000),
         M("mitsubishi_lancer", "Mitsubishi", "Lancer", engine_oil=5000),
         M("suzuki_alto", "Suzuki", "Alto 800", engine_oil=5000),
+        M("toyota_avanza", "Toyota", "Avanza (2004–2011)", engine_oil=5000, spark_plugs=20000),
+        M("toyota_avanza_2012", "Toyota", "Avanza (2012 on)", engine_oil=5000),
         M("toyota_axio_cng", "Toyota", "Axio (CNG converted)", "PETROL_CNG", engine_oil=4000, spark_plugs=20000),
     ]})
 
