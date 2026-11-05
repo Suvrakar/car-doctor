@@ -4,7 +4,7 @@
 ┌──────────────────────────── app (Android) ───────────────────────────┐
 │ Compose screens ── MainViewModel ── Repository ── Room (SQLite)      │
 │        │                               │                             │
-│  ML Kit OCR · TFLite · ELM327 BT · PdfDocument · WorkManager · RC     │
+│  ML Kit OCR · TFLite · ELM327 BT/USB · PdfDocument · WorkManager · RC     │
 └───────────────────────────────┬──────────────────────────────────────┘
                                 │ pure functions, no Android
 ┌───────────────────────────── core (JVM) ─────────────────────────────┐

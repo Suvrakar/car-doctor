@@ -12,3 +12,6 @@
 # TensorFlow Lite
 -keep class org.tensorflow.** { *; }
 -dontwarn org.tensorflow.**
+
+# usb-serial-for-android: the prober instantiates drivers from its table by reflection.
+-keep class com.hoho.android.usbserial.driver.** { *; }

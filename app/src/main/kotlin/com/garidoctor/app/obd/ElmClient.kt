@@ -19,12 +19,33 @@ import java.io.Closeable
 import java.util.UUID
 
 /**
- * Bluetooth Classic SPP client for ELM327 dongles. All parsing lives in [ObdDecoder] (:core).
- * Callers must hold BLUETOOTH_CONNECT (API 31+) before using this class.
+ * A byte pipe to an ELM327 adapter. Bluetooth (SPP socket) and USB (serial cable via OTG) both
+ * implement it, so the ELM327 conversation in [ElmClient] is written once.
+ */
+interface ElmLink : Closeable {
+    fun write(bytes: ByteArray)
+    /** Reads what has arrived, waiting at most [timeoutMs]. Returns 0 when nothing came. */
+    fun read(buffer: ByteArray, timeoutMs: Int): Int
+}
+
+private class BluetoothLink(private val socket: BluetoothSocket) : ElmLink {
+    override fun write(bytes: ByteArray) { socket.outputStream.write(bytes); socket.outputStream.flush() }
+    override fun read(buffer: ByteArray, timeoutMs: Int): Int {
+        // available() instead of a blocking read, so a silent dongle can't hang the coroutine.
+        val n = socket.inputStream.available()
+        return if (n > 0) socket.inputStream.read(buffer, 0, minOf(n, buffer.size)) else 0
+    }
+    override fun close() = socket.close()
+}
+
+/**
+ * ELM327 client over Bluetooth Classic or USB. All parsing lives in [ObdDecoder] (:core).
+ * Bluetooth callers must hold BLUETOOTH_CONNECT (API 31+); USB callers need the device permission
+ * from [UsbElm.requestPermission].
  */
 @SuppressLint("MissingPermission")
 class ElmClient(private val context: Context) : Closeable {
-    private var socket: BluetoothSocket? = null
+    private var link: ElmLink? = null
 
     private val adapter: BluetoothAdapter? get() = context.getSystemService(BluetoothManager::class.java)?.adapter
 
@@ -38,23 +59,41 @@ class ElmClient(private val context: Context) : Closeable {
         adapter?.cancelDiscovery()
         val s = device.createRfcommSocketToServiceRecord(SPP_UUID)
         s.connect()
-        socket = s
-        ObdDecoder.INIT_COMMANDS.forEach { send(it) }
+        link = BluetoothLink(s)
+        initialise()
     }
 
+    /** Opens a USB cable, finding its baud rate (38400 is the ELM327 default; clones vary). */
+    suspend fun connect(usb: UsbElm.Adapter) = withContext(Dispatchers.IO) {
+        close()
+        var lastError: Throwable? = null
+        for (baud in UsbElm.BAUD_RATES) {
+            val l = runCatching { UsbElm.open(context, usb, baud) }.getOrElse { lastError = it; null } ?: continue
+            link = l
+            val reply = runCatching { send("ATZ", 2500) }.getOrDefault("")
+            if (reply.contains("ELM", ignoreCase = true)) { initialise(); return@withContext }
+            close()
+        }
+        throw lastError ?: IllegalStateException("No reply from the adapter. Turn the ignition ON and try again.")
+    }
+
+    private suspend fun initialise() = ObdDecoder.INIT_COMMANDS.forEach { send(it) }
+
     suspend fun send(cmd: String, timeoutMs: Long = 4000): String = withContext(Dispatchers.IO) {
-        val s = socket ?: error("not connected")
+        val l = link ?: error("not connected")
         withTimeout(timeoutMs) {
-            s.outputStream.write("$cmd\r".toByteArray())
-            s.outputStream.flush()
+            l.write("$cmd\r".toByteArray())
             val sb = StringBuilder()
-            val input = s.inputStream
-            // Poll instead of a blocking read so withTimeout can actually cancel a silent dongle.
-            while (isActive) {
-                if (input.available() <= 0) { delay(10); continue }
-                val b = input.read()
-                if (b < 0 || b.toChar() == '>') break
-                sb.append(b.toChar())
+            val buf = ByteArray(1024) // usb-serial needs at least one max-size USB packet (512 on high-speed chips)
+            var done = false
+            while (isActive && !done) {
+                val n = l.read(buf, 50)
+                if (n <= 0) { delay(10); continue }
+                for (i in 0 until n) {
+                    val c = (buf[i].toInt() and 0xFF).toChar()
+                    if (c == '>') { done = true; break }
+                    sb.append(c)
+                }
             }
             sb.toString().trim()
         }
@@ -64,7 +103,7 @@ class ElmClient(private val context: Context) : Closeable {
     suspend fun clearCodes() { send("04") }
     suspend fun readLive(): List<LiveData> = ObdDecoder.LIVE_PIDS.mapNotNull { pid -> runCatching { ObdDecoder.decodeLive(send(pid)) }.getOrNull() }
 
-    override fun close() { runCatching { socket?.close() }; socket = null }
+    override fun close() { runCatching { link?.close() }; link = null }
 
     companion object { val SPP_UUID: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB") }
 }

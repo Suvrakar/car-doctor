@@ -22,6 +22,8 @@ dependencyResolutionManagement {
             }
         }
         mavenCentral()
+        // Only for usb-serial-for-android, which is published on JitPack.
+        maven("https://jitpack.io") { content { includeGroup("com.github.mik3y") } }
     }
 }
 rootProject.name = "GariDoctor"

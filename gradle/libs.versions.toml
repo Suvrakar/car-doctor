@@ -23,10 +23,12 @@ mlkitTextPlay = "19.0.1"
 googleServices = "4.4.2"
 tflite = "2.16.1"
 billing = "7.1.1"
+usbSerial = "3.8.1"
 playAds = "23.6.0"
 junit = "4.13.2"
 
 [libraries]
+usb-serial = { module = "com.github.mik3y:usb-serial-for-android", version.ref = "usbSerial" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }

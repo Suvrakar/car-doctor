@@ -14,7 +14,7 @@
 | [`core/src/main/resources/templates`](core/src/main/resources/templates) | 12 vehicle-type templates (JSON) with **68 Bangladesh model presets** (Pulsar, FZS, Apache, Splendor, Axio, Premio, Prius, HiAce, Bajaj RE, easy-bike 48V/60V, Prado, Hino AK1J…). Users add as many vehicles as they like and filter the garage by type. |
 | [`core/src/main/resources/symptoms`](core/src/main/resources/symptoms) | 5 bilingual symptom decision trees, 29 entry symptoms, each leaf with urgency colour + approx. BDT cost. |
 | [`core/src/main/resources/obd/dtc.json`](core/src/main/resources/obd/dtc.json) | Offline OBD fault-code dictionary in Bangla + English. |
-| [`app/`](app) | Android app: Kotlin + Jetpack Compose, Room, WorkManager, ML Kit text recognition, TensorFlow Lite, Bluetooth SPP (ELM327), PdfDocument + ZXing QR, Firebase Remote Config (optional). |
+| [`app/`](app) | Android app: Kotlin + Jetpack Compose, Room, WorkManager, ML Kit text recognition, TensorFlow Lite, ELM327 over Bluetooth SPP or USB OTG (usb-serial-for-android), PdfDocument + ZXing QR, Firebase Remote Config (optional). |
 | [`tools/`](tools) | Generators for templates and symptom trees (`python3 tools/gen_templates.py`, `python3 tools/gen_symptoms.py`). |
 | [`docs/`](docs) | [Architecture & database](docs/ARCHITECTURE.md), [screens](docs/SCREENS.md), [product & business plan](docs/PRODUCT.md). |
 
@@ -27,7 +27,7 @@
 - **Fuel / CNG / charge tracker**: km/L, km/m³, km/charge (tank-to-tank method), cost per km, and **anomaly alerts** ("Mileage dropped 18% this month — common causes: …").
 - **Symptom doctor**: tap-through questions in Bangla → possible causes with likelihood, **urgency colour** (safe / fix this week / stop now), approx. cost, and a "confirm with a mechanic" disclaimer.
 - **Camera checks**: warning-light scanner (TFLite, Teachable Machine model drop-in, manual picker fallback) and guided visual checks (tyre tread, chain slack, brake pads, oil, battery terminals, coolant, easy-bike battery water).
-- **OBD mode (cars)**: ELM327 Bluetooth dongle, fault codes decoded offline in Bangla, live data (Pro), voltage → health score.
+- **OBD mode (cars, SUVs, microbuses, pickups)**: ELM327 over a Bluetooth dongle **or a USB cable** through an OTG adapter (FTDI, CH340, CP210x, PL2303; baud rate found automatically), fault codes decoded offline in Bangla, live data (Pro), voltage → health score.
 - **Papers**: registration, fitness, tax token, insurance, driving licence, route permit, CNG cylinder retest — reminders at 30/15/7/3/1 days, weekly once expired.
 - **Vehicle Passport**: a shareable PDF with health score, service history, papers, mileage and a QR fingerprint. Sellers share it to get a better price.
 - **Easy-bike battery health**: charge cycles, range fade, water top-up reminders, and an alert when one weak battery is pulling the whole set down.

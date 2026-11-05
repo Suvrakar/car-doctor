@@ -1,0 +1,6 @@
+1008|Bluetooth
+1009|Stecken Sie das ELM327-USB-Kabel in die OBD-II-Buchse (unter dem Lenkrad) und mit einem OTG-Adapter ins Handy, dann Zündung einschalten. Erlauben Sie den Zugriff, wenn Android fragt.
+1010|USB-Zugriff wurde nicht erlaubt
+1011|USB-Kabel
+1012|Warte auf ein USB-OBD-Kabel …
+1013|Funktioniert mit FTDI-, CH340-, CP210x- und PL2303-Kabeln. Ihr Handy muss USB OTG unterstützen.

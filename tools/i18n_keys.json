@@ -1006,5 +1006,11 @@
 "Brake pads / shoes",
 "Bus",
 "Other vehicle",
-"SUV / jeep"
+"SUV / jeep",
+"Bluetooth",
+"Plug the ELM327 USB cable into the OBD-II port (under the steering) and into your phone with an OTG adapter, then turn the ignition ON. Allow access when Android asks.",
+"USB access was not allowed",
+"USB cable",
+"Waiting for a USB OBD cable…",
+"Works with FTDI, CH340, CP210x and PL2303 cables. Your phone must support USB OTG."
 ]

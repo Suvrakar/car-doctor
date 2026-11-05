@@ -1,0 +1,6 @@
+1008|Bluetooth
+1009|Collega il cavo USB ELM327 alla presa OBD-II (sotto il volante) e al telefono con un adattatore OTG, poi accendi il quadro. Consenti l'accesso quando Android lo chiede.
+1010|Accesso USB non consentito
+1011|Cavo USB
+1012|In attesa di un cavo USB OBD…
+1013|Funziona con cavi FTDI, CH340, CP210x e PL2303. Il telefono deve supportare USB OTG.

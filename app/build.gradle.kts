@@ -111,6 +111,7 @@ dependencies {
     if (enableNano) implementation(libs.mlkit.genai.prompt)
     implementation(libs.kotlinx.coroutines.play)
     implementation(libs.billing)
+    implementation(libs.usb.serial) // USB ELM327 cables (FTDI, CH340, CP210x, PL2303, CDC-ACM)
     implementation(libs.play.ads)
     testImplementation(libs.junit)
 }
